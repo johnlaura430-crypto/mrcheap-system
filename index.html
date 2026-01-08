@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MrCheap Business Management System</title>
+  <title>MrCheap System</title>
   <!-- Load React and Babel -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -251,7 +251,7 @@
           username: 'admin',
           password: 'admin123',
           role: 'admin',
-          name: 'Administrator',
+          name: 'Owner',
           active: true
         }
       ]);
@@ -653,7 +653,7 @@
                   React.createElement('tr', null,
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product Name' : 'Jina la Bidhaa'),
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Category' : 'Aina'),
-                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Availabe Quantity' : 'Idadi Iliopo'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Buy Price' : 'Bei ya Kununua'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Sell Price' : 'Bei ya Kuuza'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Stock Value' : 'Thamani'),
@@ -817,7 +817,6 @@
           productId: '',
           quantity: '',
           pricePerUnit: '',
-          supplier: '',
           date: new Date().toISOString().split('T')[0]
         });
 
@@ -834,7 +833,6 @@
           const product = products.find(p => p.id === purchase.productId);
           const productName = product ? product.name : '';
           return productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                 purchase.supplier.toLowerCase().includes(searchTerm.toLowerCase());
         });
 
         const handleOpenModal = () => {
@@ -842,7 +840,6 @@
             productId: '',
             quantity: '',
             pricePerUnit: '',
-            supplier: '',
             date: new Date().toISOString().split('T')[0]
           });
           setShowModal(true);
@@ -854,7 +851,6 @@
             productId: '',
             quantity: '',
             pricePerUnit: '',
-            supplier: '',
             date: new Date().toISOString().split('T')[0]
           });
         };
@@ -872,7 +868,6 @@
             quantity: quantity,
             pricePerUnit: pricePerUnit,
             total: total,
-            supplier: formData.supplier,
             date: formData.date,
             createdBy: currentUser.name
           };
@@ -958,7 +953,6 @@
                   React.createElement('tr', null,
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product' : 'Bidhaa'),
-                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Supplier' : 'Muuzaji'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Price/Unit' : 'Bei/Kipande'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Total' : 'Jumla'),
@@ -975,7 +969,6 @@
                     },
                       React.createElement('td', { className: "px-4 py-3" }, formatDate(purchase.date)),
                       React.createElement('td', { className: "px-4 py-3 font-medium" }, product ? product.name : 'N/A'),
-                      React.createElement('td', { className: "px-4 py-3" }, purchase.supplier),
                       React.createElement('td', { className: "px-4 py-3 text-right font-semibold" }, purchase.quantity),
                       React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(purchase.pricePerUnit)),
                       React.createElement('td', { className: "px-4 py-3 text-right font-bold text-blue-600" }, formatCurrency(purchase.total)),
@@ -1038,20 +1031,6 @@
                       )
                     )
                   )
-                ),
-
-                React.createElement('div', null,
-                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
-                    language === 'english' ? 'Supplier Name' : 'Jina la Muuzaji'
-                  ),
-                  React.createElement('input', {
-                    type: "text",
-                    required: true,
-                    value: formData.supplier,
-                    onChange: (e) => setFormData({...formData, supplier: e.target.value}),
-                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-                    placeholder: language === 'english' ? 'Enter supplier name' : 'Weka jina la muuzaji'
-                  })
                 ),
 
                 React.createElement('div', null,
@@ -1125,7 +1104,6 @@
         const [searchTerm, setSearchTerm] = useState('');
         const [cartItems, setCartItems] = useState([]);
         const [formData, setFormData] = useState({
-          customerName: '',
           date: new Date().toISOString().split('T')[0]
         });
 
@@ -1137,30 +1115,6 @@
           const date = new Date(dateString);
           return date.toLocaleDateString('en-GB');
         };
-
-        const filteredSales = sales.filter(sale => {
-          const customer = sale.customerName || '';
-          return customer.toLowerCase().includes(searchTerm.toLowerCase());
-        });
-
-        const handleOpenModal = () => {
-          setCartItems([]);
-          setFormData({
-            customerName: '',
-            date: new Date().toISOString().split('T')[0]
-          });
-          setShowModal(true);
-        };
-
-        const handleCloseModal = () => {
-          setShowModal(false);
-          setCartItems([]);
-          setFormData({
-            customerName: '',
-            date: new Date().toISOString().split('T')[0]
-          });
-        };
-
         const addToCart = (productId) => {
           const product = products.find(p => p.id === productId);
           if (!product) return;
@@ -1216,7 +1170,6 @@
 
           const newSale = {
             id: Date.now().toString(),
-            customerName: formData.customerName || 'Walk-in Customer',
             items: cartItems,
             total: total,
             date: formData.date,
@@ -1293,7 +1246,7 @@
           React.createElement('div', { className: "mb-6" },
             React.createElement('input', {
               type: "text",
-              placeholder: language === 'english' ? 'Search sales by customer...' : 'Tafuta mauzo kwa jina la mteja...',
+              placeholder: language === 'english' ? 'Search sales by item...' : 'Tafuta mauzo kwa jina la bidhaa...',
               value: searchTerm,
               onChange: (e) => setSearchTerm(e.target.value),
               className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -1307,7 +1260,6 @@
                 React.createElement('thead', { className: "bg-green-600 text-white" },
                   React.createElement('tr', null,
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
-                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Customer' : 'Mteja'),
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Items' : 'Bidhaa'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Total Amount' : 'Jumla'),
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Sold By' : 'Aliuza'),
@@ -1321,7 +1273,6 @@
                       className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-green-50`
                     },
                       React.createElement('td', { className: "px-4 py-3" }, formatDate(sale.date)),
-                      React.createElement('td', { className: "px-4 py-3 font-medium" }, sale.customerName),
                       React.createElement('td', { className: "px-4 py-3" },
                         React.createElement('div', { className: "text-sm" },
                           sale.items.map((item, i) =>
@@ -1365,22 +1316,6 @@
                   className: "text-white hover:text-gray-200"
                 }, React.createElement(XIcon, { className: "w-6 h-6" }))
               ),
-
-              React.createElement('form', { onSubmit: handleSubmit, className: "p-6" },
-                React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6 mb-6" },
-                  React.createElement('div', null,
-                    React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
-                      language === 'english' ? 'Customer Name (Optional)' : 'Jina la Mteja (Si Lazima)'
-                    ),
-                    React.createElement('input', {
-                      type: "text",
-                      value: formData.customerName,
-                      onChange: (e) => setFormData({...formData, customerName: e.target.value}),
-                      className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent",
-                      placeholder: language === 'english' ? 'Walk-in customer' : 'Mteja wa kawaida'
-                    })
-                  ),
-
                   React.createElement('div', null,
                     React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
                       language === 'english' ? 'Sale Date' : 'Tarehe ya Mauzo'
@@ -1923,7 +1858,6 @@
                 React.createElement('thead', { className: "bg-gray-100" },
                   React.createElement('tr', null,
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
-                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Customer' : 'Mteja'),
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Items' : 'Bidhaa'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Amount' : 'Kiasi')
                   )
@@ -1935,7 +1869,6 @@
                       className: index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
                     },
                       React.createElement('td', { className: "px-4 py-3" }, formatDate(sale.date)),
-                      React.createElement('td', { className: "px-4 py-3" }, sale.customerName),
                       React.createElement('td', { className: "px-4 py-3 text-sm" },
                         sale.items.map((item, i) =>
                           React.createElement('div', { key: i }, `${item.productName} x${item.quantity}`)
@@ -1965,7 +1898,6 @@
                   React.createElement('tr', null,
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
                     React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product' : 'Bidhaa'),
-                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Supplier' : 'Muuzaji'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
                     React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Amount' : 'Kiasi')
                   )
@@ -1979,7 +1911,6 @@
                     },
                       React.createElement('td', { className: "px-4 py-3" }, formatDate(purchase.date)),
                       React.createElement('td', { className: "px-4 py-3" }, product ? product.name : 'N/A'),
-                      React.createElement('td', { className: "px-4 py-3" }, purchase.supplier),
                       React.createElement('td', { className: "px-4 py-3 text-right" }, purchase.quantity),
                       React.createElement('td', { className: "px-4 py-3 text-right font-bold" }, formatCurrency(purchase.total))
                     );
