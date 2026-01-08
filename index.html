@@ -13,27 +13,52 @@
 </head>
 <body>
   <div id="root"></div>
-// Add this right after your useState import
-const fixRoutingOnRefresh = () => {
-  // If we're not at the root, redirect to root
-  if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
-    window.history.replaceState(null, null, window.location.origin);
-    return 'dashboard';
-  }
-  
-  // Try to get page from URL
-  const page = window.location.pathname.substring(1) || 
-               window.location.hash.substring(1);
-  return page || 'dashboard';
-};
-
-// Then in your component:
 const MrCheapSystem = () => {
-  const [currentPage, setCurrentPage] = useState(fixRoutingOnRefresh());
-  
-  // Rest of your code...
-};
+  // Fix routing on refresh
+  const getInitialPage = () => {
+    // Try to get from URL hash
+    if (window.location.hash) {
+      return window.location.hash.substring(1) || 'dashboard';
+    }
+    // Try to get from URL path
+    const path = window.location.pathname.replace('/', '');
+    return path || 'dashboard';
+  };
 
+  const [currentPage, setCurrentPage] = useState(getInitialPage());
+  const [language, setLanguage] = useState('english');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  
+  // Fix: Load currentUser from localStorage on initial render
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedData = localStorage.getItem('mrcheap_data');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        // Try to get the last logged in user
+        if (data.currentUser) {
+          return data.currentUser;
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    }
+    return null;
+  });
+
+  // Data states - keep your existing code here
+  const [users, setUsers] = useState([
+    {
+      id: '1',
+      username: 'admin',
+      password: 'admin123',
+      role: 'admin',
+      name: 'Owner',
+      active: true
+    }
+  ]);
+
+  // ... rest of your existing state declarations
   
   <script type="text/babel">
     // Use React and ReactDOM from global scope
