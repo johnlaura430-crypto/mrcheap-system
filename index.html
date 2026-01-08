@@ -10,56 +10,233 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <!-- Load Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Load Lucide React Icons -->
-  <script src="https://unpkg.com/lucide-react@latest"></script>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    // Create Lucide icons as React components
-    const createLucideIcon = (iconName) => {
-      return function Icon(props) {
-        return React.createElement('svg', {
-          ...props,
-          width: props.size || '24',
-          height: props.size || '24',
-          viewBox: '0 0 24 24',
-          fill: 'none',
-          stroke: 'currentColor',
-          strokeWidth: '2',
-          strokeLinecap: 'round',
-          strokeLinejoin: 'round'
-        }, React.createElement(iconName));
-      };
-    };
-
-    // Define Lucide icons we need
-    const LucideIcons = {
-      Package: createLucideIcon('rect'),
-      ShoppingCart: createLucideIcon('shopping-cart'),
-      DollarSign: createLucideIcon('dollar-sign'),
-      TrendingUp: createLucideIcon('trending-up'),
-      Users: createLucideIcon('users'),
-      FileText: createLucideIcon('file-text'),
-      Settings: createLucideIcon('settings'),
-      Menu: createLucideIcon('menu'),
-      X: createLucideIcon('x'),
-      Plus: createLucideIcon('plus'),
-      Edit: createLucideIcon('edit'),
-      Trash2: createLucideIcon('trash-2'),
-      Eye: createLucideIcon('eye'),
-      EyeOff: createLucideIcon('eye-off')
-    };
-
     // Use React and ReactDOM from global scope
     const { useState, useEffect } = React;
     
-    // Extract icons
-    const { 
-      Package, ShoppingCart, DollarSign, TrendingUp, Users, 
-      FileText, Settings, Menu, X, Plus, Edit, Trash2, Eye, EyeOff 
-    } = LucideIcons;
+    // Custom SVG Icons
+    const PackageIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('rect', { x: '2', y: '7', width: '20', height: '14', rx: '2', ry: '2' }),
+      React.createElement('path', { d: 'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16' })
+    ]);
+
+    const ShoppingCartIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('circle', { cx: '9', cy: '21', r: '1' }),
+      React.createElement('circle', { cx: '20', cy: '21', r: '1' }),
+      React.createElement('path', { d: 'M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6' })
+    ]);
+
+    const DollarSignIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('line', { x1: '12', y1: '1', x2: '12', y2: '23' }),
+      React.createElement('path', { d: 'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' })
+    ]);
+
+    const TrendingUpIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('polyline', { points: '23 6 13.5 15.5 8.5 10.5 1 18' }),
+      React.createElement('polyline', { points: '17 6 23 6 23 12' })
+    ]);
+
+    const UsersIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }),
+      React.createElement('circle', { cx: '9', cy: '7', r: '4' }),
+      React.createElement('path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87' }),
+      React.createElement('path', { d: 'M16 3.13a4 4 0 0 1 0 7.75' })
+    ]);
+
+    const FileTextIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('path', { d: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' }),
+      React.createElement('polyline', { points: '14 2 14 8 20 8' }),
+      React.createElement('line', { x1: '16', y1: '13', x2: '8', y2: '13' }),
+      React.createElement('line', { x1: '16', y1: '17', x2: '8', y2: '17' }),
+      React.createElement('polyline', { points: '10 9 9 9 8 9' })
+    ]);
+
+    const SettingsIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('circle', { cx: '12', cy: '12', r: '3' }),
+      React.createElement('path', { d: 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z' })
+    ]);
+
+    const MenuIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('line', { x1: '3', y1: '12', x2: '21', y2: '12' }),
+      React.createElement('line', { x1: '3', y1: '6', x2: '21', y2: '6' }),
+      React.createElement('line', { x1: '3', y1: '18', x2: '21', y2: '18' })
+    ]);
+
+    const XIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('line', { x1: '18', y1: '6', x2: '6', y2: '18' }),
+      React.createElement('line', { x1: '6', y1: '6', x2: '18', y2: '18' })
+    ]);
+
+    const PlusIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('line', { x1: '12', y1: '5', x2: '12', y2: '19' }),
+      React.createElement('line', { x1: '5', y1: '12', x2: '19', y2: '12' })
+    ]);
+
+    const EditIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('path', { d: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' }),
+      React.createElement('path', { d: 'M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' })
+    ]);
+
+    const Trash2Icon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('polyline', { points: '3 6 5 6 21 6' }),
+      React.createElement('path', { d: 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' }),
+      React.createElement('line', { x1: '10', y1: '11', x2: '10', y2: '17' }),
+      React.createElement('line', { x1: '14', y1: '11', x2: '14', y2: '17' })
+    ]);
+
+    const EyeIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('path', { d: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' }),
+      React.createElement('circle', { cx: '12', cy: '12', r: '3' })
+    ]);
+
+    const EyeOffIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('path', { d: 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24' }),
+      React.createElement('line', { x1: '1', y1: '1', x2: '23', y2: '23' })
+    ]);
 
     const MrCheapSystem = () => {
       const [currentPage, setCurrentPage] = useState('dashboard');
@@ -67,7 +244,7 @@
       const [sidebarOpen, setSidebarOpen] = useState(true);
       const [currentUser, setCurrentUser] = useState(null);
 
-      // Data states - using in-memory storage with localStorage backup
+      // Data states
       const [users, setUsers] = useState([
         {
           id: '1',
@@ -91,7 +268,7 @@
       const [purchases, setPurchases] = useState([]);
       const [expenses, setExpenses] = useState([]);
 
-      // Load data from localStorage on mount
+      // Load data from localStorage
       useEffect(() => {
         const savedData = localStorage.getItem('mrcheap_data');
         if (savedData) {
@@ -108,7 +285,7 @@
         }
       }, []);
 
-      // Save data to localStorage whenever it changes
+      // Save data to localStorage
       useEffect(() => {
         const data = {
           users,
@@ -120,7 +297,7 @@
         localStorage.setItem('mrcheap_data', JSON.stringify(data));
       }, [users, products, sales, purchases, expenses]);
 
-      // Translation object
+      // Translations
       const translations = {
         english: {
           dashboard: 'Dashboard',
@@ -189,54 +366,52 @@
           }
         };
 
-        return (
-          React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4" },
-            React.createElement('div', { className: "bg-white rounded-lg shadow-xl p-8 w-full max-w-md" },
-              React.createElement('div', { className: "text-center mb-8" },
-                React.createElement('h1', { className: "text-3xl font-bold text-indigo-600 mb-2" }, t.businessName),
-                React.createElement('p', { className: "text-gray-600" }, t.login)
+        return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4" },
+          React.createElement('div', { className: "bg-white rounded-lg shadow-xl p-8 w-full max-w-md" },
+            React.createElement('div', { className: "text-center mb-8" },
+              React.createElement('h1', { className: "text-3xl font-bold text-indigo-600 mb-2" }, t.businessName),
+              React.createElement('p', { className: "text-gray-600" }, t.login)
+            ),
+            
+            error && React.createElement('div', { className: "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" }, error),
+
+            React.createElement('div', { className: "space-y-4" },
+              React.createElement('div', null,
+                React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.username),
+                React.createElement('input', {
+                  type: "text",
+                  value: username,
+                  onChange: (e) => setUsername(e.target.value),
+                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
+                  placeholder: language === 'english' ? 'Enter username' : 'Weka jina la mtumiaji'
+                })
               ),
-              
-              error && React.createElement('div', { className: "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" }, error),
 
-              React.createElement('div', { className: "space-y-4" },
-                React.createElement('div', null,
-                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.username),
-                  React.createElement('input', {
-                    type: "text",
-                    value: username,
-                    onChange: (e) => setUsername(e.target.value),
-                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
-                    placeholder: language === 'english' ? 'Enter username' : 'Weka jina la mtumiaji'
-                  })
-                ),
+              React.createElement('div', null,
+                React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.password),
+                React.createElement('input', {
+                  type: "password",
+                  value: password,
+                  onChange: (e) => setPassword(e.target.value),
+                  onKeyPress: (e) => e.key === 'Enter' && handleLogin(),
+                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
+                  placeholder: language === 'english' ? 'Enter password' : 'Weka neno la siri'
+                })
+              ),
 
-                React.createElement('div', null,
-                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.password),
-                  React.createElement('input', {
-                    type: "password",
-                    value: password,
-                    onChange: (e) => setPassword(e.target.value),
-                    onKeyPress: (e) => e.key === 'Enter' && handleLogin(),
-                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
-                    placeholder: language === 'english' ? 'Enter password' : 'Weka neno la siri'
-                  })
-                ),
+              React.createElement('button', {
+                onClick: handleLogin,
+                className: "w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+              }, t.login),
 
-                React.createElement('button', {
-                  onClick: handleLogin,
-                  className: "w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-                }, t.login),
+              React.createElement('div', { className: "text-center text-sm text-gray-600 mt-4" },
+                language === 'english' ? 'Default: admin / admin123' : 'Chaguo-msingi: admin / admin123'
+              ),
 
-                React.createElement('div', { className: "text-center text-sm text-gray-600 mt-4" },
-                  language === 'english' ? 'Default: admin / admin123' : 'Chaguo-msingi: admin / admin123'
-                ),
-
-                React.createElement('button', {
-                  onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
-                  className: "w-full mt-4 text-sm text-indigo-600 hover:text-indigo-800"
-                }, language === 'english' ? 'Badilisha kwa Kiswahili' : 'Switch to English')
-              )
+              React.createElement('button', {
+                onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
+                className: "w-full mt-4 text-sm text-indigo-600 hover:text-indigo-800"
+              }, language === 'english' ? 'Badilisha kwa Kiswahili' : 'Switch to English')
             )
           )
         );
@@ -254,82 +429,2350 @@
         const stockValue = products.reduce((sum, product) => sum + (product.quantity * product.buyPrice), 0);
         const profit = totalSales - totalPurchases - totalExpenses;
 
-        return (
-          React.createElement('div', { className: "p-6" },
-            React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.dashboard),
-            
-            React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" },
-              React.createElement('div', { className: "bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white" },
-                React.createElement('div', { className: "flex items-center justify-between" },
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.dashboard),
+          
+          React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" },
+            React.createElement('div', { className: "bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('div', { className: "flex items-center justify-between" },
+                React.createElement('div', null,
+                  React.createElement('p', { className: "text-green-100 text-sm" }, t.totalSales),
+                  React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalSales))
+                ),
+                React.createElement(ShoppingCartIcon, { className: "w-12 h-12 text-green-200" })
+              )
+            ),
+
+            React.createElement('div', { className: "bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('div', { className: "flex items-center justify-between" },
+                React.createElement('div', null,
+                  React.createElement('p', { className: "text-blue-100 text-sm" }, t.totalPurchases),
+                  React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalPurchases))
+                ),
+                React.createElement(PackageIcon, { className: "w-12 h-12 text-blue-200" })
+              )
+            ),
+
+            React.createElement('div', { className: "bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('div', { className: "flex items-center justify-between" },
+                React.createElement('div', null,
+                  React.createElement('p', { className: "text-purple-100 text-sm" }, t.currentStock),
+                  React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(stockValue))
+                ),
+                React.createElement(DollarSignIcon, { className: "w-12 h-12 text-purple-200" })
+              )
+            ),
+
+            React.createElement('div', { className: `bg-gradient-to-br ${profit >= 0 ? 'from-emerald-400 to-emerald-600' : 'from-red-400 to-red-600'} rounded-lg shadow-lg p-6 text-white` },
+              React.createElement('div', { className: "flex items-center justify-between" },
+                React.createElement('div', null,
+                  React.createElement('p', { className: "text-white text-sm" }, t.profit),
+                  React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(profit))
+                ),
+                React.createElement(TrendingUpIcon, { className: "w-12 h-12 text-white opacity-80" })
+              )
+            )
+          ),
+
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
+            React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" }, language === 'english' ? 'Quick Actions' : 'Vitendo vya Haraka'),
+            React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-4 gap-4" },
+              React.createElement('button', {
+                onClick: () => setCurrentPage('sales'),
+                className: "bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-colors"
+              },
+                React.createElement(ShoppingCartIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Sale' : 'Uza')
+              ),
+              React.createElement('button', {
+                onClick: () => setCurrentPage('purchases'),
+                className: "bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-colors"
+              },
+                React.createElement(PackageIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Purchase' : 'Nunua')
+              ),
+              React.createElement('button', {
+                onClick: () => setCurrentPage('inventory'),
+                className: "bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-colors"
+              },
+                React.createElement(PackageIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'View Stock' : 'Tazama Bidhaa')
+              ),
+              React.createElement('button', {
+                onClick: () => setCurrentPage('reports'),
+                className: "bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition-colors"
+              },
+                React.createElement(FileTextIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'Reports' : 'Ripoti')
+              )
+            )
+          ),
+
+          // Low Stock Alerts
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6 mt-6" },
+            React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" }, t.lowStock),
+            React.createElement('div', { className: "space-y-2" },
+              products.filter(p => p.quantity < 10).map(product =>
+                React.createElement('div', { 
+                  key: product.id,
+                  className: "flex justify-between items-center p-3 bg-red-50 border border-red-200 rounded-lg"
+                },
                   React.createElement('div', null,
-                    React.createElement('p', { className: "text-green-100 text-sm" }, t.totalSales),
-                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalSales))
+                    React.createElement('span', { className: "font-medium" }, product.name),
+                    React.createElement('span', { className: "ml-2 text-sm text-red-600" } , `(${product.quantity} left)`)
                   ),
-                  React.createElement(ShoppingCart, { className: "w-12 h-12 text-green-200" })
+                  React.createElement('button', {
+                    onClick: () => setCurrentPage('inventory'),
+                    className: "text-sm text-indigo-600 hover:text-indigo-800"
+                  }, language === 'english' ? 'Restock' : 'Ongeza')
                 )
               ),
-
-              React.createElement('div', { className: "bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg p-6 text-white" },
-                React.createElement('div', { className: "flex items-center justify-between" },
-                  React.createElement('div', null,
-                    React.createElement('p', { className: "text-blue-100 text-sm" }, t.totalPurchases),
-                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalPurchases))
-                  ),
-                  React.createElement(Package, { className: "w-12 h-12 text-blue-200" })
+              products.filter(p => p.quantity < 10).length === 0 &&
+                React.createElement('p', { className: "text-gray-500 text-center py-4" },
+                  language === 'english' ? 'All products have sufficient stock' : 'Bidhaa zote zina idadi ya kutosha'
                 )
-              ),
+            )
+          )
+        );
+      };
 
-              React.createElement('div', { className: "bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg p-6 text-white" },
-                React.createElement('div', { className: "flex items-center justify-between" },
-                  React.createElement('div', null,
-                    React.createElement('p', { className: "text-purple-100 text-sm" }, t.currentStock),
-                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(stockValue))
-                  ),
-                  React.createElement(DollarSign, { className: "w-12 h-12 text-purple-200" })
-                )
-              ),
+      // Inventory Management Component
+      const InventoryPage = () => {
+        const [showModal, setShowModal] = useState(false);
+        const [editingProduct, setEditingProduct] = useState(null);
+        const [searchTerm, setSearchTerm] = useState('');
+        const [formData, setFormData] = useState({
+          name: '',
+          quantity: '',
+          buyPrice: '',
+          sellPrice: '',
+          category: ''
+        });
 
-              React.createElement('div', { className: `bg-gradient-to-br ${profit >= 0 ? 'from-emerald-400 to-emerald-600' : 'from-red-400 to-red-600'} rounded-lg shadow-lg p-6 text-white` },
-                React.createElement('div', { className: "flex items-center justify-between" },
-                  React.createElement('div', null,
-                    React.createElement('p', { className: "text-white text-sm" }, t.profit),
-                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(profit))
-                  ),
-                  React.createElement(TrendingUp, { className: "w-12 h-12 text-white opacity-80" })
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount.toLocaleString()}`;
+        };
+
+        const filteredProducts = products.filter(product =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.category.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        const handleOpenModal = (product = null) => {
+          if (product) {
+            setEditingProduct(product);
+            setFormData({
+              name: product.name,
+              quantity: product.quantity,
+              buyPrice: product.buyPrice,
+              sellPrice: product.sellPrice,
+              category: product.category
+            });
+          } else {
+            setEditingProduct(null);
+            setFormData({
+              name: '',
+              quantity: '',
+              buyPrice: '',
+              sellPrice: '',
+              category: ''
+            });
+          }
+          setShowModal(true);
+        };
+
+        const handleCloseModal = () => {
+          setShowModal(false);
+          setEditingProduct(null);
+          setFormData({
+            name: '',
+            quantity: '',
+            buyPrice: '',
+            sellPrice: '',
+            category: ''
+          });
+        };
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          
+          if (editingProduct) {
+            setProducts(products.map(p => 
+              p.id === editingProduct.id 
+                ? { ...p, ...formData, quantity: Number(formData.quantity), buyPrice: Number(formData.buyPrice), sellPrice: Number(formData.sellPrice) }
+                : p
+            ));
+          } else {
+            const newProduct = {
+              id: Date.now().toString(),
+              ...formData,
+              quantity: Number(formData.quantity),
+              buyPrice: Number(formData.buyPrice),
+              sellPrice: Number(formData.sellPrice)
+            };
+            setProducts([...products, newProduct]);
+          }
+          
+          handleCloseModal();
+        };
+
+        const handleDelete = (productId) => {
+          if (window.confirm(language === 'english' ? 'Are you sure you want to delete this product?' : 'Je, una uhakika unataka kufuta bidhaa hii?')) {
+            setProducts(products.filter(p => p.id !== productId));
+          }
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('div', { className: "flex justify-between items-center mb-6" },
+            React.createElement('h2', { className: "text-3xl font-bold text-gray-800" }, t.inventory),
+            React.createElement('button', {
+              onClick: () => handleOpenModal(),
+              className: "bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center"
+            },
+              React.createElement(PlusIcon, { className: "w-5 h-5 mr-2" }),
+              language === 'english' ? 'Add Product' : 'Ongeza Bidhaa'
+            )
+          ),
+
+          // Search Bar
+          React.createElement('div', { className: "mb-6" },
+            React.createElement('input', {
+              type: "text",
+              placeholder: language === 'english' ? 'Search products...' : 'Tafuta bidhaa...',
+              value: searchTerm,
+              onChange: (e) => setSearchTerm(e.target.value),
+              className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            })
+          ),
+
+          // Products Table
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-indigo-600 text-white" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product Name' : 'Jina la Bidhaa'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Category' : 'Aina'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Buy Price' : 'Bei ya Kununua'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Sell Price' : 'Bei ya Kuuza'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Stock Value' : 'Thamani'),
+                    React.createElement('th', { className: "px-4 py-3 text-center" }, language === 'english' ? 'Actions' : 'Vitendo')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  filteredProducts.map((product, index) =>
+                    React.createElement('tr', { 
+                      key: product.id, 
+                      className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-indigo-50`
+                    },
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('div', { className: "flex items-center" },
+                          React.createElement('span', { className: "font-medium" }, product.name),
+                          product.quantity < 10 && React.createElement('span', { className: "ml-2 px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full" },
+                            language === 'english' ? 'Low Stock' : 'Pungufu'
+                          )
+                        )
+                      ),
+                      React.createElement('td', { className: "px-4 py-3" }, product.category),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-semibold" }, product.quantity),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(product.buyPrice)),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(product.sellPrice)),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-semibold" }, formatCurrency(product.quantity * product.buyPrice)),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('div', { className: "flex justify-center space-x-2" },
+                          React.createElement('button', {
+                            onClick: () => handleOpenModal(product),
+                            className: "text-blue-600 hover:text-blue-800",
+                            title: language === 'english' ? 'Edit' : 'Hariri'
+                          }, React.createElement(EditIcon, { className: "w-5 h-5" })),
+                          React.createElement('button', {
+                            onClick: () => handleDelete(product.id),
+                            className: "text-red-600 hover:text-red-800",
+                            title: language === 'english' ? 'Delete' : 'Futa'
+                          }, React.createElement(Trash2Icon, { className: "w-5 h-5" }))
+                        )
+                      )
+                    )
+                  )
                 )
               )
             ),
 
-            React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
-              React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" }, language === 'english' ? 'Quick Actions' : 'Vitendo vya Haraka'),
-              React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-4 gap-4" },
-                React.createElement('button', {
-                  onClick: () => setCurrentPage('sales'),
-                  className: "bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-colors"
-                },
-                  React.createElement(ShoppingCart, { className: "w-6 h-6 mx-auto mb-2" }),
-                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Sale' : 'Uza')
+            filteredProducts.length === 0 && React.createElement('div', { className: "text-center py-8 text-gray-500" },
+              language === 'english' ? 'No products found' : 'Hakuna bidhaa'
+            )
+          ),
+
+          // Add/Edit Modal
+          showModal && React.createElement('div', { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" },
+            React.createElement('div', { className: "bg-white rounded-lg shadow-xl w-full max-w-md" },
+              React.createElement('div', { className: "bg-indigo-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center" },
+                React.createElement('h3', { className: "text-xl font-bold" },
+                  editingProduct 
+                    ? (language === 'english' ? 'Edit Product' : 'Hariri Bidhaa')
+                    : (language === 'english' ? 'Add New Product' : 'Ongeza Bidhaa Mpya')
                 ),
-                React.createElement('button', {
-                  onClick: () => setCurrentPage('purchases'),
-                  className: "bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-colors"
-                },
-                  React.createElement(Package, { className: "w-6 h-6 mx-auto mb-2" }),
-                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Purchase' : 'Nunua')
+                React.createElement('button', { 
+                  onClick: handleCloseModal, 
+                  className: "text-white hover:text-gray-200"
+                }, React.createElement(XIcon, { className: "w-6 h-6" }))
+              ),
+
+              React.createElement('form', { onSubmit: handleSubmit, className: "p-6 space-y-4" },
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Product Name' : 'Jina la Bidhaa'
+                  ),
+                  React.createElement('input', {
+                    type: "text",
+                    required: true,
+                    value: formData.name,
+                    onChange: (e) => setFormData({...formData, name: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  })
                 ),
-                React.createElement('button', {
-                  onClick: () => setCurrentPage('inventory'),
-                  className: "bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-colors"
-                },
-                  React.createElement(Package, { className: "w-6 h-6 mx-auto mb-2" }),
-                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'View Stock' : 'Tazama Bidhaa')
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Category' : 'Aina'
+                  ),
+                  React.createElement('input', {
+                    type: "text",
+                    required: true,
+                    value: formData.category,
+                    onChange: (e) => setFormData({...formData, category: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  })
                 ),
-                React.createElement('button', {
-                  onClick: () => setCurrentPage('reports'),
-                  className: "bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition-colors"
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Quantity' : 'Idadi'
+                  ),
+                  React.createElement('input', {
+                    type: "number",
+                    required: true,
+                    min: "0",
+                    value: formData.quantity,
+                    onChange: (e) => setFormData({...formData, quantity: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Buy Price (TZS)' : 'Bei ya Kununua (TZS)'
+                  ),
+                  React.createElement('input', {
+                    type: "number",
+                    required: true,
+                    min: "0",
+                    value: formData.buyPrice,
+                    onChange: (e) => setFormData({...formData, buyPrice: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Sell Price (TZS)' : 'Bei ya Kuuza (TZS)'
+                  ),
+                  React.createElement('input', {
+                    type: "number",
+                    required: true,
+                    min: "0",
+                    value: formData.sellPrice,
+                    onChange: (e) => setFormData({...formData, sellPrice: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', { className: "flex space-x-3 pt-4" },
+                  React.createElement('button', {
+                    type: "submit",
+                    className: "flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                  },
+                    editingProduct 
+                      ? (language === 'english' ? 'Update' : 'Sasisha')
+                      : (language === 'english' ? 'Add Product' : 'Ongeza')
+                  ),
+                  React.createElement('button', {
+                    type: "button",
+                    onClick: handleCloseModal,
+                    className: "flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  }, language === 'english' ? 'Cancel' : 'Ghairi')
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Purchases Management Component
+      const PurchasesPage = () => {
+        const [showModal, setShowModal] = useState(false);
+        const [searchTerm, setSearchTerm] = useState('');
+        const [formData, setFormData] = useState({
+          productId: '',
+          quantity: '',
+          pricePerUnit: '',
+          supplier: '',
+          date: new Date().toISOString().split('T')[0]
+        });
+
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount.toLocaleString()}`;
+        };
+
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return date.toLocaleDateString('en-GB');
+        };
+
+        const filteredPurchases = purchases.filter(purchase => {
+          const product = products.find(p => p.id === purchase.productId);
+          const productName = product ? product.name : '';
+          return productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                 purchase.supplier.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+        const handleOpenModal = () => {
+          setFormData({
+            productId: '',
+            quantity: '',
+            pricePerUnit: '',
+            supplier: '',
+            date: new Date().toISOString().split('T')[0]
+          });
+          setShowModal(true);
+        };
+
+        const handleCloseModal = () => {
+          setShowModal(false);
+          setFormData({
+            productId: '',
+            quantity: '',
+            pricePerUnit: '',
+            supplier: '',
+            date: new Date().toISOString().split('T')[0]
+          });
+        };
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          
+          const quantity = Number(formData.quantity);
+          const pricePerUnit = Number(formData.pricePerUnit);
+          const total = quantity * pricePerUnit;
+
+          const newPurchase = {
+            id: Date.now().toString(),
+            productId: formData.productId,
+            quantity: quantity,
+            pricePerUnit: pricePerUnit,
+            total: total,
+            supplier: formData.supplier,
+            date: formData.date,
+            createdBy: currentUser.name
+          };
+
+          setPurchases([newPurchase, ...purchases]);
+
+          setProducts(products.map(p => 
+            p.id === formData.productId 
+              ? { ...p, quantity: p.quantity + quantity }
+              : p
+          ));
+
+          handleCloseModal();
+        };
+
+        const handleDelete = (purchaseId) => {
+          if (window.confirm(language === 'english' ? 'Are you sure you want to delete this purchase record?' : 'Je, una uhakika unataka kufuta rekodi hii?')) {
+            const purchase = purchases.find(p => p.id === purchaseId);
+            
+            setProducts(products.map(p => 
+              p.id === purchase.productId 
+                ? { ...p, quantity: Math.max(0, p.quantity - purchase.quantity) }
+                : p
+            ));
+
+            setPurchases(purchases.filter(p => p.id !== purchaseId));
+          }
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('div', { className: "flex justify-between items-center mb-6" },
+            React.createElement('h2', { className: "text-3xl font-bold text-gray-800" }, t.purchases),
+            React.createElement('button', {
+              onClick: handleOpenModal,
+              className: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+            },
+              React.createElement(PlusIcon, { className: "w-5 h-5 mr-2" }),
+              language === 'english' ? 'New Purchase' : 'Nunua Bidhaa'
+            )
+          ),
+
+          // Summary Cards
+          React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-6 mb-6" },
+            React.createElement('div', { className: "bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-blue-100 text-sm" }, language === 'english' ? 'Total Purchases' : 'Jumla ya Manunuzi'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" },
+                formatCurrency(purchases.reduce((sum, p) => sum + p.total, 0))
+              )
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-indigo-100 text-sm" }, language === 'english' ? 'Total Transactions' : 'Idadi ya Manunuzi'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" }, purchases.length)
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-purple-100 text-sm" }, language === 'english' ? 'This Month' : 'Mwezi Huu'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" },
+                formatCurrency(purchases.filter(p => {
+                  const purchaseDate = new Date(p.date);
+                  const now = new Date();
+                  return purchaseDate.getMonth() === now.getMonth() && 
+                         purchaseDate.getFullYear() === now.getFullYear();
+                }).reduce((sum, p) => sum + p.total, 0))
+              )
+            )
+          ),
+
+          // Search Bar
+          React.createElement('div', { className: "mb-6" },
+            React.createElement('input', {
+              type: "text",
+              placeholder: language === 'english' ? 'Search purchases...' : 'Tafuta manunuzi...',
+              value: searchTerm,
+              onChange: (e) => setSearchTerm(e.target.value),
+              className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            })
+          ),
+
+          // Purchases Table
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-blue-600 text-white" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product' : 'Bidhaa'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Supplier' : 'Muuzaji'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Price/Unit' : 'Bei/Kipande'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Total' : 'Jumla'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Added By' : 'Aliongeza'),
+                    React.createElement('th', { className: "px-4 py-3 text-center" }, language === 'english' ? 'Actions' : 'Vitendo')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  filteredPurchases.map((purchase, index) => {
+                    const product = products.find(p => p.id === purchase.productId);
+                    return React.createElement('tr', { 
+                      key: purchase.id, 
+                      className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50`
+                    },
+                      React.createElement('td', { className: "px-4 py-3" }, formatDate(purchase.date)),
+                      React.createElement('td', { className: "px-4 py-3 font-medium" }, product ? product.name : 'N/A'),
+                      React.createElement('td', { className: "px-4 py-3" }, purchase.supplier),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-semibold" }, purchase.quantity),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(purchase.pricePerUnit)),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-bold text-blue-600" }, formatCurrency(purchase.total)),
+                      React.createElement('td', { className: "px-4 py-3 text-sm text-gray-600" }, purchase.createdBy),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('div', { className: "flex justify-center" },
+                          React.createElement('button', {
+                            onClick: () => handleDelete(purchase.id),
+                            className: "text-red-600 hover:text-red-800",
+                            title: language === 'english' ? 'Delete' : 'Futa'
+                          }, React.createElement(Trash2Icon, { className: "w-5 h-5" }))
+                        )
+                      )
+                    );
+                  })
+                )
+              )
+            ),
+
+            filteredPurchases.length === 0 && React.createElement('div', { className: "text-center py-8 text-gray-500" },
+              language === 'english' ? 'No purchases recorded yet' : 'Hakuna manunuzi bado'
+            )
+          ),
+
+          // Add Purchase Modal
+          showModal && React.createElement('div', { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" },
+            React.createElement('div', { className: "bg-white rounded-lg shadow-xl w-full max-w-md" },
+              React.createElement('div', { className: "bg-blue-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center" },
+                React.createElement('h3', { className: "text-xl font-bold" },
+                  language === 'english' ? 'Record New Purchase' : 'Rekodi Ununuzi Mpya'
+                ),
+                React.createElement('button', { 
+                  onClick: handleCloseModal, 
+                  className: "text-white hover:text-gray-200"
+                }, React.createElement(XIcon, { className: "w-6 h-6" }))
+              ),
+
+              React.createElement('form', { onSubmit: handleSubmit, className: "p-6 space-y-4" },
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Select Product' : 'Chagua Bidhaa'
+                  ),
+                  React.createElement('select', {
+                    required: true,
+                    value: formData.productId,
+                    onChange: (e) => {
+                      const selectedProduct = products.find(p => p.id === e.target.value);
+                      setFormData({
+                        ...formData, 
+                        productId: e.target.value,
+                        pricePerUnit: selectedProduct ? selectedProduct.buyPrice : ''
+                      });
+                    },
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  },
+                    React.createElement('option', { value: "" }, language === 'english' ? 'Choose a product...' : 'Chagua bidhaa...'),
+                    products.map(product =>
+                      React.createElement('option', { key: product.id, value: product.id },
+                        `${product.name} - ${product.category}`
+                      )
+                    )
+                  )
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Supplier Name' : 'Jina la Muuzaji'
+                  ),
+                  React.createElement('input', {
+                    type: "text",
+                    required: true,
+                    value: formData.supplier,
+                    onChange: (e) => setFormData({...formData, supplier: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                    placeholder: language === 'english' ? 'Enter supplier name' : 'Weka jina la muuzaji'
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Quantity' : 'Idadi'
+                  ),
+                  React.createElement('input', {
+                    type: "number",
+                    required: true,
+                    min: "1",
+                    value: formData.quantity,
+                    onChange: (e) => setFormData({...formData, quantity: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Price per Unit (TZS)' : 'Bei kwa Kipande (TZS)'
+                  ),
+                  React.createElement('input', {
+                    type: "number",
+                    required: true,
+                    min: "0",
+                    value: formData.pricePerUnit,
+                    onChange: (e) => setFormData({...formData, pricePerUnit: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Purchase Date' : 'Tarehe ya Ununuzi'
+                  ),
+                  React.createElement('input', {
+                    type: "date",
+                    required: true,
+                    value: formData.date,
+                    onChange: (e) => setFormData({...formData, date: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  })
+                ),
+
+                formData.quantity && formData.pricePerUnit && React.createElement('div', { className: "bg-blue-50 border border-blue-200 rounded-lg p-4" },
+                  React.createElement('p', { className: "text-sm text-gray-600" }, language === 'english' ? 'Total Amount:' : 'Jumla:'),
+                  React.createElement('p', { className: "text-2xl font-bold text-blue-600" },
+                    formatCurrency(Number(formData.quantity) * Number(formData.pricePerUnit))
+                  )
+                ),
+
+                React.createElement('div', { className: "flex space-x-3 pt-4" },
+                  React.createElement('button', {
+                    type: "submit",
+                    className: "flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  }, language === 'english' ? 'Record Purchase' : 'Rekodi'),
+                  React.createElement('button', {
+                    type: "button",
+                    onClick: handleCloseModal,
+                    className: "flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  }, language === 'english' ? 'Cancel' : 'Ghairi')
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Sales Management Component
+      const SalesPage = () => {
+        const [showModal, setShowModal] = useState(false);
+        const [searchTerm, setSearchTerm] = useState('');
+        const [cartItems, setCartItems] = useState([]);
+        const [formData, setFormData] = useState({
+          customerName: '',
+          date: new Date().toISOString().split('T')[0]
+        });
+
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount.toLocaleString()}`;
+        };
+
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return date.toLocaleDateString('en-GB');
+        };
+
+        const filteredSales = sales.filter(sale => {
+          const customer = sale.customerName || '';
+          return customer.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+        const handleOpenModal = () => {
+          setCartItems([]);
+          setFormData({
+            customerName: '',
+            date: new Date().toISOString().split('T')[0]
+          });
+          setShowModal(true);
+        };
+
+        const handleCloseModal = () => {
+          setShowModal(false);
+          setCartItems([]);
+          setFormData({
+            customerName: '',
+            date: new Date().toISOString().split('T')[0]
+          });
+        };
+
+        const addToCart = (productId) => {
+          const product = products.find(p => p.id === productId);
+          if (!product) return;
+
+          const existingItem = cartItems.find(item => item.productId === productId);
+          if (existingItem) {
+            setCartItems(cartItems.map(item =>
+              item.productId === productId && item.quantity < product.quantity
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            ));
+          } else {
+            setCartItems([...cartItems, {
+              productId: productId,
+              productName: product.name,
+              quantity: 1,
+              pricePerUnit: product.sellPrice,
+              maxQuantity: product.quantity
+            }]);
+          }
+        };
+
+        const updateCartQuantity = (productId, newQuantity) => {
+          const item = cartItems.find(i => i.productId === productId);
+          if (newQuantity <= 0) {
+            removeFromCart(productId);
+          } else if (newQuantity <= item.maxQuantity) {
+            setCartItems(cartItems.map(item =>
+              item.productId === productId
+                ? { ...item, quantity: newQuantity }
+                : item
+            ));
+          }
+        };
+
+        const removeFromCart = (productId) => {
+          setCartItems(cartItems.filter(item => item.productId !== productId));
+        };
+
+        const calculateTotal = () => {
+          return cartItems.reduce((sum, item) => sum + (item.quantity * item.pricePerUnit), 0);
+        };
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          
+          if (cartItems.length === 0) {
+            alert(language === 'english' ? 'Please add items to cart' : 'Tafadhali ongeza bidhaa kwenye cart');
+            return;
+          }
+
+          const total = calculateTotal();
+
+          const newSale = {
+            id: Date.now().toString(),
+            customerName: formData.customerName || 'Walk-in Customer',
+            items: cartItems,
+            total: total,
+            date: formData.date,
+            createdBy: currentUser.name
+          };
+
+          setSales([newSale, ...sales]);
+
+          cartItems.forEach(item => {
+            setProducts(products.map(p =>
+              p.id === item.productId
+                ? { ...p, quantity: p.quantity - item.quantity }
+                : p
+            ));
+          });
+
+          handleCloseModal();
+        };
+
+        const handleDelete = (saleId) => {
+          if (window.confirm(language === 'english' ? 'Are you sure you want to delete this sale record?' : 'Je, una uhakika unataka kufuta rekodi hii?')) {
+            const sale = sales.find(s => s.id === saleId);
+            
+            sale.items.forEach(item => {
+              setProducts(products.map(p =>
+                p.id === item.productId
+                  ? { ...p, quantity: p.quantity + item.quantity }
+                  : p
+              ));
+            });
+
+            setSales(sales.filter(s => s.id !== saleId));
+          }
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('div', { className: "flex justify-between items-center mb-6" },
+            React.createElement('h2', { className: "text-3xl font-bold text-gray-800" }, t.sales),
+            React.createElement('button', {
+              onClick: handleOpenModal,
+              className: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center"
+            },
+              React.createElement(PlusIcon, { className: "w-5 h-5 mr-2" }),
+              language === 'english' ? 'New Sale' : 'Uza Bidhaa'
+            )
+          ),
+
+          // Summary Cards
+          React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-6 mb-6" },
+            React.createElement('div', { className: "bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-green-100 text-sm" }, language === 'english' ? 'Total Sales' : 'Jumla ya Mauzo'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" },
+                formatCurrency(sales.reduce((sum, s) => sum + s.total, 0))
+              )
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-emerald-100 text-sm" }, language === 'english' ? 'Total Transactions' : 'Idadi ya Mauzo'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" }, sales.length)
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-teal-100 text-sm" }, language === 'english' ? 'This Month' : 'Mwezi Huu'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" },
+                formatCurrency(sales.filter(s => {
+                  const saleDate = new Date(s.date);
+                  const now = new Date();
+                  return saleDate.getMonth() === now.getMonth() && 
+                         saleDate.getFullYear() === now.getFullYear();
+                }).reduce((sum, s) => sum + s.total, 0))
+              )
+            )
+          ),
+
+          // Search Bar
+          React.createElement('div', { className: "mb-6" },
+            React.createElement('input', {
+              type: "text",
+              placeholder: language === 'english' ? 'Search sales by customer...' : 'Tafuta mauzo kwa jina la mteja...',
+              value: searchTerm,
+              onChange: (e) => setSearchTerm(e.target.value),
+              className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            })
+          ),
+
+          // Sales Table
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-green-600 text-white" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Customer' : 'Mteja'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Items' : 'Bidhaa'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Total Amount' : 'Jumla'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Sold By' : 'Aliuza'),
+                    React.createElement('th', { className: "px-4 py-3 text-center" }, language === 'english' ? 'Actions' : 'Vitendo')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  filteredSales.map((sale, index) =>
+                    React.createElement('tr', { 
+                      key: sale.id, 
+                      className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-green-50`
+                    },
+                      React.createElement('td', { className: "px-4 py-3" }, formatDate(sale.date)),
+                      React.createElement('td', { className: "px-4 py-3 font-medium" }, sale.customerName),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('div', { className: "text-sm" },
+                          sale.items.map((item, i) =>
+                            React.createElement('div', { key: i },
+                              `${item.productName} x${item.quantity}`
+                            )
+                          )
+                        )
+                      ),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-bold text-green-600" }, formatCurrency(sale.total)),
+                      React.createElement('td', { className: "px-4 py-3 text-sm text-gray-600" }, sale.createdBy),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('div', { className: "flex justify-center" },
+                          React.createElement('button', {
+                            onClick: () => handleDelete(sale.id),
+                            className: "text-red-600 hover:text-red-800",
+                            title: language === 'english' ? 'Delete' : 'Futa'
+                          }, React.createElement(Trash2Icon, { className: "w-5 h-5" }))
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            ),
+
+            filteredSales.length === 0 && React.createElement('div', { className: "text-center py-8 text-gray-500" },
+              language === 'english' ? 'No sales recorded yet' : 'Hakuna mauzo bado'
+            )
+          ),
+
+          // Add Sale Modal
+          showModal && React.createElement('div', { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" },
+            React.createElement('div', { className: "bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto" },
+              React.createElement('div', { className: "bg-green-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center sticky top-0" },
+                React.createElement('h3', { className: "text-xl font-bold" },
+                  language === 'english' ? 'New Sale' : 'Uza Bidhaa'
+                ),
+                React.createElement('button', { 
+                  onClick: handleCloseModal, 
+                  className: "text-white hover:text-gray-200"
+                }, React.createElement(XIcon, { className: "w-6 h-6" }))
+              ),
+
+              React.createElement('form', { onSubmit: handleSubmit, className: "p-6" },
+                React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6 mb-6" },
+                  React.createElement('div', null,
+                    React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                      language === 'english' ? 'Customer Name (Optional)' : 'Jina la Mteja (Si Lazima)'
+                    ),
+                    React.createElement('input', {
+                      type: "text",
+                      value: formData.customerName,
+                      onChange: (e) => setFormData({...formData, customerName: e.target.value}),
+                      className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent",
+                      placeholder: language === 'english' ? 'Walk-in customer' : 'Mteja wa kawaida'
+                    })
+                  ),
+
+                  React.createElement('div', null,
+                    React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                      language === 'english' ? 'Sale Date' : 'Tarehe ya Mauzo'
+                    ),
+                    React.createElement('input', {
+                      type: "date",
+                      required: true,
+                      value: formData.date,
+                      onChange: (e) => setFormData({...formData, date: e.target.value}),
+                      className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    })
+                  )
+                ),
+
+                // Product Selection
+                React.createElement('div', { className: "mb-6" },
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Add Products to Cart' : 'Ongeza Bidhaa kwenye Cart'
+                  ),
+                  React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-3 max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-3" },
+                    products.filter(p => p.quantity > 0).map(product =>
+                      React.createElement('button', {
+                        key: product.id,
+                        type: "button",
+                        onClick: () => addToCart(product.id),
+                        className: "text-left p-3 border border-gray-300 rounded-lg hover:bg-green-50 hover:border-green-500 transition-colors"
+                      },
+                        React.createElement('div', { className: "font-medium" }, product.name),
+                        React.createElement('div', { className: "text-sm text-gray-600" },
+                          `${formatCurrency(product.sellPrice)} | ${language === 'english' ? 'Stock' : 'Idadi'}: ${product.quantity}`
+                        )
+                      )
+                    )
+                  )
+                ),
+
+                // Cart
+                cartItems.length > 0 && React.createElement('div', { className: "mb-6 border-t pt-6" },
+                  React.createElement('h4', { className: "font-bold text-lg mb-4" }, language === 'english' ? 'Cart' : 'Bidhaa Zilizochaguliwa'),
+                  React.createElement('div', { className: "space-y-3" },
+                    cartItems.map(item =>
+                      React.createElement('div', { key: item.productId, className: "flex items-center justify-between bg-gray-50 p-3 rounded-lg" },
+                        React.createElement('div', { className: "flex-1" },
+                          React.createElement('div', { className: "font-medium" }, item.productName),
+                          React.createElement('div', { className: "text-sm text-gray-600" }, `${formatCurrency(item.pricePerUnit)} each`)
+                        ),
+                        React.createElement('div', { className: "flex items-center space-x-3" },
+                          React.createElement('button', {
+                            type: "button",
+                            onClick: () => updateCartQuantity(item.productId, item.quantity - 1),
+                            className: "w-8 h-8 bg-gray-300 rounded hover:bg-gray-400"
+                          }, '-'),
+                          React.createElement('span', { className: "font-bold w-12 text-center" }, item.quantity),
+                          React.createElement('button', {
+                            type: "button",
+                            onClick: () => updateCartQuantity(item.productId, item.quantity + 1),
+                            className: "w-8 h-8 bg-gray-300 rounded hover:bg-gray-400",
+                            disabled: item.quantity >= item.maxQuantity
+                          }, '+'),
+                          React.createElement('span', { className: "font-bold text-green-600 w-32 text-right" },
+                            formatCurrency(item.quantity * item.pricePerUnit)
+                          ),
+                          React.createElement('button', {
+                            type: "button",
+                            onClick: () => removeFromCart(item.productId),
+                            className: "text-red-600 hover:text-red-800"
+                          }, React.createElement(Trash2Icon, { className: "w-5 h-5" }))
+                        )
+                      )
+                    )
+                  ),
+
+                  React.createElement('div', { className: "mt-6 bg-green-50 border border-green-200 rounded-lg p-4" },
+                    React.createElement('div', { className: "flex justify-between items-center" },
+                      React.createElement('span', { className: "text-lg font-medium" }, language === 'english' ? 'Total Amount:' : 'Jumla ya Malipo:'),
+                      React.createElement('span', { className: "text-3xl font-bold text-green-600" },
+                        formatCurrency(calculateTotal())
+                      )
+                    )
+                  )
+                ),
+
+                React.createElement('div', { className: "flex space-x-3 pt-4" },
+                  React.createElement('button', {
+                    type: "submit",
+                    className: "flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-bold"
+                  }, language === 'english' ? 'Complete Sale' : 'Maliza Mauzo'),
+                  React.createElement('button', {
+                    type: "button",
+                    onClick: handleCloseModal,
+                    className: "flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition-colors"
+                  }, language === 'english' ? 'Cancel' : 'Ghairi')
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Expenses Management Component
+      const ExpensesPage = () => {
+        const [showModal, setShowModal] = useState(false);
+        const [editingExpense, setEditingExpense] = useState(null);
+        const [searchTerm, setSearchTerm] = useState('');
+        const [formData, setFormData] = useState({
+          description: '',
+          amount: '',
+          category: '',
+          date: new Date().toISOString().split('T')[0]
+        });
+
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount.toLocaleString()}`;
+        };
+
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return date.toLocaleDateString('en-GB');
+        };
+
+        const filteredExpenses = expenses.filter(expense =>
+          expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          expense.category.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        const expenseCategories = [
+          { en: 'Rent', sw: 'Kodi' },
+          { en: 'Electricity', sw: 'Umeme' },
+          { en: 'Water', sw: 'Maji' },
+          { en: 'Salaries', sw: 'Mishahara' },
+          { en: 'Transport', sw: 'Usafiri' },
+          { en: 'Maintenance', sw: 'Matengenezo' },
+          { en: 'Marketing', sw: 'Matangazo' },
+          { en: 'Other', sw: 'Mengineyo' }
+        ];
+
+        const handleOpenModal = (expense = null) => {
+          if (expense) {
+            setEditingExpense(expense);
+            setFormData({
+              description: expense.description,
+              amount: expense.amount,
+              category: expense.category,
+              date: expense.date
+            });
+          } else {
+            setEditingExpense(null);
+            setFormData({
+              description: '',
+              amount: '',
+              category: '',
+              date: new Date().toISOString().split('T')[0]
+            });
+          }
+          setShowModal(true);
+        };
+
+        const handleCloseModal = () => {
+          setShowModal(false);
+          setEditingExpense(null);
+          setFormData({
+            description: '',
+            amount: '',
+            category: '',
+            date: new Date().toISOString().split('T')[0]
+          });
+        };
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          
+          if (editingExpense) {
+            setExpenses(expenses.map(exp =>
+              exp.id === editingExpense.id
+                ? { ...exp, ...formData, amount: Number(formData.amount) }
+                : exp
+            ));
+          } else {
+            const newExpense = {
+              id: Date.now().toString(),
+              ...formData,
+              amount: Number(formData.amount),
+              createdBy: currentUser.name
+            };
+            setExpenses([newExpense, ...expenses]);
+          }
+          
+          handleCloseModal();
+        };
+
+        const handleDelete = (expenseId) => {
+          if (window.confirm(language === 'english' ? 'Are you sure you want to delete this expense?' : 'Je, una uhakika unataka kufuta matumizi haya?')) {
+            setExpenses(expenses.filter(exp => exp.id !== expenseId));
+          }
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('div', { className: "flex justify-between items-center mb-6" },
+            React.createElement('h2', { className: "text-3xl font-bold text-gray-800" }, t.expenses),
+            React.createElement('button', {
+              onClick: () => handleOpenModal(),
+              className: "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center"
+            },
+              React.createElement(PlusIcon, { className: "w-5 h-5 mr-2" }),
+              language === 'english' ? 'Add Expense' : 'Ongeza Matumizi'
+            )
+          ),
+
+          // Summary Cards
+          React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-6 mb-6" },
+            React.createElement('div', { className: "bg-gradient-to-br from-red-400 to-red-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-red-100 text-sm" }, language === 'english' ? 'Total Expenses' : 'Jumla ya Matumizi'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" },
+                formatCurrency(expenses.reduce((sum, exp) => sum + exp.amount, 0))
+              )
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-orange-100 text-sm" }, language === 'english' ? 'Total Records' : 'Idadi ya Rekodi'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" }, expenses.length)
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-amber-100 text-sm" }, language === 'english' ? 'This Month' : 'Mwezi Huu'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" },
+                formatCurrency(expenses.filter(exp => {
+                  const expenseDate = new Date(exp.date);
+                  const now = new Date();
+                  return expenseDate.getMonth() === now.getMonth() && 
+                         expenseDate.getFullYear() === now.getFullYear();
+                }).reduce((sum, exp) => sum + exp.amount, 0))
+              )
+            )
+          ),
+
+          // Search Bar
+          React.createElement('div', { className: "mb-6" },
+            React.createElement('input', {
+              type: "text",
+              placeholder: language === 'english' ? 'Search expenses...' : 'Tafuta matumizi...',
+              value: searchTerm,
+              onChange: (e) => setSearchTerm(e.target.value),
+              className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            })
+          ),
+
+          // Expenses Table
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-red-600 text-white" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Description' : 'Maelezo'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Category' : 'Aina'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Amount' : 'Kiasi'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Added By' : 'Aliongeza'),
+                    React.createElement('th', { className: "px-4 py-3 text-center" }, language === 'english' ? 'Actions' : 'Vitendo')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  filteredExpenses.map((expense, index) =>
+                    React.createElement('tr', { 
+                      key: expense.id, 
+                      className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-red-50`
+                    },
+                      React.createElement('td', { className: "px-4 py-3" }, formatDate(expense.date)),
+                      React.createElement('td', { className: "px-4 py-3 font-medium" }, expense.description),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('span', { className: "px-2 py-1 bg-red-100 text-red-800 rounded-full text-sm" },
+                          expense.category
+                        )
+                      ),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-bold text-red-600" }, formatCurrency(expense.amount)),
+                      React.createElement('td', { className: "px-4 py-3 text-sm text-gray-600" }, expense.createdBy),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('div', { className: "flex justify-center space-x-2" },
+                          React.createElement('button', {
+                            onClick: () => handleOpenModal(expense),
+                            className: "text-blue-600 hover:text-blue-800",
+                            title: language === 'english' ? 'Edit' : 'Hariri'
+                          }, React.createElement(EditIcon, { className: "w-5 h-5" })),
+                          React.createElement('button', {
+                            onClick: () => handleDelete(expense.id),
+                            className: "text-red-600 hover:text-red-800",
+                            title: language === 'english' ? 'Delete' : 'Futa'
+                          }, React.createElement(Trash2Icon, { className: "w-5 h-5" }))
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            ),
+
+            filteredExpenses.length === 0 && React.createElement('div', { className: "text-center py-8 text-gray-500" },
+              language === 'english' ? 'No expenses recorded yet' : 'Hakuna matumizi bado'
+            )
+          ),
+
+          // Add/Edit Modal
+          showModal && React.createElement('div', { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" },
+            React.createElement('div', { className: "bg-white rounded-lg shadow-xl w-full max-w-md" },
+              React.createElement('div', { className: "bg-red-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center" },
+                React.createElement('h3', { className: "text-xl font-bold" },
+                  editingExpense
+                    ? (language === 'english' ? 'Edit Expense' : 'Hariri Matumizi')
+                    : (language === 'english' ? 'Add New Expense' : 'Ongeza Matumizi Mapya')
+                ),
+                React.createElement('button', { 
+                  onClick: handleCloseModal, 
+                  className: "text-white hover:text-gray-200"
+                }, React.createElement(XIcon, { className: "w-6 h-6" }))
+              ),
+
+              React.createElement('form', { onSubmit: handleSubmit, className: "p-6 space-y-4" },
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Description' : 'Maelezo'
+                  ),
+                  React.createElement('input', {
+                    type: "text",
+                    required: true,
+                    value: formData.description,
+                    onChange: (e) => setFormData({...formData, description: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent",
+                    placeholder: language === 'english' ? 'Enter description' : 'Weka maelezo'
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Category' : 'Aina'
+                  ),
+                  React.createElement('select', {
+                    required: true,
+                    value: formData.category,
+                    onChange: (e) => setFormData({...formData, category: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  },
+                    React.createElement('option', { value: "" }, language === 'english' ? 'Select category...' : 'Chagua aina...'),
+                    expenseCategories.map(cat =>
+                      React.createElement('option', { key: cat.en, value: language === 'english' ? cat.en : cat.sw },
+                        language === 'english' ? cat.en : cat.sw
+                      )
+                    )
+                  )
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Amount (TZS)' : 'Kiasi (TZS)'
+                  ),
+                  React.createElement('input', {
+                    type: "number",
+                    required: true,
+                    min: "0",
+                    value: formData.amount,
+                    onChange: (e) => setFormData({...formData, amount: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Date' : 'Tarehe'
+                  ),
+                  React.createElement('input', {
+                    type: "date",
+                    required: true,
+                    value: formData.date,
+                    onChange: (e) => setFormData({...formData, date: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', { className: "flex space-x-3 pt-4" },
+                  React.createElement('button', {
+                    type: "submit",
+                    className: "flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors"
+                  },
+                    editingExpense
+                      ? (language === 'english' ? 'Update' : 'Sasisha')
+                      : (language === 'english' ? 'Add Expense' : 'Ongeza')
+                  ),
+                  React.createElement('button', {
+                    type: "button",
+                    onClick: handleCloseModal,
+                    className: "flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  }, language === 'english' ? 'Cancel' : 'Ghairi')
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Reports Component
+      const ReportsPage = () => {
+        const [reportType, setReportType] = useState('summary');
+        const [dateFrom, setDateFrom] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0]);
+        const [dateTo, setDateTo] = useState(new Date().toISOString().split('T')[0]);
+
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount.toLocaleString()}`;
+        };
+
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return date.toLocaleDateString('en-GB');
+        };
+
+        const filterByDate = (items, dateField = 'date') => {
+          return items.filter(item => {
+            const itemDate = new Date(item[dateField]);
+            const from = new Date(dateFrom);
+            const to = new Date(dateTo);
+            return itemDate >= from && itemDate <= to;
+          });
+        };
+
+        const filteredSales = filterByDate(sales);
+        const filteredPurchases = filterByDate(purchases);
+        const filteredExpenses = filterByDate(expenses);
+
+        const totalSales = filteredSales.reduce((sum, s) => sum + s.total, 0);
+        const totalPurchases = filteredPurchases.reduce((sum, p) => sum + p.total, 0);
+        const totalExpenses = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
+        const grossProfit = totalSales - totalPurchases;
+        const netProfit = totalSales - totalPurchases - totalExpenses;
+
+        const printReport = () => {
+          window.print();
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('div', { className: "flex justify-between items-center mb-6" },
+            React.createElement('h2', { className: "text-3xl font-bold text-gray-800" }, t.reports),
+            React.createElement('button', {
+              onClick: printReport,
+              className: "bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center print:hidden"
+            },
+              React.createElement(FileTextIcon, { className: "w-5 h-5 mr-2" }),
+              language === 'english' ? 'Print Report' : 'Chapa Ripoti'
+            )
+          ),
+
+          // Date Range Filter
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6 mb-6 print:hidden" },
+            React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-4" },
+              React.createElement('div', null,
+                React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                  language === 'english' ? 'From Date' : 'Kuanzia'
+                ),
+                React.createElement('input', {
+                  type: "date",
+                  value: dateFrom,
+                  onChange: (e) => setDateFrom(e.target.value),
+                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                })
+              ),
+              React.createElement('div', null,
+                React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                  language === 'english' ? 'To Date' : 'Hadi'
+                ),
+                React.createElement('input', {
+                  type: "date",
+                  value: dateTo,
+                  onChange: (e) => setDateTo(e.target.value),
+                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                })
+              ),
+              React.createElement('div', null,
+                React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                  language === 'english' ? 'Report Type' : 'Aina ya Ripoti'
+                ),
+                React.createElement('select', {
+                  value: reportType,
+                  onChange: (e) => setReportType(e.target.value),
+                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                 },
-                  React.createElement(FileText, { className: "w-6 h-6 mx-auto mb-2" }),
-                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'Reports' : 'Ripoti')
+                  React.createElement('option', { value: "summary" }, language === 'english' ? 'Summary Report' : 'Ripoti ya Muhtasari'),
+                  React.createElement('option', { value: "sales" }, language === 'english' ? 'Sales Report' : 'Ripoti ya Mauzo'),
+                  React.createElement('option', { value: "purchases" }, language === 'english' ? 'Purchases Report' : 'Ripoti ya Manunuzi'),
+                  React.createElement('option', { value: "profit" }, language === 'english' ? 'Profit & Loss' : 'Faida na Hasara'),
+                  React.createElement('option', { value: "inventory" }, language === 'english' ? 'Inventory Report' : 'Ripoti ya Bidhaa')
+                )
+              )
+            )
+          ),
+
+          // Summary Report
+          reportType === 'summary' && React.createElement('div', null,
+            React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6 mb-6" },
+              React.createElement('h3', { className: "text-2xl font-bold text-gray-800 mb-4" },
+                language === 'english' ? 'Business Summary Report' : 'Ripoti ya Muhtasari wa Biashara'
+              ),
+              React.createElement('p', { className: "text-gray-600 mb-6" },
+                `${language === 'english' ? 'Period:' : 'Kipindi:'} ${formatDate(dateFrom)} - ${formatDate(dateTo)}`
+              ),
+
+              React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" },
+                React.createElement('div', { className: "bg-green-50 border border-green-200 rounded-lg p-4" },
+                  React.createElement('p', { className: "text-sm text-gray-600 mb-2" }, language === 'english' ? 'Total Sales' : 'Jumla ya Mauzo'),
+                  React.createElement('p', { className: "text-2xl font-bold text-green-600" }, formatCurrency(totalSales)),
+                  React.createElement('p', { className: "text-sm text-gray-500 mt-1" }, `${filteredSales.length} ${language === 'english' ? 'transactions' : 'miamala'}`)
+                ),
+
+                React.createElement('div', { className: "bg-blue-50 border border-blue-200 rounded-lg p-4" },
+                  React.createElement('p', { className: "text-sm text-gray-600 mb-2" }, language === 'english' ? 'Total Purchases' : 'Jumla ya Manunuzi'),
+                  React.createElement('p', { className: "text-2xl font-bold text-blue-600" }, formatCurrency(totalPurchases)),
+                  React.createElement('p', { className: "text-sm text-gray-500 mt-1" }, `${filteredPurchases.length} ${language === 'english' ? 'transactions' : 'miamala'}`)
+                ),
+
+                React.createElement('div', { className: "bg-red-50 border border-red-200 rounded-lg p-4" },
+                  React.createElement('p', { className: "text-sm text-gray-600 mb-2" }, language === 'english' ? 'Total Expenses' : 'Jumla ya Matumizi'),
+                  React.createElement('p', { className: "text-2xl font-bold text-red-600" }, formatCurrency(totalExpenses)),
+                  React.createElement('p', { className: "text-sm text-gray-500 mt-1" }, `${filteredExpenses.length} ${language === 'english' ? 'records' : 'rekodi'}`)
+                ),
+
+                React.createElement('div', { className: `${netProfit >= 0 ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'} border rounded-lg p-4` },
+                  React.createElement('p', { className: "text-sm text-gray-600 mb-2" }, language === 'english' ? 'Net Profit' : 'Faida Halisi'),
+                  React.createElement('p', { className: `text-2xl font-bold ${netProfit >= 0 ? 'text-emerald-600' : 'text-red-600'}` },
+                    formatCurrency(netProfit)
+                  ),
+                  React.createElement('p', { className: "text-sm text-gray-500 mt-1" },
+                    netProfit >= 0 ? (language === 'english' ? 'Profit' : 'Faida') : (language === 'english' ? 'Loss' : 'Hasara')
+                  )
+                )
+              )
+            )
+          ),
+
+          // Sales Report
+          reportType === 'sales' && React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "px-6 py-4 bg-green-600 text-white" },
+              React.createElement('h3', { className: "text-xl font-bold" }, language === 'english' ? 'Sales Report' : 'Ripoti ya Mauzo'),
+              React.createElement('p', { className: "text-sm opacity-90" }, `${formatDate(dateFrom)} - ${formatDate(dateTo)}`)
+            ),
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-gray-100" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Customer' : 'Mteja'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Items' : 'Bidhaa'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Amount' : 'Kiasi')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  filteredSales.map((sale, index) =>
+                    React.createElement('tr', { 
+                      key: sale.id, 
+                      className: index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                    },
+                      React.createElement('td', { className: "px-4 py-3" }, formatDate(sale.date)),
+                      React.createElement('td', { className: "px-4 py-3" }, sale.customerName),
+                      React.createElement('td', { className: "px-4 py-3 text-sm" },
+                        sale.items.map((item, i) =>
+                          React.createElement('div', { key: i }, `${item.productName} x${item.quantity}`)
+                        )
+                      ),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-bold" }, formatCurrency(sale.total))
+                    )
+                  ),
+                  React.createElement('tr', { className: "bg-green-100 font-bold" },
+                    React.createElement('td', { colSpan: "3", className: "px-4 py-3 text-right" }, language === 'english' ? 'TOTAL:' : 'JUMLA:'),
+                    React.createElement('td', { className: "px-4 py-3 text-right text-green-600" }, formatCurrency(totalSales))
+                  )
+                )
+              )
+            )
+          ),
+
+          // Purchases Report
+          reportType === 'purchases' && React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "px-6 py-4 bg-blue-600 text-white" },
+              React.createElement('h3', { className: "text-xl font-bold" }, language === 'english' ? 'Purchases Report' : 'Ripoti ya Manunuzi'),
+              React.createElement('p', { className: "text-sm opacity-90" }, `${formatDate(dateFrom)} - ${formatDate(dateTo)}`)
+            ),
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-gray-100" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product' : 'Bidhaa'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Supplier' : 'Muuzaji'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Amount' : 'Kiasi')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  filteredPurchases.map((purchase, index) => {
+                    const product = products.find(p => p.id === purchase.productId);
+                    return React.createElement('tr', { 
+                      key: purchase.id, 
+                      className: index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                    },
+                      React.createElement('td', { className: "px-4 py-3" }, formatDate(purchase.date)),
+                      React.createElement('td', { className: "px-4 py-3" }, product ? product.name : 'N/A'),
+                      React.createElement('td', { className: "px-4 py-3" }, purchase.supplier),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, purchase.quantity),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-bold" }, formatCurrency(purchase.total))
+                    );
+                  }),
+                  React.createElement('tr', { className: "bg-blue-100 font-bold" },
+                    React.createElement('td', { colSpan: "4", className: "px-4 py-3 text-right" }, language === 'english' ? 'TOTAL:' : 'JUMLA:'),
+                    React.createElement('td', { className: "px-4 py-3 text-right text-blue-600" }, formatCurrency(totalPurchases))
+                  )
+                )
+              )
+            )
+          ),
+
+          // Profit & Loss Report
+          reportType === 'profit' && React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
+            React.createElement('h3', { className: "text-2xl font-bold text-gray-800 mb-4" },
+              language === 'english' ? 'Profit & Loss Statement' : 'Taarifa ya Faida na Hasara'
+            ),
+            React.createElement('p', { className: "text-gray-600 mb-6" },
+              `${language === 'english' ? 'Period:' : 'Kipindi:'} ${formatDate(dateFrom)} - ${formatDate(dateTo)}`
+            ),
+
+            React.createElement('div', { className: "space-y-4" },
+              React.createElement('div', { className: "border-b pb-4" },
+                React.createElement('div', { className: "flex justify-between items-center mb-2" },
+                  React.createElement('span', { className: "font-medium" }, language === 'english' ? 'Revenue (Sales)' : 'Mapato (Mauzo)'),
+                  React.createElement('span', { className: "font-bold text-green-600" }, formatCurrency(totalSales))
+                )
+              ),
+
+              React.createElement('div', { className: "border-b pb-4" },
+                React.createElement('div', { className: "flex justify-between items-center mb-2" },
+                  React.createElement('span', { className: "font-medium" }, language === 'english' ? 'Cost of Goods Sold' : 'Gharama za Bidhaa'),
+                  React.createElement('span', { className: "font-bold text-red-600" }, `(${formatCurrency(totalPurchases)})`)
+                )
+              ),
+
+              React.createElement('div', { className: "border-b pb-4 bg-blue-50 p-3 rounded" },
+                React.createElement('div', { className: "flex justify-between items-center" },
+                  React.createElement('span', { className: "font-bold text-lg" }, language === 'english' ? 'Gross Profit' : 'Faida Jumla'),
+                  React.createElement('span', { className: `font-bold text-lg ${grossProfit >= 0 ? 'text-blue-600' : 'text-red-600'}` },
+                    formatCurrency(grossProfit)
+                  )
+                )
+              ),
+
+              React.createElement('div', { className: "border-b pb-4" },
+                React.createElement('div', { className: "flex justify-between items-center mb-2" },
+                  React.createElement('span', { className: "font-medium" }, language === 'english' ? 'Operating Expenses' : 'Matumizi ya Ofisi'),
+                  React.createElement('span', { className: "font-bold text-red-600" }, `(${formatCurrency(totalExpenses)})`)
+                ),
+                React.createElement('div', { className: "ml-4 text-sm text-gray-600 space-y-1" },
+                  Object.entries(
+                    filteredExpenses.reduce((acc, exp) => {
+                      acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
+                      return acc;
+                    }, {})
+                  ).map(([category, amount]) =>
+                    React.createElement('div', { key: category, className: "flex justify-between" },
+                      React.createElement('span', null, `• ${category}`),
+                      React.createElement('span', null, formatCurrency(amount))
+                    )
+                  )
+                )
+              ),
+
+              React.createElement('div', { className: `${netProfit >= 0 ? 'bg-emerald-50' : 'bg-red-50'} p-4 rounded-lg` },
+                React.createElement('div', { className: "flex justify-between items-center" },
+                  React.createElement('span', { className: "font-bold text-2xl" }, language === 'english' ? 'NET PROFIT/LOSS' : 'FAIDA/HASARA HALISI'),
+                  React.createElement('span', { className: `font-bold text-3xl ${netProfit >= 0 ? 'text-emerald-600' : 'text-red-600'}` },
+                    formatCurrency(netProfit)
+                  )
+                ),
+                React.createElement('p', { className: "text-sm text-gray-600 mt-2" },
+                  netProfit >= 0 
+                    ? (language === 'english' ? 'Your business made a profit' : 'Biashara yako imepata faida')
+                    : (language === 'english' ? 'Your business made a loss' : 'Biashara yako imepata hasara')
+                )
+              )
+            )
+          ),
+
+          // Inventory Report
+          reportType === 'inventory' && React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "px-6 py-4 bg-purple-600 text-white" },
+              React.createElement('h3', { className: "text-xl font-bold" }, language === 'english' ? 'Inventory Report' : 'Ripoti ya Bidhaa'),
+              React.createElement('p', { className: "text-sm opacity-90" }, language === 'english' ? 'Current Stock Levels' : 'Hali ya Bidhaa Sasa')
+            ),
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-gray-100" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product' : 'Bidhaa'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Category' : 'Aina'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Buy Price' : 'Bei ya Kununua'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Sell Price' : 'Bei ya Kuuza'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Stock Value' : 'Thamani'),
+                    React.createElement('th', { className: "px-4 py-3 text-center" }, language === 'english' ? 'Status' : 'Hali')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  products.map((product, index) =>
+                    React.createElement('tr', { 
+                      key: product.id, 
+                      className: index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                    },
+                      React.createElement('td', { className: "px-4 py-3 font-medium" }, product.name),
+                      React.createElement('td', { className: "px-4 py-3" }, product.category),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-bold" }, product.quantity),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(product.buyPrice)),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(product.sellPrice)),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-bold" }, formatCurrency(product.quantity * product.buyPrice)),
+                      React.createElement('td', { className: "px-4 py-3 text-center" },
+                        product.quantity === 0 ? 
+                          React.createElement('span', { className: "px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full" },
+                            language === 'english' ? 'Out of Stock' : 'Imeisha'
+                          ) : 
+                        product.quantity < 10 ? 
+                          React.createElement('span', { className: "px-2 py-1 bg-yellow-100 text-yellow-600 text-xs rounded-full" },
+                            language === 'english' ? 'Low Stock' : 'Pungufu'
+                          ) : 
+                          React.createElement('span', { className: "px-2 py-1 bg-green-100 text-green-600 text-xs rounded-full" },
+                            language === 'english' ? 'In Stock' : 'Ipo'
+                          )
+                      )
+                    )
+                  ),
+                  React.createElement('tr', { className: "bg-purple-100 font-bold" },
+                    React.createElement('td', { colSpan: "5", className: "px-4 py-3 text-right" }, language === 'english' ? 'TOTAL STOCK VALUE:' : 'THAMANI YA BIDHAA ZOTE:'),
+                    React.createElement('td', { className: "px-4 py-3 text-right text-purple-600" },
+                      formatCurrency(products.reduce((sum, p) => sum + (p.quantity * p.buyPrice), 0))
+                    ),
+                    React.createElement('td', null)
+                  )
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // User Management Component
+      const UserManagementPage = () => {
+        const [showModal, setShowModal] = useState(false);
+        const [editingUser, setEditingUser] = useState(null);
+        const [searchTerm, setSearchTerm] = useState('');
+        const [showPassword, setShowPassword] = useState(false);
+        const [formData, setFormData] = useState({
+          username: '',
+          password: '',
+          name: '',
+          role: 'staff'
+        });
+
+        const filteredUsers = users.filter(user =>
+          user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        const handleOpenModal = (user = null) => {
+          if (user) {
+            setEditingUser(user);
+            setFormData({
+              username: user.username,
+              password: user.password,
+              name: user.name,
+              role: user.role
+            });
+          } else {
+            setEditingUser(null);
+            setFormData({
+              username: '',
+              password: '',
+              name: '',
+              role: 'staff'
+            });
+          }
+          setShowPassword(false);
+          setShowModal(true);
+        };
+
+        const handleCloseModal = () => {
+          setShowModal(false);
+          setEditingUser(null);
+          setShowPassword(false);
+          setFormData({
+            username: '',
+            password: '',
+            name: '',
+            role: 'staff'
+          });
+        };
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          
+          const usernameExists = users.some(u => 
+            u.username === formData.username && 
+            (!editingUser || u.id !== editingUser.id)
+          );
+          
+          if (usernameExists) {
+            alert(language === 'english' ? 'Username already exists!' : 'Jina la mtumiaji lipo tayari!');
+            return;
+          }
+
+          if (editingUser) {
+            setUsers(users.map(u =>
+              u.id === editingUser.id
+                ? { ...u, ...formData }
+                : u
+            ));
+          } else {
+            const newUser = {
+              id: Date.now().toString(),
+              ...formData,
+              active: true
+            };
+            setUsers([...users, newUser]);
+          }
+          
+          handleCloseModal();
+        };
+
+        const handleToggleActive = (userId) => {
+          setUsers(users.map(u =>
+            u.id === userId
+              ? { ...u, active: !u.active }
+              : u
+          ));
+        };
+
+        const handleDelete = (userId) => {
+          if (userId === '1') {
+            alert(language === 'english' ? 'Cannot delete admin user!' : 'Huwezi kufuta mtumiaji admin!');
+            return;
+          }
+          
+          if (window.confirm(language === 'english' ? 'Are you sure you want to delete this user?' : 'Je, una uhakika unataka kufuta mtumiaji huyu?')) {
+            setUsers(users.filter(u => u.id !== userId));
+          }
+        };
+
+        if (currentUser.role !== 'admin') {
+          return React.createElement('div', { className: "p-6" },
+            React.createElement('div', { className: "bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg" },
+              React.createElement('h3', { className: "font-bold text-lg mb-2" },
+                language === 'english' ? 'Access Denied' : 'Hakuna Ruhusa'
+              ),
+              React.createElement('p', null,
+                language === 'english' 
+                  ? 'Only administrators can access user management.' 
+                  : 'Wasimamizi pekee ndio wanaweza kusimamia watumiaji.'
+              )
+            )
+          );
+        }
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('div', { className: "flex justify-between items-center mb-6" },
+            React.createElement('h2', { className: "text-3xl font-bold text-gray-800" }, t.users),
+            React.createElement('button', {
+              onClick: () => handleOpenModal(),
+              className: "bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center"
+            },
+              React.createElement(PlusIcon, { className: "w-5 h-5 mr-2" }),
+              language === 'english' ? 'Add User' : 'Ongeza Mtumiaji'
+            )
+          ),
+
+          // Summary Cards
+          React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-6 mb-6" },
+            React.createElement('div', { className: "bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-indigo-100 text-sm" }, language === 'english' ? 'Total Users' : 'Jumla ya Watumiaji'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" }, users.length)
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-green-100 text-sm" }, language === 'english' ? 'Active Users' : 'Watumiaji Wanafanya Kazi'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" }, users.filter(u => u.active).length)
+            ),
+            React.createElement('div', { className: "bg-gradient-to-br from-red-400 to-red-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('p', { className: "text-red-100 text-sm" }, language === 'english' ? 'Disabled Users' : 'Watumiaji Waliozimwa'),
+              React.createElement('p', { className: "text-2xl font-bold mt-2" }, users.filter(u => !u.active).length)
+            )
+          ),
+
+          // Search Bar
+          React.createElement('div', { className: "mb-6" },
+            React.createElement('input', {
+              type: "text",
+              placeholder: language === 'english' ? 'Search users...' : 'Tafuta watumiaji...',
+              value: searchTerm,
+              onChange: (e) => setSearchTerm(e.target.value),
+              className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            })
+          ),
+
+          // Users Table
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-indigo-600 text-white" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Username' : 'Jina la Mtumiaji'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Full Name' : 'Jina Kamili'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Role' : 'Wadhifa'),
+                    React.createElement('th', { className: "px-4 py-3 text-center" }, language === 'english' ? 'Status' : 'Hali'),
+                    React.createElement('th', { className: "px-4 py-3 text-center" }, language === 'english' ? 'Actions' : 'Vitendo')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  filteredUsers.map((user, index) =>
+                    React.createElement('tr', { 
+                      key: user.id, 
+                      className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-indigo-50`
+                    },
+                      React.createElement('td', { className: "px-4 py-3 font-medium" }, user.username),
+                      React.createElement('td', { className: "px-4 py-3" }, user.name),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('span', { className: `px-3 py-1 rounded-full text-xs font-semibold ${
+                          user.role === 'admin' 
+                            ? 'bg-purple-100 text-purple-800' 
+                            : 'bg-blue-100 text-blue-800'
+                        }`},
+                          user.role === 'admin' 
+                            ? (language === 'english' ? 'Admin' : 'Msimamizi')
+                            : (language === 'english' ? 'Staff' : 'Mfanyakazi')
+                        )
+                      ),
+                      React.createElement('td', { className: "px-4 py-3 text-center" },
+                        React.createElement('button', {
+                          onClick: () => handleToggleActive(user.id),
+                          disabled: user.id === '1',
+                          className: `px-3 py-1 rounded-full text-xs font-semibold ${
+                            user.active 
+                              ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                              : 'bg-red-100 text-red-800 hover:bg-red-200'
+                          } ${user.id === '1' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`,
+                        },
+                          user.active 
+                            ? (language === 'english' ? 'Active' : 'Anafanya Kazi')
+                            : (language === 'english' ? 'Disabled' : 'Amezimwa')
+                        )
+                      ),
+                      React.createElement('td', { className: "px-4 py-3" },
+                        React.createElement('div', { className: "flex justify-center space-x-2" },
+                          React.createElement('button', {
+                            onClick: () => handleOpenModal(user),
+                            className: "text-blue-600 hover:text-blue-800",
+                            title: language === 'english' ? 'Edit' : 'Hariri'
+                          }, React.createElement(EditIcon, { className: "w-5 h-5" })),
+                          user.id !== '1' && React.createElement('button', {
+                            onClick: () => handleDelete(user.id),
+                            className: "text-red-600 hover:text-red-800",
+                            title: language === 'english' ? 'Delete' : 'Futa'
+                          }, React.createElement(Trash2Icon, { className: "w-5 h-5" }))
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            ),
+
+            filteredUsers.length === 0 && React.createElement('div', { className: "text-center py-8 text-gray-500" },
+              language === 'english' ? 'No users found' : 'Hakuna watumiaji'
+            )
+          ),
+
+          // Add/Edit Modal
+          showModal && React.createElement('div', { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" },
+            React.createElement('div', { className: "bg-white rounded-lg shadow-xl w-full max-w-md" },
+              React.createElement('div', { className: "bg-indigo-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center" },
+                React.createElement('h3', { className: "text-xl font-bold" },
+                  editingUser
+                    ? (language === 'english' ? 'Edit User' : 'Hariri Mtumiaji')
+                    : (language === 'english' ? 'Add New User' : 'Ongeza Mtumiaji Mpya')
+                ),
+                React.createElement('button', { 
+                  onClick: handleCloseModal, 
+                  className: "text-white hover:text-gray-200"
+                }, React.createElement(XIcon, { className: "w-6 h-6" }))
+              ),
+
+              React.createElement('form', { onSubmit: handleSubmit, className: "p-6 space-y-4" },
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Username' : 'Jina la Mtumiaji'
+                  ),
+                  React.createElement('input', {
+                    type: "text",
+                    required: true,
+                    value: formData.username,
+                    onChange: (e) => setFormData({...formData, username: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Full Name' : 'Jina Kamili'
+                  ),
+                  React.createElement('input', {
+                    type: "text",
+                    required: true,
+                    value: formData.name,
+                    onChange: (e) => setFormData({...formData, name: e.target.value}),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Password' : 'Neno la Siri'
+                  ),
+                  React.createElement('div', { className: "relative" },
+                    React.createElement('input', {
+                      type: showPassword ? 'text' : 'password',
+                      required: true,
+                      value: formData.password,
+                      onChange: (e) => setFormData({...formData, password: e.target.value}),
+                      className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    }),
+                    React.createElement('button', {
+                      type: "button",
+                      onClick: () => setShowPassword(!showPassword),
+                      className: "absolute right-3 top-2.5 text-gray-600 hover:text-gray-800"
+                    }, showPassword ? React.createElement(EyeOffIcon, { className: "w-5 h-5" }) : React.createElement(EyeIcon, { className: "w-5 h-5" }))
+                  )
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" },
+                    language === 'english' ? 'Role' : 'Wadhifa'
+                  ),
+                  React.createElement('select', {
+                    required: true,
+                    value: formData.role,
+                    onChange: (e) => setFormData({...formData, role: e.target.value}),
+                    disabled: editingUser && editingUser.id === '1',
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
+                  },
+                    React.createElement('option', { value: "staff" }, language === 'english' ? 'Staff' : 'Mfanyakazi'),
+                    React.createElement('option', { value: "admin" }, language === 'english' ? 'Admin' : 'Msimamizi')
+                  ),
+                  editingUser && editingUser.id === '1' && React.createElement('p', { className: "text-xs text-gray-500 mt-1" },
+                    language === 'english' ? 'Cannot change admin role' : 'Huwezi kubadili wadhifa wa admin'
+                  )
+                ),
+
+                React.createElement('div', { className: "flex space-x-3 pt-4" },
+                  React.createElement('button', {
+                    type: "submit",
+                    className: "flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                  },
+                    editingUser
+                      ? (language === 'english' ? 'Update User' : 'Sasisha')
+                      : (language === 'english' ? 'Add User' : 'Ongeza')
+                  ),
+                  React.createElement('button', {
+                    type: "button",
+                    onClick: handleCloseModal,
+                    className: "flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  }, language === 'english' ? 'Cancel' : 'Ghairi')
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Settings Component
+      const SettingsPage = () => {
+        const [activeTab, setActiveTab] = useState('general');
+
+        const handleExportData = () => {
+          const data = {
+            users,
+            products,
+            sales,
+            purchases,
+            expenses,
+            exportDate: new Date().toISOString()
+          };
+
+          const dataStr = JSON.stringify(data, null, 2);
+          const dataBlob = new Blob([dataStr], { type: 'application/json' });
+          const url = URL.createObjectURL(dataBlob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `mrcheap_backup_${new Date().toISOString().split('T')[0]}.json`;
+          link.click();
+        };
+
+        const handleImportData = (event) => {
+          const file = event.target.files[0];
+          if (!file) return;
+
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            try {
+              const data = JSON.parse(e.target.result);
+              
+              if (window.confirm(language === 'english' 
+                ? 'This will replace all current data. Are you sure?' 
+                : 'Hii itafuta data yote ya sasa. Una uhakika?')) {
+                
+                if (data.users) setUsers(data.users);
+                if (data.products) setProducts(data.products);
+                if (data.sales) setSales(data.sales);
+                if (data.purchases) setPurchases(data.purchases);
+                if (data.expenses) setExpenses(data.expenses);
+                
+                alert(language === 'english' ? 'Data imported successfully!' : 'Data imeingizwa kikamilifu!');
+              }
+            } catch (error) {
+              alert(language === 'english' ? 'Error importing data. Invalid file.' : 'Hitilafu katika kuingiza data.');
+            }
+          };
+          reader.readAsText(file);
+          event.target.value = '';
+        };
+
+        const handleClearAllData = () => {
+          if (window.confirm(language === 'english' 
+            ? 'WARNING: This will delete ALL data permanently. Are you sure?' 
+            : 'ONYO: Hii itafuta data ZOTE kabisa. Una uhakika?')) {
+            
+            if (window.confirm(language === 'english' 
+              ? 'Last confirmation: Delete everything?' 
+              : 'Thibitisho la mwisho: Futa kila kitu?')) {
+              
+              setProducts([
+                { id: '1', name: 'Electric Kettle', quantity: 25, buyPrice: 15000, sellPrice: 25000, category: 'Kitchen' },
+                { id: '2', name: 'Multicooker', quantity: 15, buyPrice: 45000, sellPrice: 75000, category: 'Kitchen' },
+                { id: '3', name: 'Pressure Cooker', quantity: 8, buyPrice: 35000, sellPrice: 55000, category: 'Kitchen' },
+                { id: '4', name: 'Phone Charger', quantity: 50, buyPrice: 3000, sellPrice: 5000, category: 'Electronics' },
+                { id: '5', name: 'Standing Fan', quantity: 12, buyPrice: 25000, sellPrice: 40000, category: 'Appliances' }
+              ]);
+              setSales([]);
+              setPurchases([]);
+              setExpenses([]);
+              
+              alert(language === 'english' ? 'All data cleared!' : 'Data zote zimefutwa!');
+            }
+          }
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.settings),
+
+          // Tabs
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg mb-6" },
+            React.createElement('div', { className: "flex border-b" },
+              React.createElement('button', {
+                onClick: () => setActiveTab('general'),
+                className: `px-6 py-3 font-medium ${
+                  activeTab === 'general'
+                    ? 'text-indigo-600 border-b-2 border-indigo-600'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`
+              }, language === 'english' ? 'General' : 'Jumla'),
+              React.createElement('button', {
+                onClick: () => setActiveTab('data'),
+                className: `px-6 py-3 font-medium ${
+                  activeTab === 'data'
+                    ? 'text-indigo-600 border-b-2 border-indigo-600'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`
+              }, language === 'english' ? 'Data Management' : 'Usimamizi wa Data'),
+              React.createElement('button', {
+                onClick: () => setActiveTab('about'),
+                className: `px-6 py-3 font-medium ${
+                  activeTab === 'about'
+                    ? 'text-indigo-600 border-b-2 border-indigo-600'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`
+              }, language === 'english' ? 'About' : 'Kuhusu')
+            ),
+
+            React.createElement('div', { className: "p-6" },
+              // General Settings
+              activeTab === 'general' && React.createElement('div', { className: "space-y-6" },
+                React.createElement('div', null,
+                  React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" },
+                    language === 'english' ? 'Language Settings' : 'Mipangilio ya Lugha'
+                  ),
+                  React.createElement('div', { className: "bg-gray-50 border border-gray-200 rounded-lg p-4" },
+                    React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-3" },
+                      language === 'english' ? 'Select Language' : 'Chagua Lugha'
+                    ),
+                    React.createElement('div', { className: "flex space-x-4" },
+                      React.createElement('button', {
+                        onClick: () => setLanguage('english'),
+                        className: `px-6 py-3 rounded-lg font-medium transition-colors ${
+                          language === 'english'
+                            ? 'bg-indigo-600 text-white'
+                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                        }`
+                      }, 'English'),
+                      React.createElement('button', {
+                        onClick: () => setLanguage('swahili'),
+                        className: `px-6 py-3 rounded-lg font-medium transition-colors ${
+                          language === 'swahili'
+                            ? 'bg-indigo-600 text-white'
+                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                        }`
+                      }, 'Kiswahili')
+                    )
+                  )
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" },
+                    language === 'english' ? 'Business Information' : 'Taarifa za Biashara'
+                  ),
+                  React.createElement('div', { className: "bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3" },
+                    React.createElement('div', null,
+                      React.createElement('span', { className: "text-sm font-medium text-gray-700" },
+                        language === 'english' ? 'Business Name:' : 'Jina la Biashara:'
+                      ),
+                      React.createElement('span', { className: "ml-2 font-bold text-indigo-600" }, t.businessName)
+                    ),
+                    React.createElement('div', null,
+                      React.createElement('span', { className: "text-sm font-medium text-gray-700" },
+                        language === 'english' ? 'Currency:' : 'Sarafu:'
+                      ),
+                      React.createElement('span', { className: "ml-2 font-bold" }, t.currency)
+                    ),
+                    React.createElement('div', null,
+                      React.createElement('span', { className: "text-sm font-medium text-gray-700" },
+                        language === 'english' ? 'Current User:' : 'Mtumiaji wa Sasa:'
+                      ),
+                      React.createElement('span', { className: "ml-2 font-bold" }, `${currentUser.name} (${currentUser.role})`)
+                    )
+                  )
+                )
+              ),
+
+              // Data Management
+              activeTab === 'data' && React.createElement('div', { className: "space-y-6" },
+                React.createElement('div', null,
+                  React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" },
+                    language === 'english' ? 'Backup & Restore' : 'Hifadhi na Rejesha'
+                  ),
+                  
+                  React.createElement('div', { className: "bg-blue-50 border border-blue-200 rounded-lg p-6 mb-4" },
+                    React.createElement('h4', { className: "font-bold text-blue-900 mb-2" },
+                      language === 'english' ? 'Export Data (Backup)' : 'Hamisha Data (Backup)'
+                    ),
+                    React.createElement('p', { className: "text-sm text-blue-800 mb-4" },
+                      language === 'english' 
+                        ? 'Download all your business data as a backup file.' 
+                        : 'Pakua data zote za biashara yako kama faili la backup.'
+                    ),
+                    React.createElement('button', {
+                      onClick: handleExportData,
+                      className: "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                    },
+                      React.createElement(FileTextIcon, { className: "w-5 h-5 mr-2" }),
+                      language === 'english' ? 'Export Data' : 'Hamisha Data'
+                    )
+                  ),
+
+                  React.createElement('div', { className: "bg-green-50 border border-green-200 rounded-lg p-6" },
+                    React.createElement('h4', { className: "font-bold text-green-900 mb-2" },
+                      language === 'english' ? 'Import Data (Restore)' : 'Ingiza Data (Rejesha)'
+                    ),
+                    React.createElement('p', { className: "text-sm text-green-800 mb-4" },
+                      language === 'english' 
+                        ? 'Restore your business data from a backup file.' 
+                        : 'Rejesha data za biashara yako kutoka kwenye faili la backup.'
+                    ),
+                    React.createElement('input', {
+                      type: "file",
+                      accept: ".json",
+                      onChange: handleImportData,
+                      className: "hidden",
+                      id: "import-file"
+                    }),
+                    React.createElement('label', {
+                      htmlFor: "import-file",
+                      className: "bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors inline-flex items-center cursor-pointer"
+                    },
+                      React.createElement(PlusIcon, { className: "w-5 h-5 mr-2" }),
+                      language === 'english' ? 'Import Data' : 'Ingiza Data'
+                    )
+                  )
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" },
+                    language === 'english' ? 'Data Statistics' : 'Takwimu za Data'
+                  ),
+                  React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-4 gap-4" },
+                    React.createElement('div', { className: "bg-gray-50 border border-gray-200 rounded-lg p-4 text-center" },
+                      React.createElement('p', { className: "text-sm text-gray-600 mb-1" }, language === 'english' ? 'Products' : 'Bidhaa'),
+                      React.createElement('p', { className: "text-2xl font-bold text-indigo-600" }, products.length)
+                    ),
+                    React.createElement('div', { className: "bg-gray-50 border border-gray-200 rounded-lg p-4 text-center" },
+                      React.createElement('p', { className: "text-sm text-gray-600 mb-1" }, language === 'english' ? 'Sales' : 'Mauzo'),
+                      React.createElement('p', { className: "text-2xl font-bold text-green-600" }, sales.length)
+                    ),
+                    React.createElement('div', { className: "bg-gray-50 border border-gray-200 rounded-lg p-4 text-center" },
+                      React.createElement('p', { className: "text-sm text-gray-600 mb-1" }, language === 'english' ? 'Purchases' : 'Manunuzi'),
+                      React.createElement('p', { className: "text-2xl font-bold text-blue-600" }, purchases.length)
+                    ),
+                    React.createElement('div', { className: "bg-gray-50 border border-gray-200 rounded-lg p-4 text-center" },
+                      React.createElement('p', { className: "text-sm text-gray-600 mb-1" }, language === 'english' ? 'Expenses' : 'Matumizi'),
+                      React.createElement('p', { className: "text-2xl font-bold text-red-600" }, expenses.length)
+                    )
+                  )
+                ),
+
+                React.createElement('div', { className: "bg-red-50 border-2 border-red-300 rounded-lg p-6" },
+                  React.createElement('h3', { className: "text-xl font-bold text-red-900 mb-2" },
+                    language === 'english' ? 'Danger Zone' : 'Eneo la Hatari'
+                  ),
+                  React.createElement('p', { className: "text-sm text-red-800 mb-4" },
+                    language === 'english' 
+                      ? 'Warning: This action cannot be undone!' 
+                      : 'Onyo: Kitendo hiki hakiwezi kurudishwa!'
+                  ),
+                  React.createElement('button', {
+                    onClick: handleClearAllData,
+                    className: "bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center"
+                  },
+                    React.createElement(Trash2Icon, { className: "w-5 h-5 mr-2" }),
+                    language === 'english' ? 'Clear All Data' : 'Futa Data Zote'
+                  )
+                )
+              ),
+
+              // About
+              activeTab === 'about' && React.createElement('div', { className: "space-y-6" },
+                React.createElement('div', { className: "text-center" },
+                  React.createElement('h3', { className: "text-3xl font-bold text-indigo-600 mb-2" }, t.businessName),
+                  React.createElement('p', { className: "text-gray-600 mb-6" },
+                    language === 'english' 
+                      ? 'Business Management System' 
+                      : 'Mfumo wa Usimamizi wa Biashara'
+                  )
+                ),
+
+                React.createElement('div', { className: "bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg p-6" },
+                  React.createElement('h4', { className: "font-bold text-indigo-900 mb-4" },
+                    language === 'english' ? 'System Features' : 'Huduma za Mfumo'
+                  ),
+                  React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700" },
+                    ['Inventory Management', 'Sales Tracking', 'Purchase Recording', 'Expense Management', 
+                     'Comprehensive Reports', 'User Management', 'Multi-language Support', 'Data Backup & Restore'].map((feature, index) =>
+                      React.createElement('div', { key: index, className: "flex items-start" },
+                        React.createElement('span', { className: "text-indigo-600 mr-2" }, '✓'),
+                        React.createElement('span', null, 
+                          language === 'english' 
+                            ? feature 
+                            : [
+                              'Usimamizi wa Bidhaa', 'Ufuatiliaji wa Mauzo', 'Kurekodi Manunuzi', 'Usimamizi wa Matumizi',
+                              'Ripoti Kamili', 'Usimamizi wa Watumiaji', 'Lugha Nyingi', 'Backup na Restore'
+                            ][index]
+                        )
+                      )
+                    )
+                  )
+                ),
+
+                React.createElement('div', { className: "bg-gray-50 border border-gray-200 rounded-lg p-6" },
+                  React.createElement('h4', { className: "font-bold text-gray-900 mb-3" },
+                    language === 'english' ? 'Version Information' : 'Taarifa za Toleo'
+                  ),
+                  React.createElement('div', { className: "space-y-2 text-sm text-gray-700" },
+                    React.createElement('div', { className: "flex justify-between" },
+                      React.createElement('span', null, language === 'english' ? 'Version:' : 'Toleo:'),
+                      React.createElement('span', { className: "font-semibold" }, '1.0.0')
+                    ),
+                    React.createElement('div', { className: "flex justify-between" },
+                      React.createElement('span', null, language === 'english' ? 'Release Date:' : 'Tarehe ya Kutolewa:'),
+                      React.createElement('span', { className: "font-semibold" }, 'January 2026')
+                    ),
+                    React.createElement('div', { className: "flex justify-between" },
+                      React.createElement('span', null, language === 'english' ? 'Status:' : 'Hali:'),
+                      React.createElement('span', { className: "font-semibold text-green-600" }, language === 'english' ? 'Active' : 'Inafanya Kazi')
+                    )
+                  )
+                ),
+
+                React.createElement('div', { className: "text-center text-sm text-gray-600" },
+                  React.createElement('p', null,
+                    language === 'english' 
+                      ? '© 2026 MrCheap Electronics. All rights reserved.' 
+                      : '© 2026 MrCheap Electronics. Haki zote zimehifadhiwa.'
+                  )
                 )
               )
             )
@@ -342,68 +2785,72 @@
         return React.createElement(LoginPage);
       }
 
-      return (
-        React.createElement('div', { className: "flex h-screen bg-gray-100" },
-          // Sidebar
-          React.createElement('div', { className: `${sidebarOpen ? 'w-64' : 'w-20'} bg-indigo-800 text-white transition-all duration-300 flex flex-col` },
-            React.createElement('div', { className: "p-4 flex items-center justify-between" },
-              sidebarOpen && React.createElement('h1', { className: "text-xl font-bold" }, t.businessName),
-              React.createElement('button', { 
-                onClick: () => setSidebarOpen(!sidebarOpen), 
-                className: "text-white" 
-              }, sidebarOpen ? React.createElement(X) : React.createElement(Menu))
-            ),
+      return React.createElement('div', { className: "flex h-screen bg-gray-100" },
+        // Sidebar
+        React.createElement('div', { className: `${sidebarOpen ? 'w-64' : 'w-20'} bg-indigo-800 text-white transition-all duration-300 flex flex-col` },
+          React.createElement('div', { className: "p-4 flex items-center justify-between" },
+            sidebarOpen && React.createElement('h1', { className: "text-xl font-bold" }, t.businessName),
+            React.createElement('button', { 
+              onClick: () => setSidebarOpen(!sidebarOpen), 
+              className: "text-white" 
+            }, sidebarOpen ? React.createElement(XIcon) : React.createElement(MenuIcon))
+          ),
 
-            React.createElement('nav', { className: "flex-1 mt-4" },
-              [
-                { id: 'dashboard', icon: TrendingUp, label: t.dashboard },
-                { id: 'inventory', icon: Package, label: t.inventory },
-                { id: 'purchases', icon: ShoppingCart, label: t.purchases },
-                { id: 'sales', icon: DollarSign, label: t.sales },
-                { id: 'expenses', icon: FileText, label: t.expenses },
-                { id: 'reports', icon: FileText, label: t.reports },
-                { id: 'users', icon: Users, label: t.users },
-                { id: 'settings', icon: Settings, label: t.settings }
-              ].map((item) =>
-                React.createElement('button', {
-                  key: item.id,
-                  onClick: () => setCurrentPage(item.id),
-                  className: `w-full flex items-center px-4 py-3 hover:bg-indigo-700 transition-colors ${
-                    currentPage === item.id ? 'bg-indigo-700 border-l-4 border-white' : ''
-                  }`
-                },
-                  React.createElement(item.icon, { className: "w-5 h-5" }),
-                  sidebarOpen && React.createElement('span', { className: "ml-3" }, item.label)
-                )
-              )
-            ),
-
-            React.createElement('div', { className: "p-4 border-t border-indigo-700" },
+          React.createElement('nav', { className: "flex-1 mt-4" },
+            [
+              { id: 'dashboard', icon: TrendingUpIcon, label: t.dashboard },
+              { id: 'inventory', icon: PackageIcon, label: t.inventory },
+              { id: 'purchases', icon: ShoppingCartIcon, label: t.purchases },
+              { id: 'sales', icon: DollarSignIcon, label: t.sales },
+              { id: 'expenses', icon: FileTextIcon, label: t.expenses },
+              { id: 'reports', icon: FileTextIcon, label: t.reports },
+              { id: 'users', icon: UsersIcon, label: t.users },
+              { id: 'settings', icon: SettingsIcon, label: t.settings }
+            ].map((item) =>
               React.createElement('button', {
-                onClick: () => setCurrentUser(null),
-                className: "w-full flex items-center px-4 py-2 hover:bg-indigo-700 rounded transition-colors"
+                key: item.id,
+                onClick: () => setCurrentPage(item.id),
+                className: `w-full flex items-center px-4 py-3 hover:bg-indigo-700 transition-colors ${
+                  currentPage === item.id ? 'bg-indigo-700 border-l-4 border-white' : ''
+                }`
               },
-                React.createElement(Users, { className: "w-5 h-5" }),
-                sidebarOpen && React.createElement('span', { className: "ml-3" }, t.logout)
+                React.createElement(item.icon, { className: "w-5 h-5" }),
+                sidebarOpen && React.createElement('span', { className: "ml-3" }, item.label)
               )
             )
           ),
 
-          // Main Content
-          React.createElement('div', { className: "flex-1 overflow-auto" },
-            React.createElement('div', { className: "bg-white shadow-sm p-4 flex justify-between items-center" },
-              React.createElement('h2', { className: "text-xl font-semibold text-gray-800" },
-                language === 'english' ? `Welcome, ${currentUser.name}` : `Karibu, ${currentUser.name}`
-              ),
-              React.createElement('button', {
-                onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
-                className: "px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm"
-              }, language === 'english' ? 'Kiswahili' : 'English')
-            ),
-
-            currentPage === 'dashboard' && React.createElement(Dashboard)
-            // Note: Other components (inventory, purchases, sales, etc.) would be added here
+          React.createElement('div', { className: "p-4 border-t border-indigo-700" },
+            React.createElement('button', {
+              onClick: () => setCurrentUser(null),
+              className: "w-full flex items-center px-4 py-2 hover:bg-indigo-700 rounded transition-colors"
+            },
+              React.createElement(UsersIcon, { className: "w-5 h-5" }),
+              sidebarOpen && React.createElement('span', { className: "ml-3" }, t.logout)
+            )
           )
+        ),
+
+        // Main Content
+        React.createElement('div', { className: "flex-1 overflow-auto" },
+          React.createElement('div', { className: "bg-white shadow-sm p-4 flex justify-between items-center" },
+            React.createElement('h2', { className: "text-xl font-semibold text-gray-800" },
+              language === 'english' ? `Welcome, ${currentUser.name}` : `Karibu, ${currentUser.name}`
+            ),
+            React.createElement('button', {
+              onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
+              className: "px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+            }, language === 'english' ? 'Kiswahili' : 'English')
+          ),
+
+          currentPage === 'dashboard' && React.createElement(Dashboard),
+          currentPage === 'inventory' && React.createElement(InventoryPage),
+          currentPage === 'purchases' && React.createElement(PurchasesPage),
+          currentPage === 'sales' && React.createElement(SalesPage),
+          currentPage === 'expenses' && React.createElement(ExpensesPage),
+          currentPage === 'reports' && React.createElement(ReportsPage),
+          currentPage === 'users' && React.createElement(UserManagementPage),
+          currentPage === 'settings' && React.createElement(SettingsPage)
         )
       );
     };
