@@ -5,87 +5,122 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MrCheap System</title>
   
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
   
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="MrCheap">
-  
+  <!-- Load React and Babel -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
   
-  <style>
-    @media print {
-      .print\:hidden { display: none !important; }
-      body { background: white; }
-    }
-  </style>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
+    // Use React and ReactDOM from global scope
     const { useState, useEffect } = React;
-    
-    // SVG Icons (keeping all the icon definitions from your original code)
-    const PackageIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('rect', { x: '2', y: '7', width: '20', height: '14', rx: '2', ry: '2' }), React.createElement('path', { d: 'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16' })]);
-    const ShoppingCartIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('circle', { cx: '9', cy: '21', r: '1' }), React.createElement('circle', { cx: '20', cy: '21', r: '1' }), React.createElement('path', { d: 'M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6' })]);
-    const DollarSignIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('line', { x1: '12', y1: '1', x2: '12', y2: '23' }), React.createElement('path', { d: 'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' })]);
-    const TrendingUpIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('polyline', { points: '23 6 13.5 15.5 8.5 10.5 1 18' }), React.createElement('polyline', { points: '17 6 23 6 23 12' })]);
-    const UsersIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }), React.createElement('circle', { cx: '9', cy: '7', r: '4' }), React.createElement('path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87' }), React.createElement('path', { d: 'M16 3.13a4 4 0 0 1 0 7.75' })]);
-    const FileTextIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('path', { d: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' }), React.createElement('polyline', { points: '14 2 14 8 20 8' }), React.createElement('line', { x1: '16', y1: '13', x2: '8', y2: '13' }), React.createElement('line', { x1: '16', y1: '17', x2: '8', y2: '17' }), React.createElement('polyline', { points: '10 9 9 9 8 9' })]);
-    const SettingsIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('circle', { cx: '12', cy: '12', r: '3' }), React.createElement('path', { d: 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z' })]);
-    const MenuIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('line', { x1: '3', y1: '12', x2: '21', y2: '12' }), React.createElement('line', { x1: '3', y1: '6', x2: '21', y2: '6' }), React.createElement('line', { x1: '3', y1: '18', x2: '21', y2: '18' })]);
-    const XIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('line', { x1: '18', y1: '6', x2: '6', y2: '18' }), React.createElement('line', { x1: '6', y1: '6', x2: '18', y2: '18' })]);
-    const PlusIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('line', { x1: '12', y1: '5', x2: '12', y2: '19' }), React.createElement('line', { x1: '5', y1: '12', x2: '19', y2: '12' })]);
-    const EditIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('path', { d: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' }), React.createElement('path', { d: 'M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' })]);
-    const Trash2Icon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('polyline', { points: '3 6 5 6 21 6' }), React.createElement('path', { d: 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' }), React.createElement('line', { x1: '10', y1: '11', x2: '10', y2: '17' }), React.createElement('line', { x1: '14', y1: '11', x2: '14', y2: '17' })]);
-    const EyeIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('path', { d: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' }), React.createElement('circle', { cx: '12', cy: '12', r: '3' })]);
-    const EyeOffIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('path', { d: 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24' }), React.createElement('line', { x1: '1', y1: '1', x2: '23', y2: '23' })]);
-    const HomeIcon = (props) => React.createElement('svg', {...props, width: props.size || '24', height: props.size || '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'}, [React.createElement('path', { d: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' }), React.createElement('polyline', { points: '9 22 9 12 15 12 15 22' })]);
+
+    // Simple Icon Components
+    const PackageIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('rect', { x: '2', y: '7', width: '20', height: '14', rx: '2', ry: '2' }),
+      React.createElement('path', { d: 'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16' })
+    ]);
+
+    const ShoppingCartIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('circle', { cx: '9', cy: '21', r: '1' }),
+      React.createElement('circle', { cx: '20', cy: '21', r: '1' }),
+      React.createElement('path', { d: 'M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6' })
+    ]);
+
+    const DollarSignIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('line', { x1: '12', y1: '1', x2: '12', y2: '23' }),
+      React.createElement('path', { d: 'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' })
+    ]);
+
+    const TrendingUpIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('polyline', { points: '23 6 13.5 15.5 8.5 10.5 1 18' }),
+      React.createElement('polyline', { points: '17 6 23 6 23 12' })
+    ]);
+
+    const SettingsIcon = (props) => React.createElement('svg', {
+      ...props,
+      width: props.size || '24',
+      height: props.size || '24',
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: '2',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      React.createElement('circle', { cx: '12', cy: '12', r: '3' }),
+      React.createElement('path', { d: 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z' })
+    ]);
 
     const MrCheapSystem = () => {
       const [currentPage, setCurrentPage] = useState('dashboard');
       const [language, setLanguage] = useState('english');
-      const [sidebarOpen, setSidebarOpen] = useState(true);
       const [currentUser, setCurrentUser] = useState(null);
-      const [isMobile, setIsMobile] = useState(false);
 
+      // Load current user from localStorage on component mount
       useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-      }, []);
-
-      const [users, setUsers] = useState([{id: '1', username: 'admin', password: 'admin123', role: 'admin', name: 'Owner', active: true}]);
-      const [products, setProducts] = useState([
-        { id: '1', name: 'Electric Kettle', quantity: 25, buyPrice: 15000, sellPrice: 25000, category: 'Kitchen' },
-        { id: '2', name: 'Multicooker', quantity: 15, buyPrice: 45000, sellPrice: 75000, category: 'Kitchen' }
-      ]);
-      const [sales, setSales] = useState([]);
-      const [purchases, setPurchases] = useState([]);
-      const [expenses, setExpenses] = useState([]);
-
-      useEffect(() => {
-        const savedData = JSON.parse(localStorage.getItem('mrcheap_data') || '{}');
-        if (savedData.users) setUsers(savedData.users);
-        if (savedData.products) setProducts(savedData.products);
-        if (savedData.sales) setSales(savedData.sales);
-        if (savedData.purchases) setPurchases(savedData.purchases);
-        if (savedData.expenses) setExpenses(savedData.expenses);
-        
         const savedUser = localStorage.getItem('mrcheap_currentUser');
-        if (savedUser) setCurrentUser(JSON.parse(savedUser));
+        if (savedUser) {
+          try {
+            const user = JSON.parse(savedUser);
+            setCurrentUser(user);
+          } catch (error) {
+            console.error('Error loading user:', error);
+            localStorage.removeItem('mrcheap_currentUser');
+          }
+        }
       }, []);
 
-      useEffect(() => {
-        localStorage.setItem('mrcheap_data', JSON.stringify({users, products, sales, purchases, expenses}));
-      }, [users, products, sales, purchases, expenses]);
-
+      // Save current user to localStorage when it changes
       useEffect(() => {
         if (currentUser) {
           localStorage.setItem('mrcheap_currentUser', JSON.stringify(currentUser));
@@ -94,81 +129,463 @@
         }
       }, [currentUser]);
 
+      // Sample data
+      const [products, setProducts] = useState([
+        { id: '1', name: 'Electric Kettle', quantity: 25, buyPrice: 15000, sellPrice: 25000, category: 'Kitchen' },
+        { id: '2', name: 'Multicooker', quantity: 15, buyPrice: 45000, sellPrice: 75000, category: 'Kitchen' },
+      ]);
+
+      const [sales, setSales] = useState([]);
+      const [purchases, setPurchases] = useState([]);
+
+      // Load data from localStorage
+      useEffect(() => {
+        const savedData = localStorage.getItem('mrcheap_data');
+        if (savedData) {
+          try {
+            const data = JSON.parse(savedData);
+            if (data.products) setProducts(data.products);
+            if (data.sales) setSales(data.sales);
+            if (data.purchases) setPurchases(data.purchases);
+          } catch (error) {
+            console.error('Error loading data:', error);
+          }
+        }
+      }, []);
+
+      // Save data to localStorage
+      useEffect(() => {
+        const data = {
+          products,
+          sales,
+          purchases
+        };
+        localStorage.setItem('mrcheap_data', JSON.stringify(data));
+      }, [products, sales, purchases]);
+
+      // Translations
       const translations = {
-        english: { dashboard: 'Dashboard', inventory: 'Inventory', purchases: 'Purchases', sales: 'Sales', expenses: 'Expenses', reports: 'Reports', users: 'User Management', settings: 'Settings', totalSales: 'Total Sales', totalPurchases: 'Total Purchases', currentStock: 'Current Stock Value', profit: 'Net Profit', lowStock: 'Low Stock Alerts', recentSales: 'Recent Sales', topProducts: 'Top Selling Products', logout: 'Logout', login: 'Login', username: 'Username', password: 'Password', businessName: 'MrCheap Electronics', currency: 'TZS' },
-        swahili: { dashboard: 'Dashibodi', inventory: 'Hifadhi', purchases: 'Manunuzi', sales: 'Mauzo', expenses: 'Matumizi', reports: 'Ripoti', users: 'Usimamizi wa Watumiaji', settings: 'Mipangilio', totalSales: 'Jumla ya Mauzo', totalPurchases: 'Jumla ya Manunuzi', currentStock: 'Thamani ya Bidhaa', profit: 'Faida', lowStock: 'Bidhaa Zinazokwisha', recentSales: 'Mauzo ya Karibuni', topProducts: 'Bidhaa Zinazouzwa Zaidi', logout: 'Ondoka', login: 'Ingia', username: 'Jina la Mtumiaji', password: 'Neno la Siri', businessName: 'MrCheap Electronics', currency: 'TZS' }
+        english: {
+          dashboard: 'Dashboard',
+          inventory: 'Inventory',
+          purchases: 'Purchases',
+          sales: 'Sales',
+          logout: 'Logout',
+          login: 'Login',
+          username: 'Username',
+          password: 'Password',
+          businessName: 'MrCheap Electronics',
+          currency: 'TZS'
+        },
+        swahili: {
+          dashboard: 'Dashibodi',
+          inventory: 'Hifadhi',
+          purchases: 'Manunuzi',
+          sales: 'Mauzo',
+          logout: 'Ondoka',
+          login: 'Ingia',
+          username: 'Jina la Mtumiaji',
+          password: 'Neno la Siri',
+          businessName: 'MrCheap Electronics',
+          currency: 'TZS'
+        }
       };
 
       const t = translations[language];
 
+      // Login Component
+      const LoginPage = () => {
+        const [username, setUsername] = useState('');
+        const [password, setPassword] = useState('');
+        const [error, setError] = useState('');
+
+        const handleLogin = () => {
+          // Simple authentication
+          if (username === 'admin' && password === 'admin123') {
+            const user = {
+              id: '1',
+              username: 'admin',
+              name: 'Owner',
+              role: 'admin'
+            };
+            setCurrentUser(user);
+            setError('');
+          } else {
+            setError(language === 'english' ? 'Invalid credentials' : 'Jina au neno la siri si sahihi');
+          }
+        };
+
+        return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4" },
+          React.createElement('div', { className: "bg-white rounded-lg shadow-xl p-8 w-full max-w-md" },
+            React.createElement('div', { className: "text-center mb-8" },
+              React.createElement('h1', { className: "text-3xl font-bold text-indigo-600 mb-2" }, t.businessName),
+              React.createElement('p', { className: "text-gray-600" }, t.login)
+            ),
+            
+            error && React.createElement('div', { className: "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" }, error),
+
+            React.createElement('div', { className: "space-y-4" },
+              React.createElement('div', null,
+                React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.username),
+                React.createElement('input', {
+                  type: "text",
+                  value: username,
+                  onChange: (e) => setUsername(e.target.value),
+                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
+                  placeholder: language === 'english' ? 'Enter username' : 'Weka jina la mtumiaji'
+                })
+              ),
+
+              React.createElement('div', null,
+                React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.password),
+                React.createElement('input', {
+                  type: "password",
+                  value: password,
+                  onChange: (e) => setPassword(e.target.value),
+                  onKeyPress: (e) => e.key === 'Enter' && handleLogin(),
+                  className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
+                  placeholder: language === 'english' ? 'Enter password' : 'Weka neno la siri'
+                })
+              ),
+
+              React.createElement('button', {
+                onClick: handleLogin,
+                className: "w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+              }, t.login),
+
+              React.createElement('div', { className: "text-center text-sm text-gray-600 mt-4" },
+                language === 'english' ? 'Default: admin / admin123' : 'Chaguo-msingi: admin / admin123'
+              ),
+
+              React.createElement('button', {
+                onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
+                className: "w-full mt-4 text-sm text-indigo-600 hover:text-indigo-800"
+              }, language === 'english' ? 'Badilisha kwa Kiswahili' : 'Switch to English')
+            )
+          )
+        );
+      };
+
+      // Dashboard Component
+      const Dashboard = () => {
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount?.toLocaleString() || '0'}`;
+        };
+
+        const totalSales = sales.reduce((sum, sale) => sum + (sale.total || 0), 0);
+        const totalPurchases = purchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+        const stockValue = products.reduce((sum, product) => sum + (product.quantity * product.buyPrice), 0);
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.dashboard),
+          
+          React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" },
+            React.createElement('div', { className: "bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('div', { className: "flex items-center justify-between" },
+                React.createElement('div', null,
+                  React.createElement('p', { className: "text-green-100 text-sm" }, language === 'english' ? 'Total Sales' : 'Jumla ya Mauzo'),
+                  React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalSales))
+                ),
+                React.createElement(ShoppingCartIcon, { className: "w-12 h-12 text-green-200" })
+              )
+            ),
+
+            React.createElement('div', { className: "bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('div', { className: "flex items-center justify-between" },
+                React.createElement('div', null,
+                  React.createElement('p', { className: "text-blue-100 text-sm" }, language === 'english' ? 'Total Purchases' : 'Jumla ya Manunuzi'),
+                  React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalPurchases))
+                ),
+                React.createElement(PackageIcon, { className: "w-12 h-12 text-blue-200" })
+              )
+            ),
+
+            React.createElement('div', { className: "bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg p-6 text-white" },
+              React.createElement('div', { className: "flex items-center justify-between" },
+                React.createElement('div', null,
+                  React.createElement('p', { className: "text-purple-100 text-sm" }, language === 'english' ? 'Current Stock Value' : 'Thamani ya Bidhaa'),
+                  React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(stockValue))
+                ),
+                React.createElement(DollarSignIcon, { className: "w-12 h-12 text-purple-200" })
+              )
+            )
+          ),
+
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
+            React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" }, language === 'english' ? 'Quick Actions' : 'Vitendo vya Haraka'),
+            React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-4 gap-4" },
+              React.createElement('button', {
+                onClick: () => setCurrentPage('sales'),
+                className: "bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-colors"
+              },
+                React.createElement(ShoppingCartIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Sale' : 'Uza')
+              ),
+              React.createElement('button', {
+                onClick: () => setCurrentPage('purchases'),
+                className: "bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-colors"
+              },
+                React.createElement(PackageIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Purchase' : 'Nunua')
+              ),
+              React.createElement('button', {
+                onClick: () => setCurrentPage('inventory'),
+                className: "bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-colors"
+              },
+                React.createElement(PackageIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'View Stock' : 'Tazama Bidhaa')
+              ),
+              React.createElement('button', {
+                onClick: () => setCurrentPage('settings'),
+                className: "bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition-colors"
+              },
+                React.createElement(SettingsIcon, { className: "w-6 h-6 mx-auto mb-2" }),
+                React.createElement('span', { className: "text-sm" }, language === 'english' ? 'Settings' : 'Mipangilio')
+              )
+            )
+          )
+        );
+      };
+
+      // Inventory Component
+      const InventoryPage = () => {
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount.toLocaleString()}`;
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.inventory),
+          
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+            React.createElement('div', { className: "overflow-x-auto" },
+              React.createElement('table', { className: "w-full" },
+                React.createElement('thead', { className: "bg-indigo-600 text-white" },
+                  React.createElement('tr', null,
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product Name' : 'Jina la Bidhaa'),
+                    React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Category' : 'Aina'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Buy Price' : 'Bei ya Kununua'),
+                    React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Sell Price' : 'Bei ya Kuuza')
+                  )
+                ),
+                React.createElement('tbody', null,
+                  products.map((product, index) =>
+                    React.createElement('tr', { 
+                      key: product.id, 
+                      className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-indigo-50`
+                    },
+                      React.createElement('td', { className: "px-4 py-3 font-medium" }, product.name),
+                      React.createElement('td', { className: "px-4 py-3" }, product.category),
+                      React.createElement('td', { className: "px-4 py-3 text-right font-semibold" }, product.quantity),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(product.buyPrice)),
+                      React.createElement('td', { className: "px-4 py-3 text-right" }, formatCurrency(product.sellPrice))
+                    )
+                  )
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Purchases Component
+      const PurchasesPage = () => {
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount?.toLocaleString() || '0'}`;
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.purchases),
+          
+          purchases.length === 0 ? 
+            React.createElement('div', { className: "text-center py-8 text-gray-500" },
+              language === 'english' ? 'No purchases recorded yet' : 'Hakuna manunuzi bado'
+            ) :
+            React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+              React.createElement('div', { className: "overflow-x-auto" },
+                React.createElement('table', { className: "w-full" },
+                  React.createElement('thead', { className: "bg-blue-600 text-white" },
+                    React.createElement('tr', null,
+                      React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
+                      React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Product' : 'Bidhaa'),
+                      React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Quantity' : 'Idadi'),
+                      React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Total' : 'Jumla')
+                    )
+                  ),
+                  React.createElement('tbody', null,
+                    purchases.map((purchase, index) =>
+                      React.createElement('tr', { 
+                        key: purchase.id, 
+                        className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50`
+                      },
+                        React.createElement('td', { className: "px-4 py-3" }, purchase.date || 'N/A'),
+                        React.createElement('td', { className: "px-4 py-3 font-medium" }, purchase.productName || 'N/A'),
+                        React.createElement('td', { className: "px-4 py-3 text-right font-semibold" }, purchase.quantity || '0'),
+                        React.createElement('td', { className: "px-4 py-3 text-right font-bold text-blue-600" }, formatCurrency(purchase.total || 0))
+                      )
+                    )
+                  )
+                )
+              )
+            )
+        );
+      };
+
+      // Sales Component
+      const SalesPage = () => {
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount?.toLocaleString() || '0'}`;
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.sales),
+          
+          sales.length === 0 ? 
+            React.createElement('div', { className: "text-center py-8 text-gray-500" },
+              language === 'english' ? 'No sales recorded yet' : 'Hakuna mauzo bado'
+            ) :
+            React.createElement('div', { className: "bg-white rounded-lg shadow-lg overflow-hidden" },
+              React.createElement('div', { className: "overflow-x-auto" },
+                React.createElement('table', { className: "w-full" },
+                  React.createElement('thead', { className: "bg-green-600 text-white" },
+                    React.createElement('tr', null,
+                      React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Date' : 'Tarehe'),
+                      React.createElement('th', { className: "px-4 py-3 text-left" }, language === 'english' ? 'Items' : 'Bidhaa'),
+                      React.createElement('th', { className: "px-4 py-3 text-right" }, language === 'english' ? 'Total Amount' : 'Jumla')
+                    )
+                  ),
+                  React.createElement('tbody', null,
+                    sales.map((sale, index) =>
+                      React.createElement('tr', { 
+                        key: sale.id, 
+                        className: `${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-green-50`
+                      },
+                        React.createElement('td', { className: "px-4 py-3" }, sale.date || 'N/A'),
+                        React.createElement('td', { className: "px-4 py-3" },
+                          sale.items ? 
+                            React.createElement('div', { className: "text-sm" },
+                              sale.items.map((item, i) =>
+                                React.createElement('div', { key: i },
+                                  `${item.productName} x${item.quantity}`
+                                )
+                              )
+                            ) : 'N/A'
+                        ),
+                        React.createElement('td', { className: "px-4 py-3 text-right font-bold text-green-600" }, formatCurrency(sale.total || 0))
+                      )
+                    )
+                  )
+                )
+              )
+            )
+        );
+      };
+
+      // Settings Component
+      const SettingsPage = () => {
+        const handleLogout = () => {
+          setCurrentUser(null);
+        };
+
+        return React.createElement('div', { className: "p-6" },
+          React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, language === 'english' ? 'Settings' : 'Mipangilio'),
+          
+          React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
+            React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" }, language === 'english' ? 'Account Information' : 'Taarifa za Akaunti'),
+            
+            React.createElement('div', { className: "space-y-4" },
+              React.createElement('div', null,
+                React.createElement('p', { className: "text-sm font-medium text-gray-700" }, language === 'english' ? 'Username:' : 'Jina la Mtumiaji:'),
+                React.createElement('p', { className: "text-lg font-bold" }, currentUser?.username || 'N/A')
+              ),
+              
+              React.createElement('div', null,
+                React.createElement('p', { className: "text-sm font-medium text-gray-700" }, language === 'english' ? 'Name:' : 'Jina:'),
+                React.createElement('p', { className: "text-lg font-bold" }, currentUser?.name || 'N/A')
+              ),
+              
+              React.createElement('div', null,
+                React.createElement('p', { className: "text-sm font-medium text-gray-700" }, language === 'english' ? 'Role:' : 'Wadhifa:'),
+                React.createElement('p', { className: "text-lg font-bold" }, currentUser?.role || 'N/A')
+              ),
+              
+              React.createElement('div', { className: "pt-6 border-t" },
+                React.createElement('button', {
+                  onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
+                  className: "w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition-colors mb-4"
+                },
+                  language === 'english' ? 'Switch to Kiswahili' : 'Switch to English'
+                ),
+                
+                React.createElement('button', {
+                  onClick: handleLogout,
+                  className: "w-full bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition-colors"
+                },
+                  t.logout
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Navigation Component
+      const Navigation = () => {
+        const navItems = [
+          { id: 'dashboard', icon: TrendingUpIcon, label: t.dashboard },
+          { id: 'inventory', icon: PackageIcon, label: t.inventory },
+          { id: 'purchases', icon: ShoppingCartIcon, label: t.purchases },
+          { id: 'sales', icon: DollarSignIcon, label: t.sales },
+          { id: 'settings', icon: SettingsIcon, label: language === 'english' ? 'Settings' : 'Mipangilio' }
+        ];
+
+        return React.createElement('nav', { className: "bg-indigo-800 text-white" },
+          React.createElement('div', { className: "flex overflow-x-auto" },
+            navItems.map((item) =>
+              React.createElement('button', {
+                key: item.id,
+                onClick: () => setCurrentPage(item.id),
+                className: `flex-shrink-0 flex flex-col items-center px-4 py-3 hover:bg-indigo-700 transition-colors ${
+                  currentPage === item.id ? 'bg-indigo-700' : ''
+                }`
+              },
+                React.createElement(item.icon, { className: "w-6 h-6" }),
+                React.createElement('span', { className: "text-xs mt-1" }, item.label)
+              )
+            )
+          )
+        );
+      };
+
+      // Main App Layout
       if (!currentUser) {
-        return React.createElement(LoginPage, {
-          users, setCurrentUser, language, setLanguage, t
-        });
+        return React.createElement(LoginPage);
       }
 
       return React.createElement('div', { className: "min-h-screen bg-gray-100" },
-        React.createElement(Sidebar, { currentPage, setCurrentPage, language, setLanguage, currentUser, setCurrentUser, t, sidebarOpen, setSidebarOpen, isMobile }),
-        React.createElement('div', { className: `${isMobile ? '' : 'ml-64'} transition-all` },
-          React.createElement(Header, { currentUser, setSidebarOpen, t, isMobile }),
-          React.createElement('main', { className: "transition-all" },
-            currentPage === 'dashboard' && React.createElement(Dashboard, { products, sales, purchases, expenses, t, isMobile, language, setCurrentPage }),
-            currentPage === 'inventory' && React.createElement(InventoryPage, { products, setProducts, t, isMobile, language }),
-            currentPage === 'purchases' && React.createElement(PurchasesPage, { products, setProducts, purchases, setPurchases, currentUser, t, isMobile, language }),
-            currentPage === 'sales' && React.createElement(SalesPage, { products, setProducts, sales, setSales, currentUser, t, isMobile, language }),
-            currentPage === 'expenses' && React.createElement(ExpensesPage, { expenses, setExpenses, currentUser, t, isMobile, language }),
-            currentPage === 'reports' && React.createElement(ReportsPage, { products, sales, purchases, expenses, t, isMobile, language }),
-            currentPage === 'users' && !isMobile && React.createElement(UserManagementPage, { users, setUsers, t, language }),
-            currentPage === 'settings' && React.createElement(SettingsPage, { language, setLanguage, currentUser, t, isMobile })
-          )
+        // Header
+        React.createElement('div', { className: "bg-white shadow-sm" },
+          React.createElement('div', { className: "px-6 py-4" },
+            React.createElement('div', { className: "flex justify-between items-center" },
+              React.createElement('h1', { className: "text-2xl font-bold text-gray-800" }, t.businessName),
+              React.createElement('div', { className: "text-sm text-gray-600" },
+                language === 'english' ? `Welcome, ${currentUser.name}` : `Karibu, ${currentUser.name}`
+              )
+            )
+          ),
+          React.createElement(Navigation)
         ),
-        isMobile && React.createElement(MobileBottomNav, { currentPage, setCurrentPage, t })
+
+        // Main Content
+        currentPage === 'dashboard' && React.createElement(Dashboard),
+        currentPage === 'inventory' && React.createElement(InventoryPage),
+        currentPage === 'purchases' && React.createElement(PurchasesPage),
+        currentPage === 'sales' && React.createElement(SalesPage),
+        currentPage === 'settings' && React.createElement(SettingsPage)
       );
     };
 
-    // All component definitions would go here
-    // For brevity, I'll include just the key components
-
-    const LoginPage = ({ users, setCurrentUser, language, setLanguage, t }) => {
-      const [username, setUsername] = useState('');
-      const [password, setPassword] = useState('');
-      const [error, setError] = useState('');
-
-      const handleLogin = () => {
-        const user = users.find(u => u.username === username && u.password === password && u.active);
-        if (user) {
-          setCurrentUser(user);
-          setError('');
-        } else {
-          setError(language === 'english' ? 'Invalid credentials' : 'Jina au neno la siri si sahihi');
-        }
-      };
-
-      return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4" },
-        React.createElement('div', { className: "bg-white rounded-lg shadow-xl p-8 w-full max-w-md" },
-          React.createElement('h1', { className: "text-3xl font-bold text-indigo-600 mb-2 text-center" }, t.businessName),
-          error && React.createElement('div', { className: "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" }, error),
-          React.createElement('input', { type: "text", value: username, onChange: (e) => setUsername(e.target.value), placeholder: t.username, className: "w-full px-4 py-2 mb-4 border rounded-lg" }),
-          React.createElement('input', { type: "password", value: password, onChange: (e) => setPassword(e.target.value), onKeyPress: (e) => e.key === 'Enter' && handleLogin(), placeholder: t.password, className: "w-full px-4 py-2 mb-4 border rounded-lg" }),
-          React.createElement('button', { onClick: handleLogin, className: "w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700" }, t.login),
-          React.createElement('button', { onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'), className: "w-full mt-4 text-sm text-indigo-600" }, language === 'english' ? 'Badilisha kwa Kiswahili' : 'Switch to English')
-        )
-      );
-    };
-
-    // Due to character limits, I need to create placeholder components
-    const Sidebar = () => React.createElement('div', null);
-    const Header = () => React.createElement('div', null);
-    const Dashboard = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "Dashboard"));
-    const InventoryPage = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "Inventory"));
-    const PurchasesPage = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "Purchases"));
-    const SalesPage = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "Sales"));
-    const ExpensesPage = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "Expenses"));
-    const ReportsPage = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "Reports"));
-    const UserManagementPage = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "User Management"));
-    const SettingsPage = () => React.createElement('div', { className: "p-4" }, React.createElement('h2', { className: "text-2xl font-bold" }, "Settings"));
-    const MobileBottomNav = () => React.createElement('div', null);
-
+    // Render the app
     ReactDOM.render(React.createElement(MrCheapSystem), document.getElementById('root'));
   </script>
 </body>
