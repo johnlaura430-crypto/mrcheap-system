@@ -13,6 +13,27 @@
 </head>
 <body>
   <div id="root"></div>
+// Add this right after your useState import
+const fixRoutingOnRefresh = () => {
+  // If we're not at the root, redirect to root
+  if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+    window.history.replaceState(null, null, window.location.origin);
+    return 'dashboard';
+  }
+  
+  // Try to get page from URL
+  const page = window.location.pathname.substring(1) || 
+               window.location.hash.substring(1);
+  return page || 'dashboard';
+};
+
+// Then in your component:
+const MrCheapSystem = () => {
+  const [currentPage, setCurrentPage] = useState(fixRoutingOnRefresh());
+  
+  // Rest of your code...
+};
+
   
   <script type="text/babel">
     // Use React and ReactDOM from global scope
@@ -2815,15 +2836,5 @@
     ReactDOM.render(React.createElement(MrCheapSystem), document.getElementById('root'));
   </script>
 
-<script>
-  // Handle page refresh for single-page applications
-  window.addEventListener('load', function() {
-    // If the URL has a path beyond just the domain, redirect to root
-    if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
-      window.history.replaceState(null, null, '/');
-    }
-  });
-</script>
-  
 </body>
 </html>
