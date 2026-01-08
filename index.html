@@ -3,2764 +3,413 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MrCheap System</title>
+  <title>MrCheap Business Management System</title>
+  <!-- Load React and Babel -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Load Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load Lucide React Icons -->
+  <script src="https://unpkg.com/lucide-react@latest"></script>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-import React, { useState, useEffect } from 'react';
-import { Package, ShoppingCart, DollarSign, TrendingUp, Users, FileText, Settings, Menu, X, Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
-
-const MrCheapSystem = () => {
-  const [currentPage, setCurrentPage] = useState('dashboard');
-  const [language, setLanguage] = useState('english');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [currentUser, setCurrentUser] = useState(null);
-
-  // Data states - using in-memory storage with localStorage backup
-  const [users, setUsers] = useState([
-    {
-      id: '1',
-      username: 'admin',
-      password: 'admin123',
-      role: 'admin',
-      name: 'Administrator',
-      active: true
-    }
-  ]);
-
-  const [products, setProducts] = useState([
-    { id: '1', name: 'Electric Kettle', quantity: 25, buyPrice: 15000, sellPrice: 25000, category: 'Kitchen' },
-    { id: '2', name: 'Multicooker', quantity: 15, buyPrice: 45000, sellPrice: 75000, category: 'Kitchen' },
-    { id: '3', name: 'Pressure Cooker', quantity: 8, buyPrice: 35000, sellPrice: 55000, category: 'Kitchen' },
-    { id: '4', name: 'Phone Charger', quantity: 50, buyPrice: 3000, sellPrice: 5000, category: 'Electronics' },
-    { id: '5', name: 'Standing Fan', quantity: 12, buyPrice: 25000, sellPrice: 40000, category: 'Appliances' }
-  ]);
-
-  const [sales, setSales] = useState([]);
-  const [purchases, setPurchases] = useState([]);
-  const [expenses, setExpenses] = useState([]);
-
-  // Load data from localStorage on mount
-  useEffect(() => {
-    const savedData = localStorage.getItem('mrcheap_data');
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData);
-        if (data.users) setUsers(data.users);
-        if (data.products) setProducts(data.products);
-        if (data.sales) setSales(data.sales);
-        if (data.purchases) setPurchases(data.purchases);
-        if (data.expenses) setExpenses(data.expenses);
-      } catch (error) {
-        console.error('Error loading data:', error);
-      }
-    }
-  }, []);
-
-  // Save data to localStorage whenever it changes
-  useEffect(() => {
-    const data = {
-      users,
-      products,
-      sales,
-      purchases,
-      expenses
-    };
-    localStorage.setItem('mrcheap_data', JSON.stringify(data));
-  }, [users, products, sales, purchases, expenses]);
-
-  // Translation object
-  const translations = {
-    english: {
-      dashboard: 'Dashboard',
-      inventory: 'Inventory',
-      purchases: 'Purchases',
-      sales: 'Sales',
-      expenses: 'Expenses',
-      reports: 'Reports',
-      users: 'User Management',
-      settings: 'Settings',
-      totalSales: 'Total Sales',
-      totalPurchases: 'Total Purchases',
-      currentStock: 'Current Stock Value',
-      profit: 'Net Profit',
-      lowStock: 'Low Stock Alerts',
-      recentSales: 'Recent Sales',
-      topProducts: 'Top Selling Products',
-      logout: 'Logout',
-      login: 'Login',
-      username: 'Username',
-      password: 'Password',
-      businessName: 'MrCheap Electronics',
-      currency: 'TZS'
-    },
-    swahili: {
-      dashboard: 'Dashibodi',
-      inventory: 'Hifadhi',
-      purchases: 'Manunuzi',
-      sales: 'Mauzo',
-      expenses: 'Matumizi',
-      reports: 'Ripoti',
-      users: 'Usimamizi wa Watumiaji',
-      settings: 'Mipangilio',
-      totalSales: 'Jumla ya Mauzo',
-      totalPurchases: 'Jumla ya Manunuzi',
-      currentStock: 'Thamani ya Bidhaa',
-      profit: 'Faida',
-      lowStock: 'Bidhaa Zinazokwisha',
-      recentSales: 'Mauzo ya Karibuni',
-      topProducts: 'Bidhaa Zinazouzwa Zaidi',
-      logout: 'Ondoka',
-      login: 'Ingia',
-      username: 'Jina la Mtumiaji',
-      password: 'Neno la Siri',
-      businessName: 'MrCheap Electronics',
-      currency: 'TZS'
-    }
-  };
-
-  const t = translations[language];
-
-  // Login Component
-  const LoginPage = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-
-    const handleLogin = () => {
-      const user = users.find(u => u.username === username && u.password === password && u.active);
-      
-      if (user) {
-        setCurrentUser(user);
-        setError('');
-      } else {
-        setError(language === 'english' ? 'Invalid credentials or user disabled' : 'Jina au neno la siri si sahihi');
-      }
-    };
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-indigo-600 mb-2">{t.businessName}</h1>
-            <p className="text-gray-600">{t.login}</p>
-          </div>
-          
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
-            </div>
-          )}
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t.username}</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                placeholder={language === 'english' ? 'Enter username' : 'Weka jina la mtumiaji'}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t.password}</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                placeholder={language === 'english' ? 'Enter password' : 'Weka neno la siri'}
-              />
-            </div>
-
-            <button
-              onClick={handleLogin}
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              {t.login}
-            </button>
-
-            <div className="text-center text-sm text-gray-600 mt-4">
-              {language === 'english' ? 'Default: admin / admin123' : 'Chaguo-msingi: admin / admin123'}
-            </div>
-
-            <button
-              onClick={() => setLanguage(language === 'english' ? 'swahili' : 'english')}
-              className="w-full mt-4 text-sm text-indigo-600 hover:text-indigo-800"
-            >
-              {language === 'english' ? 'Badilisha kwa Kiswahili' : 'Switch to English'}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Dashboard Component
-  const Dashboard = () => {
-    const formatCurrency = (amount) => {
-      return `${t.currency} ${amount.toLocaleString()}`;
-    };
-
-    const totalSales = sales.reduce((sum, sale) => sum + (sale.total || 0), 0);
-    const totalPurchases = purchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
-    const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
-    const stockValue = products.reduce((sum, product) => sum + (product.quantity * product.buyPrice), 0);
-    const profit = totalSales - totalPurchases - totalExpenses;
-
-    return (
-      <div className="p-6">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">{t.dashboard}</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-100 text-sm">{t.totalSales}</p>
-                <p className="text-2xl font-bold mt-2">{formatCurrency(totalSales)}</p>
-              </div>
-              <ShoppingCart className="w-12 h-12 text-green-200" />
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100 text-sm">{t.totalPurchases}</p>
-                <p className="text-2xl font-bold mt-2">{formatCurrency(totalPurchases)}</p>
-              </div>
-              <Package className="w-12 h-12 text-blue-200" />
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100 text-sm">{t.currentStock}</p>
-                <p className="text-2xl font-bold mt-2">{formatCurrency(stockValue)}</p>
-              </div>
-              <DollarSign className="w-12 h-12 text-purple-200" />
-            </div>
-          </div>
-
-          <div className={`bg-gradient-to-br ${profit >= 0 ? 'from-emerald-400 to-emerald-600' : 'from-red-400 to-red-600'} rounded-lg shadow-lg p-6 text-white`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white text-sm">{t.profit}</p>
-                <p className="text-2xl font-bold mt-2">{formatCurrency(profit)}</p>
-              </div>
-              <TrendingUp className="w-12 h-12 text-white opacity-80" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">{language === 'english' ? 'Quick Actions' : 'Vitendo vya Haraka'}</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button
-              onClick={() => setCurrentPage('sales')}
-              className="bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-colors"
-            >
-              <ShoppingCart className="w-6 h-6 mx-auto mb-2" />
-              <span className="text-sm">{language === 'english' ? 'New Sale' : 'Uza'}</span>
-            </button>
-            <button
-              onClick={() => setCurrentPage('purchases')}
-              className="bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-colors"
-            >
-              <Package className="w-6 h-6 mx-auto mb-2" />
-              <span className="text-sm">{language === 'english' ? 'New Purchase' : 'Nunua'}</span>
-            </button>
-            <button
-              onClick={() => setCurrentPage('inventory')}
-              className="bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-colors"
-            >
-              <Package className="w-6 h-6 mx-auto mb-2" />
-              <span className="text-sm">{language === 'english' ? 'View Stock' : 'Tazama Bidhaa'}</span>
-            </button>
-            <button
-              onClick={() => setCurrentPage('reports')}
-              className="bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition-colors"
-            >
-              <FileText className="w-6 h-6 mx-auto mb-2" />
-              <span className="text-sm">{language === 'english' ? 'Reports' : 'Ripoti'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Inventory Management Component
-  const InventoryPage = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [editingProduct, setEditingProduct] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [formData, setFormData] = useState({
-      name: '',
-      quantity: '',
-      buyPrice: '',
-      sellPrice: '',
-      category: ''
-    });
-
-    const formatCurrency = (amount) => {
-      return `${t.currency} ${amount.toLocaleString()}`;
-    };
-
-    const filteredProducts = products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const handleOpenModal = (product = null) => {
-      if (product) {
-        setEditingProduct(product);
-        setFormData({
-          name: product.name,
-          quantity: product.quantity,
-          buyPrice: product.buyPrice,
-          sellPrice: product.sellPrice,
-          category: product.category
-        });
-      } else {
-        setEditingProduct(null);
-        setFormData({
-          name: '',
-          quantity: '',
-          buyPrice: '',
-          sellPrice: '',
-          category: ''
-        });
-      }
-      setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-      setShowModal(false);
-      setEditingProduct(null);
-      setFormData({
-        name: '',
-        quantity: '',
-        buyPrice: '',
-        sellPrice: '',
-        category: ''
-      });
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      
-      if (editingProduct) {
-        // Update existing product
-        setProducts(products.map(p => 
-          p.id === editingProduct.id 
-            ? { ...p, ...formData, quantity: Number(formData.quantity), buyPrice: Number(formData.buyPrice), sellPrice: Number(formData.sellPrice) }
-            : p
-        ));
-      } else {
-        // Add new product
-        const newProduct = {
-          id: Date.now().toString(),
-          ...formData,
-          quantity: Number(formData.quantity),
-          buyPrice: Number(formData.buyPrice),
-          sellPrice: Number(formData.sellPrice)
-        };
-        setProducts([...products, newProduct]);
-      }
-      
-      handleCloseModal();
-    };
-
-    const handleDelete = (productId) => {
-      if (window.confirm(language === 'english' ? 'Are you sure you want to delete this product?' : 'Je, una uhakika unataka kufuta bidhaa hii?')) {
-        setProducts(products.filter(p => p.id !== productId));
-      }
-    };
-
-    return (
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">{t.inventory}</h2>
-          <button
-            onClick={() => handleOpenModal()}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            {language === 'english' ? 'Add Product' : 'Ongeza Bidhaa'}
-          </button>
-        </div>
-
-        {/* Search Bar */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder={language === 'english' ? 'Search products...' : 'Tafuta bidhaa...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-        </div>
-
-        {/* Products Table */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-indigo-600 text-white">
-                <tr>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Product Name' : 'Jina la Bidhaa'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Category' : 'Aina'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Quantity' : 'Idadi'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Buy Price' : 'Bei ya Kununua'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Sell Price' : 'Bei ya Kuuza'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Stock Value' : 'Thamani'}</th>
-                  <th className="px-4 py-3 text-center">{language === 'english' ? 'Actions' : 'Vitendo'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((product, index) => (
-                  <tr key={product.id} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-indigo-50`}>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center">
-                        <span className="font-medium">{product.name}</span>
-                        {product.quantity < 10 && (
-                          <span className="ml-2 px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full">
-                            {language === 'english' ? 'Low Stock' : 'Pungufu'}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">{product.category}</td>
-                    <td className="px-4 py-3 text-right font-semibold">{product.quantity}</td>
-                    <td className="px-4 py-3 text-right">{formatCurrency(product.buyPrice)}</td>
-                    <td className="px-4 py-3 text-right">{formatCurrency(product.sellPrice)}</td>
-                    <td className="px-4 py-3 text-right font-semibold">{formatCurrency(product.quantity * product.buyPrice)}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex justify-center space-x-2">
-                        <button
-                          onClick={() => handleOpenModal(product)}
-                          className="text-blue-600 hover:text-blue-800"
-                          title={language === 'english' ? 'Edit' : 'Hariri'}
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="text-red-600 hover:text-red-800"
-                          title={language === 'english' ? 'Delete' : 'Futa'}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              {language === 'english' ? 'No products found' : 'Hakuna bidhaa'}
-            </div>
-          )}
-        </div>
-
-        {/* Add/Edit Modal */}
-        {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-              <div className="bg-indigo-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center">
-                <h3 className="text-xl font-bold">
-                  {editingProduct 
-                    ? (language === 'english' ? 'Edit Product' : 'Hariri Bidhaa')
-                    : (language === 'english' ? 'Add New Product' : 'Ongeza Bidhaa Mpya')
-                  }
-                </h3>
-                <button onClick={handleCloseModal} className="text-white hover:text-gray-200">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Product Name' : 'Jina la Bidhaa'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Category' : 'Aina'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Quantity' : 'Idadi'}
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.quantity}
-                    onChange={(e) => setFormData({...formData, quantity: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Buy Price (TZS)' : 'Bei ya Kununua (TZS)'}
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.buyPrice}
-                    onChange={(e) => setFormData({...formData, buyPrice: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Sell Price (TZS)' : 'Bei ya Kuuza (TZS)'}
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.sellPrice}
-                    onChange={(e) => setFormData({...formData, sellPrice: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-                  >
-                    {editingProduct 
-                      ? (language === 'english' ? 'Update' : 'Sasisha')
-                      : (language === 'english' ? 'Add Product' : 'Ongeza')
-                    }
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
-                  >
-                    {language === 'english' ? 'Cancel' : 'Ghairi'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Purchases Management Component
-  const PurchasesPage = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [formData, setFormData] = useState({
-      productId: '',
-      quantity: '',
-      pricePerUnit: '',
-      supplier: '',
-      date: new Date().toISOString().split('T')[0]
-    });
-
-    const formatCurrency = (amount) => {
-      return `${t.currency} ${amount.toLocaleString()}`;
-    };
-
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-GB');
-    };
-
-    const filteredPurchases = purchases.filter(purchase => {
-      const product = products.find(p => p.id === purchase.productId);
-      const productName = product ? product.name : '';
-      return productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-             purchase.supplier.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-
-    const handleOpenModal = () => {
-      setFormData({
-        productId: '',
-        quantity: '',
-        pricePerUnit: '',
-        supplier: '',
-        date: new Date().toISOString().split('T')[0]
-      });
-      setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-      setShowModal(false);
-      setFormData({
-        productId: '',
-        quantity: '',
-        pricePerUnit: '',
-        supplier: '',
-        date: new Date().toISOString().split('T')[0]
-      });
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      
-      const quantity = Number(formData.quantity);
-      const pricePerUnit = Number(formData.pricePerUnit);
-      const total = quantity * pricePerUnit;
-
-      // Create new purchase record
-      const newPurchase = {
-        id: Date.now().toString(),
-        productId: formData.productId,
-        quantity: quantity,
-        pricePerUnit: pricePerUnit,
-        total: total,
-        supplier: formData.supplier,
-        date: formData.date,
-        createdBy: currentUser.name
+    // Create Lucide icons as React components
+    const createLucideIcon = (iconName) => {
+      return function Icon(props) {
+        return React.createElement('svg', {
+          ...props,
+          width: props.size || '24',
+          height: props.size || '24',
+          viewBox: '0 0 24 24',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: '2',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round'
+        }, React.createElement(iconName));
       };
-
-      setPurchases([newPurchase, ...purchases]);
-
-      // Update product quantity in inventory
-      setProducts(products.map(p => 
-        p.id === formData.productId 
-          ? { ...p, quantity: p.quantity + quantity }
-          : p
-      ));
-
-      handleCloseModal();
     };
 
-    const handleDelete = (purchaseId) => {
-      if (window.confirm(language === 'english' ? 'Are you sure you want to delete this purchase record?' : 'Je, una uhakika unataka kufuta rekodi hii?')) {
-        const purchase = purchases.find(p => p.id === purchaseId);
-        
-        // Reduce product quantity back
-        setProducts(products.map(p => 
-          p.id === purchase.productId 
-            ? { ...p, quantity: Math.max(0, p.quantity - purchase.quantity) }
-            : p
-        ));
-
-        setPurchases(purchases.filter(p => p.id !== purchaseId));
-      }
+    // Define Lucide icons we need
+    const LucideIcons = {
+      Package: createLucideIcon('rect'),
+      ShoppingCart: createLucideIcon('shopping-cart'),
+      DollarSign: createLucideIcon('dollar-sign'),
+      TrendingUp: createLucideIcon('trending-up'),
+      Users: createLucideIcon('users'),
+      FileText: createLucideIcon('file-text'),
+      Settings: createLucideIcon('settings'),
+      Menu: createLucideIcon('menu'),
+      X: createLucideIcon('x'),
+      Plus: createLucideIcon('plus'),
+      Edit: createLucideIcon('edit'),
+      Trash2: createLucideIcon('trash-2'),
+      Eye: createLucideIcon('eye'),
+      EyeOff: createLucideIcon('eye-off')
     };
 
-    return (
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">{t.purchases}</h2>
-          <button
-            onClick={handleOpenModal}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            {language === 'english' ? 'New Purchase' : 'Nunua Bidhaa'}
-          </button>
-        </div>
-
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-blue-100 text-sm">{language === 'english' ? 'Total Purchases' : 'Jumla ya Manunuzi'}</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(purchases.reduce((sum, p) => sum + p.total, 0))}
-            </p>
-          </div>
-          <div className="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-indigo-100 text-sm">{language === 'english' ? 'Total Transactions' : 'Idadi ya Manunuzi'}</p>
-            <p className="text-2xl font-bold mt-2">{purchases.length}</p>
-          </div>
-          <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-purple-100 text-sm">{language === 'english' ? 'This Month' : 'Mwezi Huu'}</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(purchases.filter(p => {
-                const purchaseDate = new Date(p.date);
-                const now = new Date();
-                return purchaseDate.getMonth() === now.getMonth() && 
-                       purchaseDate.getFullYear() === now.getFullYear();
-              }).reduce((sum, p) => sum + p.total, 0))}
-            </p>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder={language === 'english' ? 'Search purchases...' : 'Tafuta manunuzi...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-
-        {/* Purchases Table */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-blue-600 text-white">
-                <tr>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Date' : 'Tarehe'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Product' : 'Bidhaa'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Supplier' : 'Muuzaji'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Quantity' : 'Idadi'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Price/Unit' : 'Bei/Kipande'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Total' : 'Jumla'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Added By' : 'Aliongeza'}</th>
-                  <th className="px-4 py-3 text-center">{language === 'english' ? 'Actions' : 'Vitendo'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredPurchases.map((purchase, index) => {
-                  const product = products.find(p => p.id === purchase.productId);
-                  return (
-                    <tr key={purchase.id} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50`}>
-                      <td className="px-4 py-3">{formatDate(purchase.date)}</td>
-                      <td className="px-4 py-3 font-medium">{product ? product.name : 'N/A'}</td>
-                      <td className="px-4 py-3">{purchase.supplier}</td>
-                      <td className="px-4 py-3 text-right font-semibold">{purchase.quantity}</td>
-                      <td className="px-4 py-3 text-right">{formatCurrency(purchase.pricePerUnit)}</td>
-                      <td className="px-4 py-3 text-right font-bold text-blue-600">{formatCurrency(purchase.total)}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{purchase.createdBy}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-center">
-                          <button
-                            onClick={() => handleDelete(purchase.id)}
-                            className="text-red-600 hover:text-red-800"
-                            title={language === 'english' ? 'Delete' : 'Futa'}
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredPurchases.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              {language === 'english' ? 'No purchases recorded yet' : 'Hakuna manunuzi bado'}
-            </div>
-          )}
-        </div>
-
-        {/* Add Purchase Modal */}
-        {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-              <div className="bg-blue-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center">
-                <h3 className="text-xl font-bold">
-                  {language === 'english' ? 'Record New Purchase' : 'Rekodi Ununuzi Mpya'}
-                </h3>
-                <button onClick={handleCloseModal} className="text-white hover:text-gray-200">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Select Product' : 'Chagua Bidhaa'}
-                  </label>
-                  <select
-                    required
-                    value={formData.productId}
-                    onChange={(e) => {
-                      const selectedProduct = products.find(p => p.id === e.target.value);
-                      setFormData({
-                        ...formData, 
-                        productId: e.target.value,
-                        pricePerUnit: selectedProduct ? selectedProduct.buyPrice : ''
-                      });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">{language === 'english' ? 'Choose a product...' : 'Chagua bidhaa...'}</option>
-                    {products.map(product => (
-                      <option key={product.id} value={product.id}>
-                        {product.name} - {product.category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Supplier Name' : 'Jina la Muuzaji'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.supplier}
-                    onChange={(e) => setFormData({...formData, supplier: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder={language === 'english' ? 'Enter supplier name' : 'Weka jina la muuzaji'}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Quantity' : 'Idadi'}
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min="1"
-                    value={formData.quantity}
-                    onChange={(e) => setFormData({...formData, quantity: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Price per Unit (TZS)' : 'Bei kwa Kipande (TZS)'}
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.pricePerUnit}
-                    onChange={(e) => setFormData({...formData, pricePerUnit: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Purchase Date' : 'Tarehe ya Ununuzi'}
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-
-                {formData.quantity && formData.pricePerUnit && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-sm text-gray-600">{language === 'english' ? 'Total Amount:' : 'Jumla:'}</p>
-                    <p className="text-2xl font-bold text-blue-600">
-                      {formatCurrency(Number(formData.quantity) * Number(formData.pricePerUnit))}
-                    </p>
-                  </div>
-                )}
-
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    {language === 'english' ? 'Record Purchase' : 'Rekodi'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
-                  >
-                    {language === 'english' ? 'Cancel' : 'Ghairi'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Sales Management Component
-  const SalesPage = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [cartItems, setCartItems] = useState([]);
-    const [formData, setFormData] = useState({
-      customerName: '',
-      date: new Date().toISOString().split('T')[0]
-    });
-
-    const formatCurrency = (amount) => {
-      return `${t.currency} ${amount.toLocaleString()}`;
-    };
-
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-GB');
-    };
-
-    const filteredSales = sales.filter(sale => {
-      const customer = sale.customerName || '';
-      return customer.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-
-    const handleOpenModal = () => {
-      setCartItems([]);
-      setFormData({
-        customerName: '',
-        date: new Date().toISOString().split('T')[0]
-      });
-      setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-      setShowModal(false);
-      setCartItems([]);
-      setFormData({
-        customerName: '',
-        date: new Date().toISOString().split('T')[0]
-      });
-    };
-
-    const addToCart = (productId) => {
-      const product = products.find(p => p.id === productId);
-      if (!product) return;
-
-      const existingItem = cartItems.find(item => item.productId === productId);
-      if (existingItem) {
-        setCartItems(cartItems.map(item =>
-          item.productId === productId && item.quantity < product.quantity
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        ));
-      } else {
-        setCartItems([...cartItems, {
-          productId: productId,
-          productName: product.name,
-          quantity: 1,
-          pricePerUnit: product.sellPrice,
-          maxQuantity: product.quantity
-        }]);
-      }
-    };
-
-    const updateCartQuantity = (productId, newQuantity) => {
-      const item = cartItems.find(i => i.productId === productId);
-      if (newQuantity <= 0) {
-        removeFromCart(productId);
-      } else if (newQuantity <= item.maxQuantity) {
-        setCartItems(cartItems.map(item =>
-          item.productId === productId
-            ? { ...item, quantity: newQuantity }
-            : item
-        ));
-      }
-    };
-
-    const removeFromCart = (productId) => {
-      setCartItems(cartItems.filter(item => item.productId !== productId));
-    };
-
-    const calculateTotal = () => {
-      return cartItems.reduce((sum, item) => sum + (item.quantity * item.pricePerUnit), 0);
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      
-      if (cartItems.length === 0) {
-        alert(language === 'english' ? 'Please add items to cart' : 'Tafadhali ongeza bidhaa kwenye cart');
-        return;
-      }
-
-      const total = calculateTotal();
-
-      // Create new sale record
-      const newSale = {
-        id: Date.now().toString(),
-        customerName: formData.customerName || 'Walk-in Customer',
-        items: cartItems,
-        total: total,
-        date: formData.date,
-        createdBy: currentUser.name
-      };
-
-      setSales([newSale, ...sales]);
-
-      // Update product quantities in inventory
-      cartItems.forEach(item => {
-        setProducts(products.map(p =>
-          p.id === item.productId
-            ? { ...p, quantity: p.quantity - item.quantity }
-            : p
-        ));
-      });
-
-      handleCloseModal();
-    };
-
-    const handleDelete = (saleId) => {
-      if (window.confirm(language === 'english' ? 'Are you sure you want to delete this sale record?' : 'Je, una uhakika unataka kufuta rekodi hii?')) {
-        const sale = sales.find(s => s.id === saleId);
-        
-        // Return product quantities back to inventory
-        sale.items.forEach(item => {
-          setProducts(products.map(p =>
-            p.id === item.productId
-              ? { ...p, quantity: p.quantity + item.quantity }
-              : p
-          ));
-        });
-
-        setSales(sales.filter(s => s.id !== saleId));
-      }
-    };
-
-    return (
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">{t.sales}</h2>
-          <button
-            onClick={handleOpenModal}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            {language === 'english' ? 'New Sale' : 'Uza Bidhaa'}
-          </button>
-        </div>
-
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-green-100 text-sm">{language === 'english' ? 'Total Sales' : 'Jumla ya Mauzo'}</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(sales.reduce((sum, s) => sum + s.total, 0))}
-            </p>
-          </div>
-          <div className="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-emerald-100 text-sm">{language === 'english' ? 'Total Transactions' : 'Idadi ya Mauzo'}</p>
-            <p className="text-2xl font-bold mt-2">{sales.length}</p>
-          </div>
-          <div className="bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-teal-100 text-sm">{language === 'english' ? 'This Month' : 'Mwezi Huu'}</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(sales.filter(s => {
-                const saleDate = new Date(s.date);
-                const now = new Date();
-                return saleDate.getMonth() === now.getMonth() && 
-                       saleDate.getFullYear() === now.getFullYear();
-              }).reduce((sum, s) => sum + s.total, 0))}
-            </p>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder={language === 'english' ? 'Search sales by customer...' : 'Tafuta mauzo kwa jina la mteja...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-          />
-        </div>
-
-        {/* Sales Table */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-green-600 text-white">
-                <tr>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Date' : 'Tarehe'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Customer' : 'Mteja'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Items' : 'Bidhaa'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Total Amount' : 'Jumla'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Sold By' : 'Aliuza'}</th>
-                  <th className="px-4 py-3 text-center">{language === 'english' ? 'Actions' : 'Vitendo'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredSales.map((sale, index) => (
-                  <tr key={sale.id} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-green-50`}>
-                    <td className="px-4 py-3">{formatDate(sale.date)}</td>
-                    <td className="px-4 py-3 font-medium">{sale.customerName}</td>
-                    <td className="px-4 py-3">
-                      <div className="text-sm">
-                        {sale.items.map((item, i) => (
-                          <div key={i}>
-                            {item.productName} x{item.quantity}
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-right font-bold text-green-600">{formatCurrency(sale.total)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{sale.createdBy}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex justify-center">
-                        <button
-                          onClick={() => handleDelete(sale.id)}
-                          className="text-red-600 hover:text-red-800"
-                          title={language === 'english' ? 'Delete' : 'Futa'}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredSales.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              {language === 'english' ? 'No sales recorded yet' : 'Hakuna mauzo bado'}
-            </div>
-          )}
-        </div>
-
-        {/* Add Sale Modal */}
-        {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-              <div className="bg-green-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center sticky top-0">
-                <h3 className="text-xl font-bold">
-                  {language === 'english' ? 'New Sale' : 'Uza Bidhaa'}
-                </h3>
-                <button onClick={handleCloseModal} className="text-white hover:text-gray-200">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === 'english' ? 'Customer Name (Optional)' : 'Jina la Mteja (Si Lazima)'}
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.customerName}
-                      onChange={(e) => setFormData({...formData, customerName: e.target.value})}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      placeholder={language === 'english' ? 'Walk-in customer' : 'Mteja wa kawaida'}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === 'english' ? 'Sale Date' : 'Tarehe ya Mauzo'}
-                    </label>
-                    <input
-                      type="date"
-                      required
-                      value={formData.date}
-                      onChange={(e) => setFormData({...formData, date: e.target.value})}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-
-                {/* Product Selection */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Add Products to Cart' : 'Ongeza Bidhaa kwenye Cart'}
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-3">
-                    {products.filter(p => p.quantity > 0).map(product => (
-                      <button
-                        key={product.id}
-                        type="button"
-                        onClick={() => addToCart(product.id)}
-                        className="text-left p-3 border border-gray-300 rounded-lg hover:bg-green-50 hover:border-green-500 transition-colors"
-                      >
-                        <div className="font-medium">{product.name}</div>
-                        <div className="text-sm text-gray-600">
-                          {formatCurrency(product.sellPrice)} | {language === 'english' ? 'Stock' : 'Idadi'}: {product.quantity}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Cart */}
-                {cartItems.length > 0 && (
-                  <div className="mb-6 border-t pt-6">
-                    <h4 className="font-bold text-lg mb-4">{language === 'english' ? 'Cart' : 'Bidhaa Zilizochaguliwa'}</h4>
-                    <div className="space-y-3">
-                      {cartItems.map(item => (
-                        <div key={item.productId} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                          <div className="flex-1">
-                            <div className="font-medium">{item.productName}</div>
-                            <div className="text-sm text-gray-600">{formatCurrency(item.pricePerUnit)} each</div>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <button
-                              type="button"
-                              onClick={() => updateCartQuantity(item.productId, item.quantity - 1)}
-                              className="w-8 h-8 bg-gray-300 rounded hover:bg-gray-400"
-                            >
-                              -
-                            </button>
-                            <span className="font-bold w-12 text-center">{item.quantity}</span>
-                            <button
-                              type="button"
-                              onClick={() => updateCartQuantity(item.productId, item.quantity + 1)}
-                              className="w-8 h-8 bg-gray-300 rounded hover:bg-gray-400"
-                              disabled={item.quantity >= item.maxQuantity}
-                            >
-                              +
-                            </button>
-                            <span className="font-bold text-green-600 w-32 text-right">
-                              {formatCurrency(item.quantity * item.pricePerUnit)}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => removeFromCart(item.productId)}
-                              className="text-red-600 hover:text-red-800"
-                            >
-                              <Trash2 className="w-5 h-5" />
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-lg font-medium">{language === 'english' ? 'Total Amount:' : 'Jumla ya Malipo:'}</span>
-                        <span className="text-3xl font-bold text-green-600">
-                          {formatCurrency(calculateTotal())}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-bold"
-                  >
-                    {language === 'english' ? 'Complete Sale' : 'Maliza Mauzo'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition-colors"
-                  >
-                    {language === 'english' ? 'Cancel' : 'Ghairi'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Expenses Management Component
-  const ExpensesPage = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [editingExpense, setEditingExpense] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [formData, setFormData] = useState({
-      description: '',
-      amount: '',
-      category: '',
-      date: new Date().toISOString().split('T')[0]
-    });
-
-    const formatCurrency = (amount) => {
-      return `${t.currency} ${amount.toLocaleString()}`;
-    };
-
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-GB');
-    };
-
-    const filteredExpenses = expenses.filter(expense =>
-      expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      expense.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const handleOpenModal = (expense = null) => {
-      if (expense) {
-        setEditingExpense(expense);
-        setFormData({
-          description: expense.description,
-          amount: expense.amount,
-          category: expense.category,
-          date: expense.date
-        });
-      } else {
-        setEditingExpense(null);
-        setFormData({
-          description: '',
-          amount: '',
-          category: '',
-          date: new Date().toISOString().split('T')[0]
-        });
-      }
-      setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-      setShowModal(false);
-      setEditingExpense(null);
-      setFormData({
-        description: '',
-        amount: '',
-        category: '',
-        date: new Date().toISOString().split('T')[0]
-      });
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      
-      if (editingExpense) {
-        setExpenses(expenses.map(exp =>
-          exp.id === editingExpense.id
-            ? { ...exp, ...formData, amount: Number(formData.amount) }
-            : exp
-        ));
-      } else {
-        const newExpense = {
-          id: Date.now().toString(),
-          ...formData,
-          amount: Number(formData.amount),
-          createdBy: currentUser.name
-        };
-        setExpenses([newExpense, ...expenses]);
-      }
-      
-      handleCloseModal();
-    };
-
-    const handleDelete = (expenseId) => {
-      if (window.confirm(language === 'english' ? 'Are you sure you want to delete this expense?' : 'Je, una uhakika unataka kufuta matumizi haya?')) {
-        setExpenses(expenses.filter(exp => exp.id !== expenseId));
-      }
-    };
-
-    const expenseCategories = [
-      { en: 'Rent', sw: 'Kodi' },
-      { en: 'Electricity', sw: 'Umeme' },
-      { en: 'Water', sw: 'Maji' },
-      { en: 'Salaries', sw: 'Mishahara' },
-      { en: 'Transport', sw: 'Usafiri' },
-      { en: 'Maintenance', sw: 'Matengenezo' },
-      { en: 'Marketing', sw: 'Matangazo' },
-      { en: 'Other', sw: 'Mengineyo' }
-    ];
-
-    return (
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">{t.expenses}</h2>
-          <button
-            onClick={() => handleOpenModal()}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            {language === 'english' ? 'Add Expense' : 'Ongeza Matumizi'}
-          </button>
-        </div>
-
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-red-100 text-sm">{language === 'english' ? 'Total Expenses' : 'Jumla ya Matumizi'}</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(expenses.reduce((sum, exp) => sum + exp.amount, 0))}
-            </p>
-          </div>
-          <div className="bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-orange-100 text-sm">{language === 'english' ? 'Total Records' : 'Idadi ya Rekodi'}</p>
-            <p className="text-2xl font-bold mt-2">{expenses.length}</p>
-          </div>
-          <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-amber-100 text-sm">{language === 'english' ? 'This Month' : 'Mwezi Huu'}</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(expenses.filter(exp => {
-                const expenseDate = new Date(exp.date);
-                const now = new Date();
-                return expenseDate.getMonth() === now.getMonth() && 
-                       expenseDate.getFullYear() === now.getFullYear();
-              }).reduce((sum, exp) => sum + exp.amount, 0))}
-            </p>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder={language === 'english' ? 'Search expenses...' : 'Tafuta matumizi...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          />
-        </div>
-
-        {/* Expenses Table */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-red-600 text-white">
-                <tr>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Date' : 'Tarehe'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Description' : 'Maelezo'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Category' : 'Aina'}</th>
-                  <th className="px-4 py-3 text-right">{language === 'english' ? 'Amount' : 'Kiasi'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Added By' : 'Aliongeza'}</th>
-                  <th className="px-4 py-3 text-center">{language === 'english' ? 'Actions' : 'Vitendo'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredExpenses.map((expense, index) => (
-                  <tr key={expense.id} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-red-50`}>
-                    <td className="px-4 py-3">{formatDate(expense.date)}</td>
-                    <td className="px-4 py-3 font-medium">{expense.description}</td>
-                    <td className="px-4 py-3">
-                      <span className="px-2 py-1 bg-red-100 text-red-800 rounded-full text-sm">
-                        {expense.category}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-right font-bold text-red-600">{formatCurrency(expense.amount)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{expense.createdBy}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex justify-center space-x-2">
-                        <button
-                          onClick={() => handleOpenModal(expense)}
-                          className="text-blue-600 hover:text-blue-800"
-                          title={language === 'english' ? 'Edit' : 'Hariri'}
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(expense.id)}
-                          className="text-red-600 hover:text-red-800"
-                          title={language === 'english' ? 'Delete' : 'Futa'}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredExpenses.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              {language === 'english' ? 'No expenses recorded yet' : 'Hakuna matumizi bado'}
-            </div>
-          )}
-        </div>
-
-        {/* Add/Edit Modal */}
-        {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-              <div className="bg-red-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center">
-                <h3 className="text-xl font-bold">
-                  {editingExpense
-                    ? (language === 'english' ? 'Edit Expense' : 'Hariri Matumizi')
-                    : (language === 'english' ? 'Add New Expense' : 'Ongeza Matumizi Mapya')
-                  }
-                </h3>
-                <button onClick={handleCloseModal} className="text-white hover:text-gray-200">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Description' : 'Maelezo'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder={language === 'english' ? 'Enter description' : 'Weka maelezo'}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Category' : 'Aina'}
-                  </label>
-                  <select
-                    required
-                    value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  >
-                    <option value="">{language === 'english' ? 'Select category...' : 'Chagua aina...'}</option>
-                    {expenseCategories.map(cat => (
-                      <option key={cat.en} value={language === 'english' ? cat.en : cat.sw}>
-                        {language === 'english' ? cat.en : cat.sw}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Amount (TZS)' : 'Kiasi (TZS)'}
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.amount}
-                    onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Date' : 'Tarehe'}
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    {editingExpense
-                      ? (language === 'english' ? 'Update' : 'Sasisha')
-                      : (language === 'english' ? 'Add Expense' : 'Ongeza')
-                    }
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
-                  >
-                    {language === 'english' ? 'Cancel' : 'Ghairi'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Reports Component
-  const ReportsPage = () => {
-    const [reportType, setReportType] = useState('summary');
-    const [dateFrom, setDateFrom] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0]);
-    const [dateTo, setDateTo] = useState(new Date().toISOString().split('T')[0]);
-
-    const formatCurrency = (amount) => {
-      return `${t.currency} ${amount.toLocaleString()}`;
-    };
-
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-GB');
-    };
-
-    const filterByDate = (items, dateField = 'date') => {
-      return items.filter(item => {
-        const itemDate = new Date(item[dateField]);
-        const from = new Date(dateFrom);
-        const to = new Date(dateTo);
-        return itemDate >= from && itemDate <= to;
-      });
-    };
-
-    const filteredSales = filterByDate(sales);
-    const filteredPurchases = filterByDate(purchases);
-    const filteredExpenses = filterByDate(expenses);
-
-    const totalSales = filteredSales.reduce((sum, s) => sum + s.total, 0);
-    const totalPurchases = filteredPurchases.reduce((sum, p) => sum + p.total, 0);
-    const totalExpenses = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
-    const grossProfit = totalSales - totalPurchases;
-    const netProfit = totalSales - totalPurchases - totalExpenses;
-
-    const printReport = () => {
-      window.print();
-    };
-
-    return (
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">{t.reports}</h2>
-          <button
-            onClick={printReport}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center print:hidden"
-          >
-            <FileText className="w-5 h-5 mr-2" />
-            {language === 'english' ? 'Print Report' : 'Chapa Ripoti'}
-          </button>
-        </div>
-
-        {/* Date Range Filter */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6 print:hidden">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'english' ? 'From Date' : 'Kuanzia'}
-              </label>
-              <input
-                type="date"
-                value={dateFrom}
-                onChange={(e) => setDateFrom(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'english' ? 'To Date' : 'Hadi'}
-              </label>
-              <input
-                type="date"
-                value={dateTo}
-                onChange={(e) => setDateTo(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'english' ? 'Report Type' : 'Aina ya Ripoti'}
-              </label>
-              <select
-                value={reportType}
-                onChange={(e) => setReportType(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              >
-                <option value="summary">{language === 'english' ? 'Summary Report' : 'Ripoti ya Muhtasari'}</option>
-                <option value="sales">{language === 'english' ? 'Sales Report' : 'Ripoti ya Mauzo'}</option>
-                <option value="purchases">{language === 'english' ? 'Purchases Report' : 'Ripoti ya Manunuzi'}</option>
-                <option value="profit">{language === 'english' ? 'Profit & Loss' : 'Faida na Hasara'}</option>
-                <option value="inventory">{language === 'english' ? 'Inventory Report' : 'Ripoti ya Bidhaa'}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Summary Report */}
-        {reportType === 'summary' && (
-          <div>
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                {language === 'english' ? 'Business Summary Report' : 'Ripoti ya Muhtasari wa Biashara'}
-              </h3>
-              <p className="text-gray-600 mb-6">
-                {language === 'english' ? 'Period:' : 'Kipindi:'} {formatDate(dateFrom)} - {formatDate(dateTo)}
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <p className="text-sm text-gray-600 mb-2">{language === 'english' ? 'Total Sales' : 'Jumla ya Mauzo'}</p>
-                  <p className="text-2xl font-bold text-green-600">{formatCurrency(totalSales)}</p>
-                  <p className="text-sm text-gray-500 mt-1">{filteredSales.length} {language === 'english' ? 'transactions' : 'miamala'}</p>
-                </div>
-
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-gray-600 mb-2">{language === 'english' ? 'Total Purchases' : 'Jumla ya Manunuzi'}</p>
-                  <p className="text-2xl font-bold text-blue-600">{formatCurrency(totalPurchases)}</p>
-                  <p className="text-sm text-gray-500 mt-1">{filteredPurchases.length} {language === 'english' ? 'transactions' : 'miamala'}</p>
-                </div>
-
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <p className="text-sm text-gray-600 mb-2">{language === 'english' ? 'Total Expenses' : 'Jumla ya Matumizi'}</p>
-                  <p className="text-2xl font-bold text-red-600">{formatCurrency(totalExpenses)}</p>
-                  <p className="text-sm text-gray-500 mt-1">{filteredExpenses.length} {language === 'english' ? 'records' : 'rekodi'}</p>
-                </div>
-
-                <div className={`${netProfit >= 0 ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'} border rounded-lg p-4`}>
-                  <p className="text-sm text-gray-600 mb-2">{language === 'english' ? 'Net Profit' : 'Faida Halisi'}</p>
-                  <p className={`text-2xl font-bold ${netProfit >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                    {formatCurrency(netProfit)}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {netProfit >= 0 ? (language === 'english' ? 'Profit' : 'Faida') : (language === 'english' ? 'Loss' : 'Hasara')}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Sales Report */}
-        {reportType === 'sales' && (
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="px-6 py-4 bg-green-600 text-white">
-              <h3 className="text-xl font-bold">{language === 'english' ? 'Sales Report' : 'Ripoti ya Mauzo'}</h3>
-              <p className="text-sm opacity-90">{formatDate(dateFrom)} - {formatDate(dateTo)}</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Date' : 'Tarehe'}</th>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Customer' : 'Mteja'}</th>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Items' : 'Bidhaa'}</th>
-                    <th className="px-4 py-3 text-right">{language === 'english' ? 'Amount' : 'Kiasi'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredSales.map((sale, index) => (
-                    <tr key={sale.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-4 py-3">{formatDate(sale.date)}</td>
-                      <td className="px-4 py-3">{sale.customerName}</td>
-                      <td className="px-4 py-3 text-sm">
-                        {sale.items.map((item, i) => (
-                          <div key={i}>{item.productName} x{item.quantity}</div>
-                        ))}
-                      </td>
-                      <td className="px-4 py-3 text-right font-bold">{formatCurrency(sale.total)}</td>
-                    </tr>
-                  ))}
-                  <tr className="bg-green-100 font-bold">
-                    <td colSpan="3" className="px-4 py-3 text-right">{language === 'english' ? 'TOTAL:' : 'JUMLA:'}</td>
-                    <td className="px-4 py-3 text-right text-green-600">{formatCurrency(totalSales)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* Purchases Report */}
-        {reportType === 'purchases' && (
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="px-6 py-4 bg-blue-600 text-white">
-              <h3 className="text-xl font-bold">{language === 'english' ? 'Purchases Report' : 'Ripoti ya Manunuzi'}</h3>
-              <p className="text-sm opacity-90">{formatDate(dateFrom)} - {formatDate(dateTo)}</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Date' : 'Tarehe'}</th>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Product' : 'Bidhaa'}</th>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Supplier' : 'Muuzaji'}</th>
-                    <th className="px-4 py-3 text-right">{language === 'english' ? 'Quantity' : 'Idadi'}</th>
-                    <th className="px-4 py-3 text-right">{language === 'english' ? 'Amount' : 'Kiasi'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredPurchases.map((purchase, index) => {
-                    const product = products.find(p => p.id === purchase.productId);
-                    return (
-                      <tr key={purchase.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                        <td className="px-4 py-3">{formatDate(purchase.date)}</td>
-                        <td className="px-4 py-3">{product ? product.name : 'N/A'}</td>
-                        <td className="px-4 py-3">{purchase.supplier}</td>
-                        <td className="px-4 py-3 text-right">{purchase.quantity}</td>
-                        <td className="px-4 py-3 text-right font-bold">{formatCurrency(purchase.total)}</td>
-                      </tr>
-                    );
-                  })}
-                  <tr className="bg-blue-100 font-bold">
-                    <td colSpan="4" className="px-4 py-3 text-right">{language === 'english' ? 'TOTAL:' : 'JUMLA:'}</td>
-                    <td className="px-4 py-3 text-right text-blue-600">{formatCurrency(totalPurchases)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* Profit & Loss Report */}
-        {reportType === 'profit' && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              {language === 'english' ? 'Profit & Loss Statement' : 'Taarifa ya Faida na Hasara'}
-            </h3>
-            <p className="text-gray-600 mb-6">
-              {language === 'english' ? 'Period:' : 'Kipindi:'} {formatDate(dateFrom)} - {formatDate(dateTo)}
-            </p>
-
-            <div className="space-y-4">
-              <div className="border-b pb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium">{language === 'english' ? 'Revenue (Sales)' : 'Mapato (Mauzo)'}</span>
-                  <span className="font-bold text-green-600">{formatCurrency(totalSales)}</span>
-                </div>
-              </div>
-
-              <div className="border-b pb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium">{language === 'english' ? 'Cost of Goods Sold' : 'Gharama za Bidhaa'}</span>
-                  <span className="font-bold text-red-600">({formatCurrency(totalPurchases)})</span>
-                </div>
-              </div>
-
-              <div className="border-b pb-4 bg-blue-50 p-3 rounded">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-lg">{language === 'english' ? 'Gross Profit' : 'Faida Jumla'}</span>
-                  <span className={`font-bold text-lg ${grossProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
-                    {formatCurrency(grossProfit)}
-                  </span>
-                </div>
-              </div>
-
-              <div className="border-b pb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium">{language === 'english' ? 'Operating Expenses' : 'Matumizi ya Ofisi'}</span>
-                  <span className="font-bold text-red-600">({formatCurrency(totalExpenses)})</span>
-                </div>
-                <div className="ml-4 text-sm text-gray-600 space-y-1">
-                  {Object.entries(
-                    filteredExpenses.reduce((acc, exp) => {
-                      acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
-                      return acc;
-                    }, {})
-                  ).map(([category, amount]) => (
-                    <div key={category} className="flex justify-between">
-                      <span>• {category}</span>
-                      <span>{formatCurrency(amount)}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className={`${netProfit >= 0 ? 'bg-emerald-50' : 'bg-red-50'} p-4 rounded-lg`}>
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-2xl">{language === 'english' ? 'NET PROFIT/LOSS' : 'FAIDA/HASARA HALISI'}</span>
-                  <span className={`font-bold text-3xl ${netProfit >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                    {formatCurrency(netProfit)}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  {netProfit >= 0 
-                    ? (language === 'english' ? 'Your business made a profit' : 'Biashara yako imepata faida')
-                    : (language === 'english' ? 'Your business made a loss' : 'Biashara yako imepata hasara')
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Inventory Report */}
-        {reportType === 'inventory' && (
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="px-6 py-4 bg-purple-600 text-white">
-              <h3 className="text-xl font-bold">{language === 'english' ? 'Inventory Report' : 'Ripoti ya Bidhaa'}</h3>
-              <p className="text-sm opacity-90">{language === 'english' ? 'Current Stock Levels' : 'Hali ya Bidhaa Sasa'}</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Product' : 'Bidhaa'}</th>
-                    <th className="px-4 py-3 text-left">{language === 'english' ? 'Category' : 'Aina'}</th>
-                    <th className="px-4 py-3 text-right">{language === 'english' ? 'Quantity' : 'Idadi'}</th>
-                    <th className="px-4 py-3 text-right">{language === 'english' ? 'Buy Price' : 'Bei ya Kununua'}</th>
-                    <th className="px-4 py-3 text-right">{language === 'english' ? 'Sell Price' : 'Bei ya Kuuza'}</th>
-                    <th className="px-4 py-3 text-right">{language === 'english' ? 'Stock Value' : 'Thamani'}</th>
-                    <th className="px-4 py-3 text-center">{language === 'english' ? 'Status' : 'Hali'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product, index) => (
-                    <tr key={product.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-4 py-3 font-medium">{product.name}</td>
-                      <td className="px-4 py-3">{product.category}</td>
-                      <td className="px-4 py-3 text-right font-bold">{product.quantity}</td>
-                      <td className="px-4 py-3 text-right">{formatCurrency(product.buyPrice)}</td>
-                      <td className="px-4 py-3 text-right">{formatCurrency(product.sellPrice)}</td>
-                      <td className="px-4 py-3 text-right font-bold">{formatCurrency(product.quantity * product.buyPrice)}</td>
-                      <td className="px-4 py-3 text-center">
-                        {product.quantity === 0 ? (
-                          <span className="px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full">
-                            {language === 'english' ? 'Out of Stock' : 'Imeisha'}
-                          </span>
-                        ) : product.quantity < 10 ? (
-                          <span className="px-2 py-1 bg-yellow-100 text-yellow-600 text-xs rounded-full">
-                            {language === 'english' ? 'Low Stock' : 'Pungufu'}
-                          </span>
-                        ) : (
-                          <span className="px-2 py-1 bg-green-100 text-green-600 text-xs rounded-full">
-                            {language === 'english' ? 'In Stock' : 'Ipo'}
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                  <tr className="bg-purple-100 font-bold">
-                    <td colSpan="5" className="px-4 py-3 text-right">{language === 'english' ? 'TOTAL STOCK VALUE:' : 'THAMANI YA BIDHAA ZOTE:'}</td>
-                    <td className="px-4 py-3 text-right text-purple-600">
-                      {formatCurrency(products.reduce((sum, p) => sum + (p.quantity * p.buyPrice), 0))}
-                    </td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // User Management Component
-  const UserManagementPage = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [editingUser, setEditingUser] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [formData, setFormData] = useState({
-      username: '',
-      password: '',
-      name: '',
-      role: 'staff'
-    });
-
-    const filteredUsers = users.filter(user =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const handleOpenModal = (user = null) => {
-      if (user) {
-        setEditingUser(user);
-        setFormData({
-          username: user.username,
-          password: user.password,
-          name: user.name,
-          role: user.role
-        });
-      } else {
-        setEditingUser(null);
-        setFormData({
-          username: '',
-          password: '',
-          name: '',
-          role: 'staff'
-        });
-      }
-      setShowPassword(false);
-      setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-      setShowModal(false);
-      setEditingUser(null);
-      setShowPassword(false);
-      setFormData({
-        username: '',
-        password: '',
-        name: '',
-        role: 'staff'
-      });
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      
-      // Check if username already exists (when adding new user or changing username)
-      const usernameExists = users.some(u => 
-        u.username === formData.username && 
-        (!editingUser || u.id !== editingUser.id)
-      );
-      
-      if (usernameExists) {
-        alert(language === 'english' ? 'Username already exists!' : 'Jina la mtumiaji lipo tayari!');
-        return;
-      }
-
-      if (editingUser) {
-        setUsers(users.map(u =>
-          u.id === editingUser.id
-            ? { ...u, ...formData }
-            : u
-        ));
-      } else {
-        const newUser = {
-          id: Date.now().toString(),
-          ...formData,
+    // Use React and ReactDOM from global scope
+    const { useState, useEffect } = React;
+    
+    // Extract icons
+    const { 
+      Package, ShoppingCart, DollarSign, TrendingUp, Users, 
+      FileText, Settings, Menu, X, Plus, Edit, Trash2, Eye, EyeOff 
+    } = LucideIcons;
+
+    const MrCheapSystem = () => {
+      const [currentPage, setCurrentPage] = useState('dashboard');
+      const [language, setLanguage] = useState('english');
+      const [sidebarOpen, setSidebarOpen] = useState(true);
+      const [currentUser, setCurrentUser] = useState(null);
+
+      // Data states - using in-memory storage with localStorage backup
+      const [users, setUsers] = useState([
+        {
+          id: '1',
+          username: 'admin',
+          password: 'admin123',
+          role: 'admin',
+          name: 'Administrator',
           active: true
-        };
-        setUsers([...users, newUser]);
-      }
-      
-      handleCloseModal();
-    };
+        }
+      ]);
 
-    const handleToggleActive = (userId) => {
-      setUsers(users.map(u =>
-        u.id === userId
-          ? { ...u, active: !u.active }
-          : u
-      ));
-    };
+      const [products, setProducts] = useState([
+        { id: '1', name: 'Electric Kettle', quantity: 25, buyPrice: 15000, sellPrice: 25000, category: 'Kitchen' },
+        { id: '2', name: 'Multicooker', quantity: 15, buyPrice: 45000, sellPrice: 75000, category: 'Kitchen' },
+        { id: '3', name: 'Pressure Cooker', quantity: 8, buyPrice: 35000, sellPrice: 55000, category: 'Kitchen' },
+        { id: '4', name: 'Phone Charger', quantity: 50, buyPrice: 3000, sellPrice: 5000, category: 'Electronics' },
+        { id: '5', name: 'Standing Fan', quantity: 12, buyPrice: 25000, sellPrice: 40000, category: 'Appliances' }
+      ]);
 
-    const handleDelete = (userId) => {
-      if (userId === '1') {
-        alert(language === 'english' ? 'Cannot delete admin user!' : 'Huwezi kufuta mtumiaji admin!');
-        return;
-      }
-      
-      if (window.confirm(language === 'english' ? 'Are you sure you want to delete this user?' : 'Je, una uhakika unataka kufuta mtumiaji huyu?')) {
-        setUsers(users.filter(u => u.id !== userId));
-      }
-    };
+      const [sales, setSales] = useState([]);
+      const [purchases, setPurchases] = useState([]);
+      const [expenses, setExpenses] = useState([]);
 
-    // Only admin can access user management
-    if (currentUser.role !== 'admin') {
-      return (
-        <div className="p-6">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg">
-            <h3 className="font-bold text-lg mb-2">
-              {language === 'english' ? 'Access Denied' : 'Hakuna Ruhusa'}
-            </h3>
-            <p>
-              {language === 'english' 
-                ? 'Only administrators can access user management.' 
-                : 'Wasimamizi pekee ndio wanaweza kusimamia watumiaji.'}
-            </p>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">{t.users}</h2>
-          <button
-            onClick={() => handleOpenModal()}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            {language === 'english' ? 'Add User' : 'Ongeza Mtumiaji'}
-          </button>
-        </div>
-
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-indigo-100 text-sm">{language === 'english' ? 'Total Users' : 'Jumla ya Watumiaji'}</p>
-            <p className="text-2xl font-bold mt-2">{users.length}</p>
-          </div>
-          <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-green-100 text-sm">{language === 'english' ? 'Active Users' : 'Watumiaji Wanafanya Kazi'}</p>
-            <p className="text-2xl font-bold mt-2">{users.filter(u => u.active).length}</p>
-          </div>
-          <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-lg shadow-lg p-6 text-white">
-            <p className="text-red-100 text-sm">{language === 'english' ? 'Disabled Users' : 'Watumiaji Waliozimwa'}</p>
-            <p className="text-2xl font-bold mt-2">{users.filter(u => !u.active).length}</p>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder={language === 'english' ? 'Search users...' : 'Tafuta watumiaji...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-        </div>
-
-        {/* Users Table */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-indigo-600 text-white">
-                <tr>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Username' : 'Jina la Mtumiaji'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Full Name' : 'Jina Kamili'}</th>
-                  <th className="px-4 py-3 text-left">{language === 'english' ? 'Role' : 'Wadhifa'}</th>
-                  <th className="px-4 py-3 text-center">{language === 'english' ? 'Status' : 'Hali'}</th>
-                  <th className="px-4 py-3 text-center">{language === 'english' ? 'Actions' : 'Vitendo'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map((user, index) => (
-                  <tr key={user.id} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-indigo-50`}>
-                    <td className="px-4 py-3 font-medium">{user.username}</td>
-                    <td className="px-4 py-3">{user.name}</td>
-                    <td className="px-4 py-3">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        user.role === 'admin' 
-                          ? 'bg-purple-100 text-purple-800' 
-                          : 'bg-blue-100 text-blue-800'
-                      }`}>
-                        {user.role === 'admin' 
-                          ? (language === 'english' ? 'Admin' : 'Msimamizi')
-                          : (language === 'english' ? 'Staff' : 'Mfanyakazi')
-                        }
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <button
-                        onClick={() => handleToggleActive(user.id)}
-                        disabled={user.id === '1'}
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          user.active 
-                            ? 'bg-green-100 text-green-800 hover:bg-green-200' 
-                            : 'bg-red-100 text-red-800 hover:bg-red-200'
-                        } ${user.id === '1' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                      >
-                        {user.active 
-                          ? (language === 'english' ? 'Active' : 'Anafanya Kazi')
-                          : (language === 'english' ? 'Disabled' : 'Amezimwa')
-                        }
-                      </button>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex justify-center space-x-2">
-                        <button
-                          onClick={() => handleOpenModal(user)}
-                          className="text-blue-600 hover:text-blue-800"
-                          title={language === 'english' ? 'Edit' : 'Hariri'}
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        {user.id !== '1' && (
-                          <button
-                            onClick={() => handleDelete(user.id)}
-                            className="text-red-600 hover:text-red-800"
-                            title={language === 'english' ? 'Delete' : 'Futa'}
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredUsers.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              {language === 'english' ? 'No users found' : 'Hakuna watumiaji'}
-            </div>
-          )}
-        </div>
-
-        {/* Add/Edit Modal */}
-        {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-              <div className="bg-indigo-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center">
-                <h3 className="text-xl font-bold">
-                  {editingUser
-                    ? (language === 'english' ? 'Edit User' : 'Hariri Mtumiaji')
-                    : (language === 'english' ? 'Add New User' : 'Ongeza Mtumiaji Mpya')
-                  }
-                </h3>
-                <button onClick={handleCloseModal} className="text-white hover:text-gray-200">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Username' : 'Jina la Mtumiaji'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.username}
-                    onChange={(e) => setFormData({...formData, username: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Full Name' : 'Jina Kamili'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Password' : 'Neno la Siri'}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      value={formData.password}
-                      onChange={(e) => setFormData({...formData, password: e.target.value})}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-2.5 text-gray-600 hover:text-gray-800"
-                    >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === 'english' ? 'Role' : 'Wadhifa'}
-                  </label>
-                  <select
-                    required
-                    value={formData.role}
-                    onChange={(e) => setFormData({...formData, role: e.target.value})}
-                    disabled={editingUser && editingUser.id === '1'}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100"
-                  >
-                    <option value="staff">{language === 'english' ? 'Staff' : 'Mfanyakazi'}</option>
-                    <option value="admin">{language === 'english' ? 'Admin' : 'Msimamizi'}</option>
-                  </select>
-                  {editingUser && editingUser.id === '1' && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      {language === 'english' ? 'Cannot change admin role' : 'Huwezi kubadili wadhifa wa admin'}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    type="submit"
-                    className="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-                  >
-                    {editingUser
-                      ? (language === 'english' ? 'Update User' : 'Sasisha')
-                      : (language === 'english' ? 'Add User' : 'Ongeza')
-                    }
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
-                  >
-                    {language === 'english' ? 'Cancel' : 'Ghairi'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Settings Component
-  const SettingsPage = () => {
-    const [activeTab, setActiveTab] = useState('general');
-
-    const handleExportData = () => {
-      const data = {
-        users,
-        products,
-        sales,
-        purchases,
-        expenses,
-        exportDate: new Date().toISOString()
-      };
-
-      const dataStr = JSON.stringify(data, null, 2);
-      const dataBlob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL.createObjectURL(dataBlob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `mrcheap_backup_${new Date().toISOString().split('T')[0]}.json`;
-      link.click();
-    };
-
-    const handleImportData = (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = JSON.parse(e.target.result);
-          
-          if (window.confirm(language === 'english' 
-            ? 'This will replace all current data. Are you sure?' 
-            : 'Hii itafuta data yote ya sasa. Una uhakika?')) {
-            
+      // Load data from localStorage on mount
+      useEffect(() => {
+        const savedData = localStorage.getItem('mrcheap_data');
+        if (savedData) {
+          try {
+            const data = JSON.parse(savedData);
             if (data.users) setUsers(data.users);
             if (data.products) setProducts(data.products);
             if (data.sales) setSales(data.sales);
             if (data.purchases) setPurchases(data.purchases);
             if (data.expenses) setExpenses(data.expenses);
-            
-            alert(language === 'english' ? 'Data imported successfully!' : 'Data imeingizwa kikamilifu!');
+          } catch (error) {
+            console.error('Error loading data:', error);
           }
-        } catch (error) {
-          alert(language === 'english' ? 'Error importing data. Invalid file.' : 'Hitilafu katika kuingiza data.');
+        }
+      }, []);
+
+      // Save data to localStorage whenever it changes
+      useEffect(() => {
+        const data = {
+          users,
+          products,
+          sales,
+          purchases,
+          expenses
+        };
+        localStorage.setItem('mrcheap_data', JSON.stringify(data));
+      }, [users, products, sales, purchases, expenses]);
+
+      // Translation object
+      const translations = {
+        english: {
+          dashboard: 'Dashboard',
+          inventory: 'Inventory',
+          purchases: 'Purchases',
+          sales: 'Sales',
+          expenses: 'Expenses',
+          reports: 'Reports',
+          users: 'User Management',
+          settings: 'Settings',
+          totalSales: 'Total Sales',
+          totalPurchases: 'Total Purchases',
+          currentStock: 'Current Stock Value',
+          profit: 'Net Profit',
+          lowStock: 'Low Stock Alerts',
+          recentSales: 'Recent Sales',
+          topProducts: 'Top Selling Products',
+          logout: 'Logout',
+          login: 'Login',
+          username: 'Username',
+          password: 'Password',
+          businessName: 'MrCheap Electronics',
+          currency: 'TZS'
+        },
+        swahili: {
+          dashboard: 'Dashibodi',
+          inventory: 'Hifadhi',
+          purchases: 'Manunuzi',
+          sales: 'Mauzo',
+          expenses: 'Matumizi',
+          reports: 'Ripoti',
+          users: 'Usimamizi wa Watumiaji',
+          settings: 'Mipangilio',
+          totalSales: 'Jumla ya Mauzo',
+          totalPurchases: 'Jumla ya Manunuzi',
+          currentStock: 'Thamani ya Bidhaa',
+          profit: 'Faida',
+          lowStock: 'Bidhaa Zinazokwisha',
+          recentSales: 'Mauzo ya Karibuni',
+          topProducts: 'Bidhaa Zinazouzwa Zaidi',
+          logout: 'Ondoka',
+          login: 'Ingia',
+          username: 'Jina la Mtumiaji',
+          password: 'Neno la Siri',
+          businessName: 'MrCheap Electronics',
+          currency: 'TZS'
         }
       };
-      reader.readAsText(file);
-      event.target.value = '';
-    };
 
-    const handleClearAllData = () => {
-      if (window.confirm(language === 'english' 
-        ? 'WARNING: This will delete ALL data permanently. Are you sure?' 
-        : 'ONYO: Hii itafuta data ZOTE kabisa. Una uhakika?')) {
-        
-        if (window.confirm(language === 'english' 
-          ? 'Last confirmation: Delete everything?' 
-          : 'Thibitisho la mwisho: Futa kila kitu?')) {
+      const t = translations[language];
+
+      // Login Component
+      const LoginPage = () => {
+        const [username, setUsername] = useState('');
+        const [password, setPassword] = useState('');
+        const [error, setError] = useState('');
+
+        const handleLogin = () => {
+          const user = users.find(u => u.username === username && u.password === password && u.active);
           
-          setProducts([
-            { id: '1', name: 'Electric Kettle', quantity: 25, buyPrice: 15000, sellPrice: 25000, category: 'Kitchen' },
-            { id: '2', name: 'Multicooker', quantity: 15, buyPrice: 45000, sellPrice: 75000, category: 'Kitchen' },
-            { id: '3', name: 'Pressure Cooker', quantity: 8, buyPrice: 35000, sellPrice: 55000, category: 'Kitchen' },
-            { id: '4', name: 'Phone Charger', quantity: 50, buyPrice: 3000, sellPrice: 5000, category: 'Electronics' },
-            { id: '5', name: 'Standing Fan', quantity: 12, buyPrice: 25000, sellPrice: 40000, category: 'Appliances' }
-          ]);
-          setSales([]);
-          setPurchases([]);
-          setExpenses([]);
-          
-          alert(language === 'english' ? 'All data cleared!' : 'Data zote zimefutwa!');
-        }
+          if (user) {
+            setCurrentUser(user);
+            setError('');
+          } else {
+            setError(language === 'english' ? 'Invalid credentials or user disabled' : 'Jina au neno la siri si sahihi');
+          }
+        };
+
+        return (
+          React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4" },
+            React.createElement('div', { className: "bg-white rounded-lg shadow-xl p-8 w-full max-w-md" },
+              React.createElement('div', { className: "text-center mb-8" },
+                React.createElement('h1', { className: "text-3xl font-bold text-indigo-600 mb-2" }, t.businessName),
+                React.createElement('p', { className: "text-gray-600" }, t.login)
+              ),
+              
+              error && React.createElement('div', { className: "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" }, error),
+
+              React.createElement('div', { className: "space-y-4" },
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.username),
+                  React.createElement('input', {
+                    type: "text",
+                    value: username,
+                    onChange: (e) => setUsername(e.target.value),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
+                    placeholder: language === 'english' ? 'Enter username' : 'Weka jina la mtumiaji'
+                  })
+                ),
+
+                React.createElement('div', null,
+                  React.createElement('label', { className: "block text-sm font-medium text-gray-700 mb-2" }, t.password),
+                  React.createElement('input', {
+                    type: "password",
+                    value: password,
+                    onChange: (e) => setPassword(e.target.value),
+                    onKeyPress: (e) => e.key === 'Enter' && handleLogin(),
+                    className: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
+                    placeholder: language === 'english' ? 'Enter password' : 'Weka neno la siri'
+                  })
+                ),
+
+                React.createElement('button', {
+                  onClick: handleLogin,
+                  className: "w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                }, t.login),
+
+                React.createElement('div', { className: "text-center text-sm text-gray-600 mt-4" },
+                  language === 'english' ? 'Default: admin / admin123' : 'Chaguo-msingi: admin / admin123'
+                ),
+
+                React.createElement('button', {
+                  onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
+                  className: "w-full mt-4 text-sm text-indigo-600 hover:text-indigo-800"
+                }, language === 'english' ? 'Badilisha kwa Kiswahili' : 'Switch to English')
+              )
+            )
+          )
+        );
+      };
+
+      // Dashboard Component
+      const Dashboard = () => {
+        const formatCurrency = (amount) => {
+          return `${t.currency} ${amount.toLocaleString()}`;
+        };
+
+        const totalSales = sales.reduce((sum, sale) => sum + (sale.total || 0), 0);
+        const totalPurchases = purchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+        const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+        const stockValue = products.reduce((sum, product) => sum + (product.quantity * product.buyPrice), 0);
+        const profit = totalSales - totalPurchases - totalExpenses;
+
+        return (
+          React.createElement('div', { className: "p-6" },
+            React.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6" }, t.dashboard),
+            
+            React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" },
+              React.createElement('div', { className: "bg-gradient-to-br from-green-400 to-green-600 rounded-lg shadow-lg p-6 text-white" },
+                React.createElement('div', { className: "flex items-center justify-between" },
+                  React.createElement('div', null,
+                    React.createElement('p', { className: "text-green-100 text-sm" }, t.totalSales),
+                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalSales))
+                  ),
+                  React.createElement(ShoppingCart, { className: "w-12 h-12 text-green-200" })
+                )
+              ),
+
+              React.createElement('div', { className: "bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg p-6 text-white" },
+                React.createElement('div', { className: "flex items-center justify-between" },
+                  React.createElement('div', null,
+                    React.createElement('p', { className: "text-blue-100 text-sm" }, t.totalPurchases),
+                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(totalPurchases))
+                  ),
+                  React.createElement(Package, { className: "w-12 h-12 text-blue-200" })
+                )
+              ),
+
+              React.createElement('div', { className: "bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg p-6 text-white" },
+                React.createElement('div', { className: "flex items-center justify-between" },
+                  React.createElement('div', null,
+                    React.createElement('p', { className: "text-purple-100 text-sm" }, t.currentStock),
+                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(stockValue))
+                  ),
+                  React.createElement(DollarSign, { className: "w-12 h-12 text-purple-200" })
+                )
+              ),
+
+              React.createElement('div', { className: `bg-gradient-to-br ${profit >= 0 ? 'from-emerald-400 to-emerald-600' : 'from-red-400 to-red-600'} rounded-lg shadow-lg p-6 text-white` },
+                React.createElement('div', { className: "flex items-center justify-between" },
+                  React.createElement('div', null,
+                    React.createElement('p', { className: "text-white text-sm" }, t.profit),
+                    React.createElement('p', { className: "text-2xl font-bold mt-2" }, formatCurrency(profit))
+                  ),
+                  React.createElement(TrendingUp, { className: "w-12 h-12 text-white opacity-80" })
+                )
+              )
+            ),
+
+            React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
+              React.createElement('h3', { className: "text-xl font-bold text-gray-800 mb-4" }, language === 'english' ? 'Quick Actions' : 'Vitendo vya Haraka'),
+              React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-4 gap-4" },
+                React.createElement('button', {
+                  onClick: () => setCurrentPage('sales'),
+                  className: "bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-colors"
+                },
+                  React.createElement(ShoppingCart, { className: "w-6 h-6 mx-auto mb-2" }),
+                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Sale' : 'Uza')
+                ),
+                React.createElement('button', {
+                  onClick: () => setCurrentPage('purchases'),
+                  className: "bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-colors"
+                },
+                  React.createElement(Package, { className: "w-6 h-6 mx-auto mb-2" }),
+                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'New Purchase' : 'Nunua')
+                ),
+                React.createElement('button', {
+                  onClick: () => setCurrentPage('inventory'),
+                  className: "bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-colors"
+                },
+                  React.createElement(Package, { className: "w-6 h-6 mx-auto mb-2" }),
+                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'View Stock' : 'Tazama Bidhaa')
+                ),
+                React.createElement('button', {
+                  onClick: () => setCurrentPage('reports'),
+                  className: "bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition-colors"
+                },
+                  React.createElement(FileText, { className: "w-6 h-6 mx-auto mb-2" }),
+                  React.createElement('span', { className: "text-sm" }, language === 'english' ? 'Reports' : 'Ripoti')
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Main App Layout
+      if (!currentUser) {
+        return React.createElement(LoginPage);
       }
+
+      return (
+        React.createElement('div', { className: "flex h-screen bg-gray-100" },
+          // Sidebar
+          React.createElement('div', { className: `${sidebarOpen ? 'w-64' : 'w-20'} bg-indigo-800 text-white transition-all duration-300 flex flex-col` },
+            React.createElement('div', { className: "p-4 flex items-center justify-between" },
+              sidebarOpen && React.createElement('h1', { className: "text-xl font-bold" }, t.businessName),
+              React.createElement('button', { 
+                onClick: () => setSidebarOpen(!sidebarOpen), 
+                className: "text-white" 
+              }, sidebarOpen ? React.createElement(X) : React.createElement(Menu))
+            ),
+
+            React.createElement('nav', { className: "flex-1 mt-4" },
+              [
+                { id: 'dashboard', icon: TrendingUp, label: t.dashboard },
+                { id: 'inventory', icon: Package, label: t.inventory },
+                { id: 'purchases', icon: ShoppingCart, label: t.purchases },
+                { id: 'sales', icon: DollarSign, label: t.sales },
+                { id: 'expenses', icon: FileText, label: t.expenses },
+                { id: 'reports', icon: FileText, label: t.reports },
+                { id: 'users', icon: Users, label: t.users },
+                { id: 'settings', icon: Settings, label: t.settings }
+              ].map((item) =>
+                React.createElement('button', {
+                  key: item.id,
+                  onClick: () => setCurrentPage(item.id),
+                  className: `w-full flex items-center px-4 py-3 hover:bg-indigo-700 transition-colors ${
+                    currentPage === item.id ? 'bg-indigo-700 border-l-4 border-white' : ''
+                  }`
+                },
+                  React.createElement(item.icon, { className: "w-5 h-5" }),
+                  sidebarOpen && React.createElement('span', { className: "ml-3" }, item.label)
+                )
+              )
+            ),
+
+            React.createElement('div', { className: "p-4 border-t border-indigo-700" },
+              React.createElement('button', {
+                onClick: () => setCurrentUser(null),
+                className: "w-full flex items-center px-4 py-2 hover:bg-indigo-700 rounded transition-colors"
+              },
+                React.createElement(Users, { className: "w-5 h-5" }),
+                sidebarOpen && React.createElement('span', { className: "ml-3" }, t.logout)
+              )
+            )
+          ),
+
+          // Main Content
+          React.createElement('div', { className: "flex-1 overflow-auto" },
+            React.createElement('div', { className: "bg-white shadow-sm p-4 flex justify-between items-center" },
+              React.createElement('h2', { className: "text-xl font-semibold text-gray-800" },
+                language === 'english' ? `Welcome, ${currentUser.name}` : `Karibu, ${currentUser.name}`
+              ),
+              React.createElement('button', {
+                onClick: () => setLanguage(language === 'english' ? 'swahili' : 'english'),
+                className: "px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+              }, language === 'english' ? 'Kiswahili' : 'English')
+            ),
+
+            currentPage === 'dashboard' && React.createElement(Dashboard)
+            // Note: Other components (inventory, purchases, sales, etc.) would be added here
+          )
+        )
+      );
     };
 
-    return (
-      <div className="p-6">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">{t.settings}</h2>
-
-        {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-lg mb-6">
-          <div className="flex border-b">
-            <button
-              onClick={() => setActiveTab('general')}
-              className={`px-6 py-3 font-medium ${
-                activeTab === 'general'
-                  ? 'text-indigo-600 border-b-2 border-indigo-600'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-            >
-              {language === 'english' ? 'General' : 'Jumla'}
-            </button>
-            <button
-              onClick={() => setActiveTab('data')}
-              className={`px-6 py-3 font-medium ${
-                activeTab === 'data'
-                  ? 'text-indigo-600 border-b-2 border-indigo-600'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-            >
-              {language === 'english' ? 'Data Management' : 'Usimamizi wa Data'}
-            </button>
-            <button
-              onClick={() => setActiveTab('about')}
-              className={`px-6 py-3 font-medium ${
-                activeTab === 'about'
-                  ? 'text-indigo-600 border-b-2 border-indigo-600'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-            >
-              {language === 'english' ? 'About' : 'Kuhusu'}
-            </button>
-          </div>
-
-          <div className="p-6">
-            {/* General Settings */}
-            {activeTab === 'general' && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">
-                    {language === 'english' ? 'Language Settings' : 'Mipangilio ya Lugha'}
-                  </h3>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      {language === 'english' ? 'Select Language' : 'Chagua Lugha'}
-                    </label>
-                    <div className="flex space-x-4">
-                      <button
-                        onClick={() => setLanguage('english')}
-                        className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                          language === 'english'
-                            ? 'bg-indigo-600 text-white'
-                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        English
-                      </button>
-                      <button
-                        onClick={() => setLanguage('swahili')}
-                        className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                          language === 'swahili'
-                            ? 'bg-indigo-600 text-white'
-                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        Kiswahili
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">
-                    {language === 'english' ? 'Business Information' : 'Taarifa za Biashara'}
-                  </h3>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
-                    <div>
-                      <span className="text-sm font-medium text-gray-700">
-                        {language === 'english' ? 'Business Name:' : 'Jina la Biashara:'}
-                      </span>
-                      <span className="ml-2 font-bold text-indigo-600">{t.businessName}</span>
-                    </div>
-                    <div>
-                      <span className="text-sm font-medium text-gray-700">
-                        {language === 'english' ? 'Currency:' : 'Sarafu:'}
-                      </span>
-                      <span className="ml-2 font-bold">{t.currency}</span>
-                    </div>
-                    <div>
-                      <span className="text-sm font-medium text-gray-700">
-                        {language === 'english' ? 'Current User:' : 'Mtumiaji wa Sasa:'}
-                      </span>
-                      <span className="ml-2 font-bold">{currentUser.name} ({currentUser.role})</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Data Management */}
-            {activeTab === 'data' && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">
-                    {language === 'english' ? 'Backup & Restore' : 'Hifadhi na Rejesha'}
-                  </h3>
-                  
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-4">
-                    <h4 className="font-bold text-blue-900 mb-2">
-                      {language === 'english' ? 'Export Data (Backup)' : 'Hamisha Data (Backup)'}
-                    </h4>
-                    <p className="text-sm text-blue-800 mb-4">
-                      {language === 'english' 
-                        ? 'Download all your business data as a backup file.' 
-                        : 'Pakua data zote za biashara yako kama faili la backup.'}
-                    </p>
-                    <button
-                      onClick={handleExportData}
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-                    >
-                      <FileText className="w-5 h-5 mr-2" />
-                      {language === 'english' ? 'Export Data' : 'Hamisha Data'}
-                    </button>
-                  </div>
-
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                    <h4 className="font-bold text-green-900 mb-2">
-                      {language === 'english' ? 'Import Data (Restore)' : 'Ingiza Data (Rejesha)'}
-                    </h4>
-                    <p className="text-sm text-green-800 mb-4">
-                      {language === 'english' 
-                        ? 'Restore your business data from a backup file.' 
-                        : 'Rejesha data za biashara yako kutoka kwenye faili la backup.'}
-                    </p>
-                    <input
-                      type="file"
-                      accept=".json"
-                      onChange={handleImportData}
-                      className="hidden"
-                      id="import-file"
-                    />
-                    <label
-                      htmlFor="import-file"
-                      className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors inline-flex items-center cursor-pointer"
-                    >
-                      <Plus className="w-5 h-5 mr-2" />
-                      {language === 'english' ? 'Import Data' : 'Ingiza Data'}
-                    </label>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">
-                    {language === 'english' ? 'Data Statistics' : 'Takwimu za Data'}
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                      <p className="text-sm text-gray-600 mb-1">{language === 'english' ? 'Products' : 'Bidhaa'}</p>
-                      <p className="text-2xl font-bold text-indigo-600">{products.length}</p>
-                    </div>
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                      <p className="text-sm text-gray-600 mb-1">{language === 'english' ? 'Sales' : 'Mauzo'}</p>
-                      <p className="text-2xl font-bold text-green-600">{sales.length}</p>
-                    </div>
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                      <p className="text-sm text-gray-600 mb-1">{language === 'english' ? 'Purchases' : 'Manunuzi'}</p>
-                      <p className="text-2xl font-bold text-blue-600">{purchases.length}</p>
-                    </div>
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                      <p className="text-sm text-gray-600 mb-1">{language === 'english' ? 'Expenses' : 'Matumizi'}</p>
-                      <p className="text-2xl font-bold text-red-600">{expenses.length}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6">
-                  <h3 className="text-xl font-bold text-red-900 mb-2">
-                    {language === 'english' ? 'Danger Zone' : 'Eneo la Hatari'}
-                  </h3>
-                  <p className="text-sm text-red-800 mb-4">
-                    {language === 'english' 
-                      ? 'Warning: This action cannot be undone!' 
-                      : 'Onyo: Kitendo hiki hakiwezi kurudishwa!'}
-                  </p>
-                  <button
-                    onClick={handleClearAllData}
-                    className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center"
-                  >
-                    <Trash2 className="w-5 h-5 mr-2" />
-                    {language === 'english' ? 'Clear All Data' : 'Futa Data Zote'}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* About */}
-            {activeTab === 'about' && (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <h3 className="text-3xl font-bold text-indigo-600 mb-2">{t.businessName}</h3>
-                  <p className="text-gray-600 mb-6">
-                    {language === 'english' 
-                      ? 'Business Management System' 
-                      : 'Mfumo wa Usimamizi wa Biashara'}
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg p-6">
-                  <h4 className="font-bold text-indigo-900 mb-4">
-                    {language === 'english' ? 'System Features' : 'Huduma za Mfumo'}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'Inventory Management' : 'Usimamizi wa Bidhaa'}</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'Sales Tracking' : 'Ufuatiliaji wa Mauzo'}</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'Purchase Recording' : 'Kurekodi Manunuzi'}</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'Expense Management' : 'Usimamizi wa Matumizi'}</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'Comprehensive Reports' : 'Ripoti Kamili'}</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'User Management' : 'Usimamizi wa Watumiaji'}</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'Multi-language Support' : 'Lugha Nyingi'}</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-indigo-600 mr-2">✓</span>
-                      <span>{language === 'english' ? 'Data Backup & Restore' : 'Backup na Restore'}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-                  <h4 className="font-bold text-gray-900 mb-3">
-                    {language === 'english' ? 'Version Information' : 'Taarifa za Toleo'}
-                  </h4>
-                  <div className="space-y-2 text-sm text-gray-700">
-                    <div className="flex justify-between">
-                      <span>{language === 'english' ? 'Version:' : 'Toleo:'}</span>
-                      <span className="font-semibold">1.0.0</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{language === 'english' ? 'Release Date:' : 'Tarehe ya Kutolewa:'}</span>
-                      <span className="font-semibold">January 2026</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{language === 'english' ? 'Status:' : 'Hali:'}</span>
-                      <span className="font-semibold text-green-600">{language === 'english' ? 'Active' : 'Inafanya Kazi'}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center text-sm text-gray-600">
-                  <p>
-                    {language === 'english' 
-                      ? '© 2026 MrCheap Electronics. All rights reserved.' 
-                      : '© 2026 MrCheap Electronics. Haki zote zimehifadhiwa.'}
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Placeholder components for other pages
-  const PlaceholderPage = ({ title }) => (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">{title}</h2>
-      <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-        <p className="text-gray-600 text-lg">
-          {language === 'english' 
-            ? 'This section is being built. Coming in the next step!' 
-            : 'Sehemu hii inaendelezwa. Inakuja katika hatua inayofuata!'}
-        </p>
-      </div>
-    </div>
-  );
-
-  if (!currentUser) {
-    return <LoginPage />;
-  }
-
-  return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-indigo-800 text-white transition-all duration-300 flex flex-col`}>
-        <div className="p-4 flex items-center justify-between">
-          {sidebarOpen && <h1 className="text-xl font-bold">{t.businessName}</h1>}
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white">
-            {sidebarOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-
-        <nav className="flex-1 mt-4">
-          {[
-            { id: 'dashboard', icon: TrendingUp, label: t.dashboard },
-            { id: 'inventory', icon: Package, label: t.inventory },
-            { id: 'purchases', icon: ShoppingCart, label: t.purchases },
-            { id: 'sales', icon: DollarSign, label: t.sales },
-            { id: 'expenses', icon: FileText, label: t.expenses },
-            { id: 'reports', icon: FileText, label: t.reports },
-            { id: 'users', icon: Users, label: t.users },
-            { id: 'settings', icon: Settings, label: t.settings }
-          ].map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setCurrentPage(item.id)}
-              className={`w-full flex items-center px-4 py-3 hover:bg-indigo-700 transition-colors ${
-                currentPage === item.id ? 'bg-indigo-700 border-l-4 border-white' : ''
-              }`}
-            >
-              <item.icon className="w-5 h-5" />
-              {sidebarOpen && <span className="ml-3">{item.label}</span>}
-            </button>
-          ))}
-        </nav>
-
-        <div className="p-4 border-t border-indigo-700">
-          <button
-            onClick={() => setCurrentUser(null)}
-            className="w-full flex items-center px-4 py-2 hover:bg-indigo-700 rounded transition-colors"
-          >
-            <Users className="w-5 h-5" />
-            {sidebarOpen && <span className="ml-3">{t.logout}</span>}
-          </button>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="bg-white shadow-sm p-4 flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">
-            {language === 'english' ? `Welcome, ${currentUser.name}` : `Karibu, ${currentUser.name}`}
-          </h2>
-          <button
-            onClick={() => setLanguage(language === 'english' ? 'swahili' : 'english')}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm"
-          >
-            {language === 'english' ? 'Kiswahili' : 'English'}
-          </button>
-        </div>
-
-        {currentPage === 'dashboard' && <Dashboard />}
-        {currentPage === 'inventory' && <InventoryPage />}
-        {currentPage === 'purchases' && <PurchasesPage />}
-        {currentPage === 'sales' && <SalesPage />}
-        {currentPage === 'expenses' && <ExpensesPage />}
-        {currentPage === 'reports' && <ReportsPage />}
-        {currentPage === 'users' && <UserManagementPage />}
-        {currentPage === 'settings' && <SettingsPage />}
-      </div>
-    </div>
-  );
-};
-
-// Add this at the VERY END of your script, after all component definitions
-ReactDOM.render(<MrCheapSystem />, document.getElementById('root'));
+    // Render the app
+    ReactDOM.render(React.createElement(MrCheapSystem), document.getElementById('root'));
   </script>
 </body>
 </html>
