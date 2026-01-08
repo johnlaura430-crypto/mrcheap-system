@@ -13,53 +13,7 @@
 </head>
 <body>
   <div id="root"></div>
-const MrCheapSystem = () => {
-  // Fix routing on refresh
-  const getInitialPage = () => {
-    // Try to get from URL hash
-    if (window.location.hash) {
-      return window.location.hash.substring(1) || 'dashboard';
-    }
-    // Try to get from URL path
-    const path = window.location.pathname.replace('/', '');
-    return path || 'dashboard';
-  };
 
-  const [currentPage, setCurrentPage] = useState(getInitialPage());
-  const [language, setLanguage] = useState('english');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  
-  // Fix: Load currentUser from localStorage on initial render
-  const [currentUser, setCurrentUser] = useState(() => {
-    const savedData = localStorage.getItem('mrcheap_data');
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData);
-        // Try to get the last logged in user
-        if (data.currentUser) {
-          return data.currentUser;
-        }
-      } catch (error) {
-        console.error('Error loading user data:', error);
-      }
-    }
-    return null;
-  });
-
-  // Data states - keep your existing code here
-  const [users, setUsers] = useState([
-    {
-      id: '1',
-      username: 'admin',
-      password: 'admin123',
-      role: 'admin',
-      name: 'Owner',
-      active: true
-    }
-  ]);
-
-  // ... rest of your existing state declarations
-  
   <script type="text/babel">
     // Use React and ReactDOM from global scope
     const { useState, useEffect } = React;
@@ -2860,20 +2814,5 @@ const MrCheapSystem = () => {
     // Render the app
     ReactDOM.render(React.createElement(MrCheapSystem), document.getElementById('root'));
   </script>
-<script>
-  // Handle page refresh routing
-  window.addEventListener('load', function() {
-    // If there's a hash in the URL, keep it
-    if (window.location.hash) {
-      return; // Let React handle it
-    }
-    
-    // If URL has a path (like /dashboard, /sales, etc.), redirect to hash
-    const path = window.location.pathname.replace('/', '');
-    if (path && path !== 'index.html') {
-      window.location.hash = path;
-    }
-  });
-</script>
 </body>
 </html>
