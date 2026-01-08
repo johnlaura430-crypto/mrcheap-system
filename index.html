@@ -2860,6 +2860,20 @@ const MrCheapSystem = () => {
     // Render the app
     ReactDOM.render(React.createElement(MrCheapSystem), document.getElementById('root'));
   </script>
-
+<script>
+  // Handle page refresh routing
+  window.addEventListener('load', function() {
+    // If there's a hash in the URL, keep it
+    if (window.location.hash) {
+      return; // Let React handle it
+    }
+    
+    // If URL has a path (like /dashboard, /sales, etc.), redirect to hash
+    const path = window.location.pathname.replace('/', '');
+    if (path && path !== 'index.html') {
+      window.location.hash = path;
+    }
+  });
+</script>
 </body>
 </html>
