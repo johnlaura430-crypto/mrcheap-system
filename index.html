@@ -14,6 +14,36 @@
 <body>
   <div id="root"></div>
 
+// Add this function to handle routing
+const useHashRouter = () => {
+  const [hash, setHash] = useState(window.location.hash.substr(1) || 'dashboard');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setHash(window.location.hash.substr(1) || 'dashboard');
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const navigate = (page) => {
+    window.location.hash = page;
+  };
+
+  return [hash, navigate];
+};
+
+// Then update your MrCheapSystem component:
+const MrCheapSystem = () => {
+  // Replace: const [currentPage, setCurrentPage] = useState('dashboard');
+  // With:
+  const [currentPage, navigate] = useHashRouter();
+  
+  // Then update all setCurrentPage() calls to navigate()
+  // For example:
+  // setCurrentPage('sales') becomes navigate('sales')
+  
   <script type="text/babel">
     // Use React and ReactDOM from global scope
     const { useState, useEffect } = React;
