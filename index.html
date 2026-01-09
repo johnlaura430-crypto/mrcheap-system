@@ -268,22 +268,32 @@
       const [purchases, setPurchases] = useState([]);
       const [expenses, setExpenses] = useState([]);
 
-      // Load data from localStorage
-      useEffect(() => {
-        const savedData = localStorage.getItem('mrcheap_data');
-        if (savedData) {
-          try {
-            const data = JSON.parse(savedData);
-            if (data.users) setUsers(data.users);
-            if (data.products) setProducts(data.products);
-            if (data.sales) setSales(data.sales);
-            if (data.purchases) setPurchases(data.purchases);
-            if (data.expenses) setExpenses(data.expenses);
-          } catch (error) {
-            console.error('Error loading data:', error);
-          }
-        }
-      }, []);
+    // Load data from localStorage
+useEffect(() => {
+  const savedData = localStorage.getItem('mrcheap_data');
+  if (savedData) {
+    try {
+      const data = JSON.parse(savedData);
+      if (data.users) setUsers(data.users);
+      if (data.products) setProducts(data.products);
+      if (data.sales) setSales(data.sales);
+      if (data.purchases) setPurchases(data.purchases);
+      if (data.expenses) setExpenses(data.expenses);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
+  }
+  
+  // Load current user session
+  const savedUser = localStorage.getItem('mrcheap_current_user');
+  if (savedUser) {
+    try {
+      setCurrentUser(JSON.parse(savedUser));
+    } catch (error) {
+      console.error('Error loading user session:', error);
+    }
+  }
+}, []);
 
       // Save data to localStorage
       useEffect(() => {
