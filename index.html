@@ -25,6 +25,60 @@
 const SUPABASE_URL = 'https://crbhtdwgysfpnfpllzgq.supabase.co'; // Replace with your URL
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyYmh0ZHdneXNmcG5mcGxsemdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5Mjc4NTIsImV4cCI6MjA4MzUwMzg1Mn0.z-vOjrzVVsju16e5r9D0wEiOkvFadU9FGS9G3IzdZHI'; // Replace with your key
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Supabase helper functions
+const saveToSupabase = async (table, data) => {
+  try {
+    const { error } = await supabase
+      .from(table)
+      .insert(data);
+    
+    if (error) {
+      console.error(`Error saving to ${table}:`, error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(`Error saving to ${table}:`, error);
+    return false;
+  }
+};
+
+const updateInSupabase = async (table, id, data) => {
+  try {
+    const { error } = await supabase
+      .from(table)
+      .update(data)
+      .eq('id', id);
+    
+    if (error) {
+      console.error(`Error updating ${table}:`, error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(`Error updating ${table}:`, error);
+    return false;
+  }
+};
+
+const deleteFromSupabase = async (table, id) => {
+  try {
+    const { error } = await supabase
+      .from(table)
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error(`Error deleting from ${table}:`, error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(`Error deleting from ${table}:`, error);
+    return false;
+  }
+};
+    
     // Custom SVG Icons
     const PackageIcon = (props) => React.createElement('svg', {
       ...props,
@@ -275,21 +329,72 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       const [purchases, setPurchases] = useState([]);
       const [expenses, setExpenses] = useState([]);
 
-    // Load data from localStorage
+    // Load data from Supabase
 useEffect(() => {
-  const savedData = localStorage.getItem('mrcheap_data');
-  if (savedData) {
+  const loadDataFromSupabase = async () => {
     try {
-      const data = JSON.parse(savedData);
-      if (data.users) setUsers(data.users);
-      if (data.products) setProducts(data.products);
-      if (data.sales) setSales(data.sales);
-      if (data.purchases) setPurchases(data.purchases);
-      if (data.expenses) setExpenses(data.expenses);
+      // Load users
+      const { data: usersData, error: usersError } = await supabase
+        .from('users')
+        .select('*');
+      if (!usersError && usersData) setUsers(usersData);
+      
+      // Load products
+      const { data: productsData, error: productsError } = await supabase
+        .from('products')
+        .select('*');
+      if (!productsError && productsData) setProducts(productsData);
+      
+      // Load sales
+      const { data: salesData, error: salesError } = await supabase
+        .from('sales')
+        .select('*');
+      if (!salesError && salesData) setSales(salesData);
+      
+      // Load purchases
+      const { data: purchasesData, error: purchasesError } = await supabase
+        .from('purchases')
+        .select('*');
+      if (!purchasesError && purchasesData) setPurchases(purchasesData);
+      
+      // Load expenses
+      const { data: expensesData, error: expensesError } = await supabase
+        .from('expenses')
+        .select('*');
+      if (!expensesError && expensesData) setExpenses(expensesData);
+      
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('Error loading data from Supabase:', error);
+      
+      // Fallback to localStorage if Supabase fails
+      const savedData = localStorage.getItem('mrcheap_data');
+      if (savedData) {
+        try {
+          const data = JSON.parse(savedData);
+          if (data.users) setUsers(data.users);
+          if (data.products) setProducts(data.products);
+          if (data.sales) setSales(data.sales);
+          if (data.purchases) setPurchases(data.purchases);
+          if (data.expenses) setExpenses(data.expenses);
+        } catch (localError) {
+          console.error('Error loading data from localStorage:', localError);
+        }
+      }
+    }
+  };
+  
+  // Load current user session from localStorage first
+  const savedUser = localStorage.getItem('mrcheap_current_user');
+  if (savedUser) {
+    try {
+      setCurrentUser(JSON.parse(savedUser));
+      // Now load data from Supabase
+      loadDataFromSupabase();
+    } catch (error) {
+      console.error('Error loading user session:', error);
     }
   }
+}, []);
   
   // Load current user session
   const savedUser = localStorage.getItem('mrcheap_current_user');
@@ -616,34 +721,78 @@ useEffect(() => {
           });
         };
 
-        const handleSubmit = (e) => {
-          e.preventDefault();
-          
-          if (editingProduct) {
-            setProducts(products.map(p => 
-              p.id === editingProduct.id 
-                ? { ...p, ...formData, quantity: Number(formData.quantity), buyPrice: Number(formData.buyPrice), sellPrice: Number(formData.sellPrice) }
-                : p
-            ));
-          } else {
-            const newProduct = {
-              id: Date.now().toString(),
-              ...formData,
-              quantity: Number(formData.quantity),
-              buyPrice: Number(formData.buyPrice),
-              sellPrice: Number(formData.sellPrice)
-            };
-            setProducts([...products, newProduct]);
-          }
-          
-          handleCloseModal();
-        };
+      const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  const productData = {
+    name: formData.name,
+    category: formData.category,
+    quantity: Number(formData.quantity),
+    buyPrice: Number(formData.buyPrice),
+    sellPrice: Number(formData.sellPrice),
+    created_at: new Date().toISOString()
+  };
+  
+  try {
+    if (editingProduct) {
+      // Update existing product in Supabase
+      const success = await updateInSupabase('products', editingProduct.id, productData);
+      
+      if (success) {
+        // Update local state
+        setProducts(products.map(p => 
+          p.id === editingProduct.id 
+            ? { 
+                ...p, 
+                ...productData,
+                id: editingProduct.id // Keep the same ID
+              }
+            : p
+        ));
+        handleCloseModal();
+      } else {
+        alert(language === 'english' ? 'Failed to update product. Please try again.' : 'Imeshindwa kusasisha bidhaa. Tafadhali jaribu tena.');
+      }
+    } else {
+      // Add new product to Supabase
+      const newProduct = {
+        id: Date.now().toString(), // Generate unique ID
+        ...productData
+      };
+      
+      const success = await saveToSupabase('products', [newProduct]);
+      
+      if (success) {
+        // Update local state
+        setProducts([...products, newProduct]);
+        handleCloseModal();
+      } else {
+        alert(language === 'english' ? 'Failed to add product. Please try again.' : 'Imeshindwa kuongeza bidhaa. Tafadhali jaribu tena.');
+      }
+    }
+  } catch (error) {
+    console.error('Error saving product:', error);
+    alert(language === 'english' ? 'An error occurred. Please try again.' : 'Hitilafu imetokea. Tafadhali jaribu tena.');
+  }
+};
 
-        const handleDelete = (productId) => {
-          if (window.confirm(language === 'english' ? 'Are you sure you want to delete this product?' : 'Je, una uhakika unataka kufuta bidhaa hii?')) {
-            setProducts(products.filter(p => p.id !== productId));
-          }
-        };
+       const handleDelete = async (productId) => {
+  if (window.confirm(language === 'english' ? 'Are you sure you want to delete this product?' : 'Je, una uhakika unataka kufuta bidhaa hii?')) {
+    try {
+      const success = await deleteFromSupabase('products', productId);
+      
+      if (success) {
+        // Update local state
+        setProducts(products.filter(p => p.id !== productId));
+      } else {
+        alert(language === 'english' ? 'Failed to delete product. Please try again.' : 'Imeshindwa kufuta bidhaa. Tafadhali jaribu tena.');
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      alert(language === 'english' ? 'An error occurred. Please try again.' : 'Hitilafu imetokea. Tafadhali jaribu tena.');
+    }
+  }
+};
 
         return React.createElement('div', { className: "p-6" },
           React.createElement('div', { className: "flex justify-between items-center mb-6" },
