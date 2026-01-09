@@ -302,17 +302,14 @@ useEffect(() => {
   }
 }, []);
 
-      // Save data to localStorage
+// Save current user session only
 useEffect(() => {
-  const data = {
-    users,
-    products,
-    sales,
-    purchases,
-    expenses
-  };
-  localStorage.setItem('mrcheap_data', JSON.stringify(data));
-}, [users, products, sales, purchases, expenses]);
+  if (currentUser) {
+    localStorage.setItem('mrcheap_current_user', JSON.stringify(currentUser));
+  } else {
+    localStorage.removeItem('mrcheap_current_user');
+  }
+}, [currentUser]);
 
 // Save current user session
 useEffect(() => {
