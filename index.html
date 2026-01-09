@@ -275,21 +275,9 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       const [purchases, setPurchases] = useState([]);
       const [expenses, setExpenses] = useState([]);
 
-    // Load data from localStorage
+    // Load data from Supabase
 useEffect(() => {
-  const savedData = localStorage.getItem('mrcheap_data');
-  if (savedData) {
-    try {
-      const data = JSON.parse(savedData);
-      if (data.users) setUsers(data.users);
-      if (data.products) setProducts(data.products);
-      if (data.sales) setSales(data.sales);
-      if (data.purchases) setPurchases(data.purchases);
-      if (data.expenses) setExpenses(data.expenses);
-    } catch (error) {
-      console.error('Error loading data:', error);
-    }
-  }
+  loadAllData();
   
   // Load current user session
   const savedUser = localStorage.getItem('mrcheap_current_user');
@@ -302,17 +290,61 @@ useEffect(() => {
   }
 }, []);
 
-      // Save data to localStorage
+// Function to load all data from Supabase
+const loadAllData = async () => {
+  try {
+    // Load users
+    const { data: usersData, error: usersError } = await supabase
+      .from('users')
+      .select('*');
+    if (usersError) throw usersError;
+    if (usersData) setUsers(usersData);
+
+    // Load products
+    const { data: productsData, error: productsError } = await supabase
+      .from('products')
+      .select('*');
+    if (productsError) throw productsError;
+    if (productsData) setProducts(productsData);
+
+    // Load sales
+    const { data: salesData, error: salesError } = await supabase
+      .from('sales')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (salesError) throw salesError;
+    if (salesData) setSales(salesData);
+
+    // Load purchases
+    const { data: purchasesData, error: purchasesError } = await supabase
+      .from('purchases')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (purchasesError) throw purchasesError;
+    if (purchasesData) setPurchases(purchasesData);
+
+    // Load expenses
+    const { data: expensesData, error: expensesError } = await supabase
+      .from('expenses')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (expensesError) throw expensesError;
+    if (expensesData) setExpenses(expensesData);
+
+  } catch (error) {
+    console.error('Error loading data from Supabase:', error);
+    alert('Error loading data. Please refresh the page.');
+  }
+};
+
+     // Save current user session only
 useEffect(() => {
-  const data = {
-    users,
-    products,
-    sales,
-    purchases,
-    expenses
-  };
-  localStorage.setItem('mrcheap_data', JSON.stringify(data));
-}, [users, products, sales, purchases, expenses]);
+  if (currentUser) {
+    localStorage.setItem('mrcheap_current_user', JSON.stringify(currentUser));
+  } else {
+    localStorage.removeItem('mrcheap_current_user');
+  }
+}, [currentUser]);
 
 // Save current user session
 useEffect(() => {
