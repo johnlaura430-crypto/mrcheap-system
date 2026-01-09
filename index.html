@@ -10,6 +10,9 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <!-- Load Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+<!-- Add Supabase Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
 </head>
 <body>
   <div id="root"></div>
@@ -17,7 +20,11 @@
   <script type="text/babel">
     // Use React and ReactDOM from global scope
     const { useState, useEffect } = React;
-    
+
+    // Supabase Configuration
+const SUPABASE_URL = 'https://crbhtdwgysfpnfpllzgq.supabase.co'; // Replace with your URL
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyYmh0ZHdneXNmcG5mcGxsemdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5Mjc4NTIsImV4cCI6MjA4MzUwMzg1Mn0.z-vOjrzVVsju16e5r9D0wEiOkvFadU9FGS9G3IzdZHI'; // Replace with your key
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     // Custom SVG Icons
     const PackageIcon = (props) => React.createElement('svg', {
       ...props,
