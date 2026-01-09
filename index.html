@@ -296,16 +296,25 @@ useEffect(() => {
 }, []);
 
       // Save data to localStorage
-      useEffect(() => {
-        const data = {
-          users,
-          products,
-          sales,
-          purchases,
-          expenses
-        };
-        localStorage.setItem('mrcheap_data', JSON.stringify(data));
-      }, [users, products, sales, purchases, expenses]);
+useEffect(() => {
+  const data = {
+    users,
+    products,
+    sales,
+    purchases,
+    expenses
+  };
+  localStorage.setItem('mrcheap_data', JSON.stringify(data));
+}, [users, products, sales, purchases, expenses]);
+
+// Save current user session
+useEffect(() => {
+  if (currentUser) {
+    localStorage.setItem('mrcheap_current_user', JSON.stringify(currentUser));
+  } else {
+    localStorage.removeItem('mrcheap_current_user');
+  }
+}, [currentUser]);
 
       // Translations
       const translations = {
