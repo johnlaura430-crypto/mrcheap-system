@@ -1353,52 +1353,112 @@ useEffect(() => {
           });
         };
 
-        const handleSubmit = (e) => {
-          e.preventDefault();
+        const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (cartItems.length === 0) {
+    alert(language === 'english' ? 'Please add items to cart' : 'Tafadhali ongeza bidhaa kwenye cart');
+    return;
+  }
+
+  const total = calculateTotal();
+
+  const newSale = {
+    id: Date.now().toString(),
+    items: cartItems,
+    total: total,
+    date: formData.date,
+    created_by: currentUser.name, // Changed to snake_case for Supabase
+    created_at: new Date().toISOString()
+  };
+
+  try {
+    // Save sale to Supabase
+    const saleSuccess = await saveToSupabase('sales', [newSale]);
+    
+    if (saleSuccess) {
+      // Update local state
+      setSales([newSale, ...sales]);
+      
+      // Update product quantities in Supabase and local state
+      for (const item of cartItems) {
+        // Update product quantity in Supabase
+        const product = products.find(p => p.id === item.productId);
+        if (product) {
+          const newQuantity = product.quantity - item.quantity;
+          const updateSuccess = await updateInSupabase('products', product.id, {
+            quantity: newQuantity
+          });
           
-          if (cartItems.length === 0) {
-            alert(language === 'english' ? 'Please add items to cart' : 'Tafadhali ongeza bidhaa kwenye cart');
-            return;
-          }
-
-          const total = calculateTotal();
-
-          const newSale = {
-            id: Date.now().toString(),
-            items: cartItems,
-            total: total,
-            date: formData.date,
-            createdBy: currentUser.name
-          };
-
-          setSales([newSale, ...sales]);
-
-          cartItems.forEach(item => {
+          if (updateSuccess) {
+            // Update local state
             setProducts(products.map(p =>
               p.id === item.productId
-                ? { ...p, quantity: p.quantity - item.quantity }
+                ? { ...p, quantity: newQuantity }
                 : p
             ));
-          });
-
-          handleCloseModal();
-        };
-
-        const handleDelete = (saleId) => {
-          if (window.confirm(language === 'english' ? 'Are you sure you want to delete this sale record?' : 'Je, una uhakika unataka kufuta rekodi hii?')) {
-            const sale = sales.find(s => s.id === saleId);
+          } else {
+            console.error(`Failed to update product ${product.name} quantity`);
+          }
+        }
+      }
+      
+      handleCloseModal();
+    } else {
+      alert(language === 'english' ? 'Failed to save sale. Please try again.' : 'Imeshindwa kuhifadhi mauzo. Tafadhali jaribu tena.');
+    }
+  } catch (error) {
+    console.error('Error saving sale:', error);
+    alert(language === 'english' ? 'An error occurred. Please try again.' : 'Hitilafu imetokea. Tafadhali jaribu tena.');
+  }
+};
+        const handleDelete = async (saleId) => {
+  if (window.confirm(language === 'english' ? 'Are you sure you want to delete this sale record?' : 'Je, una uhakika unataka kufuta rekodi hii?')) {
+    try {
+      const sale = sales.find(s => s.id === saleId);
+      
+      if (!sale) {
+        alert('Sale not found');
+        return;
+      }
+      
+      // Delete sale from Supabase
+      const deleteSuccess = await deleteFromSupabase('sales', saleId);
+      
+      if (deleteSuccess) {
+        // Restore product quantities in Supabase and local state
+        for (const item of sale.items) {
+          const product = products.find(p => p.id === item.productId);
+          if (product) {
+            const newQuantity = product.quantity + item.quantity;
+            const updateSuccess = await updateInSupabase('products', product.id, {
+              quantity: newQuantity
+            });
             
-            sale.items.forEach(item => {
+            if (updateSuccess) {
+              // Update local state
               setProducts(products.map(p =>
                 p.id === item.productId
-                  ? { ...p, quantity: p.quantity + item.quantity }
+                  ? { ...p, quantity: newQuantity }
                   : p
               ));
-            });
-
-            setSales(sales.filter(s => s.id !== saleId));
+            } else {
+              console.error(`Failed to restore product ${product.name} quantity`);
+            }
           }
-        };
+        }
+        
+        // Update local state
+        setSales(sales.filter(s => s.id !== saleId));
+      } else {
+        alert(language === 'english' ? 'Failed to delete sale. Please try again.' : 'Imeshindwa kufuta mauzo. Tafadhali jaribu tena.');
+      }
+    } catch (error) {
+      console.error('Error deleting sale:', error);
+      alert(language === 'english' ? 'An error occurred. Please try again.' : 'Hitilafu imetokea. Tafadhali jaribu tena.');
+    }
+  }
+};
 
         return React.createElement('div', { className: "p-6" },
           React.createElement('div', { className: "flex justify-between items-center mb-6" },
