@@ -25,7 +25,24 @@
 const SUPABASE_URL = 'https://crbhtdwgysfpnfpllzgq.supabase.co'; // Replace with your URL
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyYmh0ZHdneXNmcG5mcGxsemdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5Mjc4NTIsImV4cCI6MjA4MzUwMzg1Mn0.z-vOjrzVVsju16e5r9D0wEiOkvFadU9FGS9G3IzdZHI'; // Replace with your key
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-// Supabase helper functions
+
+// Add this debugging function near your helper functions
+const debugSaveOperation = async (table, data, operation) => {
+  console.log(`=== DEBUG ${operation.toUpperCase()} OPERATION ===`);
+  console.log('Table:', table);
+  console.log('Data:', data);
+  console.log('Timestamp:', new Date().toISOString());
+  
+  try {
+    const result = await supabase.from(table).select('*');
+    console.log(`Current data in ${table}:`, result.data?.length || 0, 'records');
+  } catch (error) {
+    console.error('Error checking table:', error);
+  }
+};
+    
+    // Supabase helper functions
+    
 const saveToSupabase = async (table, data) => {
   try {
     const { error } = await supabase
