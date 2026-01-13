@@ -330,47 +330,82 @@ const deleteFromSupabase = async (table, id) => {
       const [expenses, setExpenses] = useState([]);
 
     // Load data from Supabase
+// Load data from Supabase
 useEffect(() => {
+  console.log('Starting data loading...');
+  
   const loadDataFromSupabase = async () => {
     try {
-      // Load users
+      console.log('Loading users...');
       const { data: usersData, error: usersError } = await supabase
         .from('users')
         .select('*');
-      if (!usersError && usersData) setUsers(usersData);
       
-      // Load products
+      if (usersError) {
+        console.error('Error loading users:', usersError);
+      } else {
+        console.log('Users loaded:', usersData?.length || 0);
+        setUsers(usersData || []);
+      }
+      
+      console.log('Loading products...');
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select('*');
-      if (!productsError && productsData) setProducts(productsData);
       
-      // Load sales
+      if (productsError) {
+        console.error('Error loading products:', productsError);
+      } else {
+        console.log('Products loaded:', productsData?.length || 0);
+        setProducts(productsData || []);
+      }
+      
+      console.log('Loading sales...');
       const { data: salesData, error: salesError } = await supabase
         .from('sales')
         .select('*');
-      if (!salesError && salesData) setSales(salesData);
       
-      // Load purchases
+      if (salesError) {
+        console.error('Error loading sales:', salesError);
+      } else {
+        console.log('Sales loaded:', salesData?.length || 0);
+        setSales(salesData || []);
+      }
+      
+      console.log('Loading purchases...');
       const { data: purchasesData, error: purchasesError } = await supabase
         .from('purchases')
         .select('*');
-      if (!purchasesError && purchasesData) setPurchases(purchasesData);
       
-      // Load expenses
+      if (purchasesError) {
+        console.error('Error loading purchases:', purchasesError);
+      } else {
+        console.log('Purchases loaded:', purchasesData?.length || 0);
+        setPurchases(purchasesData || []);
+      }
+      
+      console.log('Loading expenses...');
       const { data: expensesData, error: expensesError } = await supabase
         .from('expenses')
         .select('*');
-      if (!expensesError && expensesData) setExpenses(expensesData);
+      
+      if (expensesError) {
+        console.error('Error loading expenses:', expensesError);
+      } else {
+        console.log('Expenses loaded:', expensesData?.length || 0);
+        setExpenses(expensesData || []);
+      }
       
     } catch (error) {
-      console.error('Error loading data from Supabase:', error);
+      console.error('General error loading data:', error);
       
       // Fallback to localStorage if Supabase fails
+      console.log('Trying localStorage fallback...');
       const savedData = localStorage.getItem('mrcheap_data');
       if (savedData) {
         try {
           const data = JSON.parse(savedData);
+          console.log('Loaded from localStorage');
           if (data.users) setUsers(data.users);
           if (data.products) setProducts(data.products);
           if (data.sales) setSales(data.sales);
@@ -385,25 +420,21 @@ useEffect(() => {
   
   // Load current user session from localStorage first
   const savedUser = localStorage.getItem('mrcheap_current_user');
+  console.log('Saved user in localStorage:', savedUser);
+  
   if (savedUser) {
     try {
-      setCurrentUser(JSON.parse(savedUser));
+      const user = JSON.parse(savedUser);
+      console.log('Setting current user:', user.username);
+      setCurrentUser(user);
+      
       // Now load data from Supabase
       loadDataFromSupabase();
     } catch (error) {
       console.error('Error loading user session:', error);
     }
-  }
-}, []);
-  
-  // Load current user session
-  const savedUser = localStorage.getItem('mrcheap_current_user');
-  if (savedUser) {
-    try {
-      setCurrentUser(JSON.parse(savedUser));
-    } catch (error) {
-      console.error('Error loading user session:', error);
-    }
+  } else {
+    console.log('No user in localStorage, showing login page');
   }
 }, []);
 
